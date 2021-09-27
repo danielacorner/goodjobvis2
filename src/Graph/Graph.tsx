@@ -1,8 +1,7 @@
-import * as React from "react";
 import { ForceGraph2D } from "react-force-graph";
 import { useForceGraphProps } from "./useForceGraphProps";
 
-export function Graph() {
+export function Graph({ graphData }) {
   const { fgRef, forceGraphProps } = useForceGraphProps();
 
   //
@@ -10,11 +9,8 @@ export function Graph() {
   //
   // const graphWithUsers = useGraphWithUsersAndLinks();
   // useTheForce(fgRef.current, graphWithUsers);
+
   return (
-    <ForceGraph2D
-      ref={fgRef}
-      graphData={{ nodes: [{}], links: [] }}
-      {...forceGraphProps}
-    />
+    <ForceGraph2D ref={fgRef} graphData={graphData} {...forceGraphProps} />
   );
 }
