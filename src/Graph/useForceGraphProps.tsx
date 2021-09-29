@@ -2,7 +2,7 @@ import { useWindowSize } from "../hooks/useWindowSize";
 import { useCallback, useRef } from "react";
 import { useControls } from "leva";
 
-type GraphNode = { id_str: string };
+type GraphNode = { id_str: string; imageUrl: string };
 
 export const NODE_DIAMETER = 25;
 export const AVATAR_DIAMETER = NODE_DIAMETER * 4;
@@ -11,9 +11,11 @@ const LIKE = "#a40880";
 const RETWEET_TO_TWEET = "#179245";
 const USER_TO_TWEET = LIGHTGREY;
 /** https://www.npmjs.com/package/react-force-graph */
-
 // tslint:disable-next-line
 export function useForceGraphProps() {
+  const { imageWidth } = useControls({
+    imageWidth: 70,
+  });
   const fgRef = useRef();
   const onBackgroundClick = useCallback(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,8 +112,9 @@ export function useForceGraphProps() {
       //       ctx.fillStyle = "tomato";
       //       ctx.fill();
       //     } else {
-      //       // show profile photo
-      //       drawProfilePhoto(node, ctx);
+      // show profile photo
+
+      drawProfilePhoto(node, ctx, node.imageUrl, imageWidth, imageWidth);
       //     }
       //   } else if (colorBy === COLOR_BY.media) {
       //     // show media
@@ -123,27 +126,7 @@ export function useForceGraphProps() {
       //       // stroke styles https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/stroke
       //       ctx.strokeStyle = "cornflowerblue";
       //       ctx.stroke();
-      //     } else {
-      //       const image = mediaArr[0];
-      //       const small = image.sizes.small;
-      //       const hwRatio = small.h / small.w;
-      //       const imgHeight = NODE_DIAMETER * hwRatio * 2;
-      //       const imgWidth = NODE_DIAMETER * 2;
-
-      //       // show the first image/video preview
-
-      //       const ctxImg = new Image(imgWidth, imgHeight);
-      //       ctxImg.src = image.poster || image.src;
-
-      //       // drawImage https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
-      //       ctx.drawImage(
-      //         ctxImg,
-      //         node.x - imgWidth / 2,
-      //         node.y - imgHeight / 2,
-      //         imgWidth,
-      //         imgHeight
-      //       );
-      //     }
+      //    }
       //   } else {
       //     // draw circle
       //     ctx.beginPath();
@@ -309,4 +292,46 @@ function drawHighlightCircle(node: any, ctx: any) {
   // ctx.closePath();
   // ctx.clip();
   // ctx.fill();
+}
+
+function drawProfilePhoto(
+  node,
+  ctx: any,
+  imageUrl: string,
+  imgWidth: number,
+  imgHeight: number
+) {
+  //       // show the first image/video preview
+
+  var thumbImg = document.createElement("img");
+  thumbImg.src = imageUrl;
+  thumbImg.onload = function () {
+    ctx.save();
+    ctx.beginPath();
+
+    ctx.arc(
+      node.x, // x: The horizontal coordinate of the arc's center.
+      node.y, // y: The vertical coordinate of the arc's center.
+      imgWidth * 0.5, // radius
+      0, // startAngle
+      Math.PI * 2, // endAngle
+      true
+    );
+    ctx.closePath();
+    ctx.clip();
+
+    ctx.drawImage(
+      thumbImg,
+      node.x - imgWidth / 2,
+      node.y - imgHeight / 2,
+      imgWidth,
+      imgHeight
+    );
+
+    ctx.beginPath();
+    ctx.arc(0, 0, 25, 0, Math.PI * 2, true);
+    ctx.clip();
+    ctx.closePath();
+    ctx.restore();
+  };
 }

@@ -4,12 +4,16 @@ import { Graph } from "./Graph/Graph";
 import useEventListener from "./hooks/useEventListener";
 import { useWindowSize } from "./hooks/useWindowSize";
 import NOC_DATA from "./assets/NOC-data";
+import { NOCImages, NOCThumbnails } from "./NOCImages";
+
 function App() {
   const currentStep = useScrollyTeller();
   return (
     <div className="App">
       <div style={{ pointerEvents: "none" }}>
         <Graph graphData={currentStep.graphData} />
+        <NOCImages />
+        <NOCThumbnails />
       </div>
     </div>
   );
@@ -17,10 +21,20 @@ function App() {
 
 export default App;
 
+const NODES = NOC_DATA.map((node) => ({
+  ...node,
+  imageUrl: `/img/NOC_images/${node.noc}.jpg`,
+}));
+
 // the story
 const STORY_STEPS = [
-  { graphData: { nodes: NOC_DATA, links: [] } },
-  { graphData: { nodes: [NOC_DATA[0]], links: [] } },
+  {
+    graphData: {
+      nodes: NODES,
+      links: [],
+    },
+  },
+  { graphData: { nodes: [NODES[0]], links: [] } },
 ];
 
 /** Listen to scroll, and direct the story */
