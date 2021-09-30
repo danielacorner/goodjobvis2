@@ -1,18 +1,18 @@
 import * as React from "react";
 import "./App.css";
-import { Graph, Graph3D } from "./Graph/Graph";
+import { Graph3D } from "./Graph/Graph";
 import useEventListener from "./hooks/useEventListener";
 import { useWindowSize } from "./hooks/useWindowSize";
-import NOC_DATA from "./assets/NOC-data";
-import { NOCDataType } from "./assets/NOC-types";
+import { GraphDataType } from "./types";
 import { NOCImages, NOCThumbnails } from "./NOCImages";
+import { NOC_NODES } from "./assets/NOC-node";
 
 function App() {
   const currentStep = useScrollyTeller();
   return (
     <div className="App">
       <div style={{ pointerEvents: "none" }}>
-        <Graph graphData={currentStep.graphData} />
+        {/* <Graph graphData={currentStep.graphData} /> */}
         <Graph3D graphData={currentStep.graphData} />
         <NOCImages />
         <NOCThumbnails />
@@ -23,24 +23,16 @@ function App() {
 
 export default App;
 
-const NODES = NOC_DATA.map((node) => ({
-  ...node,
-  imageUrl: `/img/NOC_images/${node.noc}.jpg`,
-}));
-
 // the story
-type GraphDataType = {
-  nodes: NOCDataType[];
-  links: [];
-};
+
 const STORY_STEPS: { graphData: GraphDataType }[] = [
   {
     graphData: {
-      nodes: NODES,
+      nodes: NOC_NODES,
       links: [],
     },
   },
-  { graphData: { nodes: [NODES[0]], links: [] } },
+  { graphData: { nodes: [NOC_NODES[0]], links: [] } },
 ];
 
 /** Listen to scroll, and direct the story */
