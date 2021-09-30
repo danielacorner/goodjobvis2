@@ -1,5 +1,5 @@
 import { ForceGraph2D } from "react-force-graph";
-import { GraphDataType } from "../types";
+import { GraphDataType } from "../../utils/types";
 import { useForceGraphProps } from "./useForceGraphProps";
 
 export function Graph({ graphData }: { graphData: GraphDataType }) {

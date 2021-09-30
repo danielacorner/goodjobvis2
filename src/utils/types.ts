@@ -1,5 +1,5 @@
-import NOC_DATA from "./assets/NOC-data";
-import { NOC_NODES } from "./assets/NOC-node";
+import NOC_DATA from "../assets/NOC-data";
+import { NOC_NODES } from "../assets/NOC-node";
 
 export type NOCDataType = typeof NOC_DATA[0];
 

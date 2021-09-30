@@ -1,5 +1,5 @@
 import { StoryStepType } from "./types";
-import { NOC_NODES } from "./assets/NOC-node";
+import { NOC_NODES } from "../assets/NOC-node";
 
 // the story
 export const STORY_STEPS: StoryStepType[] = [

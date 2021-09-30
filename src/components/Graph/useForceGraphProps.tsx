@@ -1,4 +1,4 @@
-import { useWindowSize } from "../hooks/useWindowSize";
+import { useWindowSize } from "../../hooks/useWindowSize";
 import { useCallback, useRef } from "react";
 import { useControls } from "leva";
 
