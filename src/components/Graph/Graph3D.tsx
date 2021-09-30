@@ -4,6 +4,7 @@ import { useMemo, useRef } from "react";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
+import NodeBillboard from "./NodeBillboard";
 
 export function Graph3D({ graphData }: { graphData: GraphDataType }) {
   const windowSize = useWindowSize();
@@ -40,9 +41,9 @@ function Nodes({ graphData }: { graphData: GraphDataType }) {
     });
     const array = [...new Array(graphData.nodes.length)];
     const coords = array.map((i) => [
-      Math.random() * 800 - 400,
-      Math.random() * 800 - 400,
-      Math.random() * 800 - 400,
+      Math.random() * 50 - 25,
+      Math.random() * 50 - 25,
+      Math.random() * 50 - 25,
     ]);
     return [geo, mat, coords];
   }, [graphData.nodes.length]);
@@ -50,7 +51,9 @@ function Nodes({ graphData }: { graphData: GraphDataType }) {
   return (
     <group ref={group}>
       {coords.map(([p1, p2, p3], i) => (
-        <mesh key={i} geometry={geo} material={mat} position={[p1, p2, p3]} />
+        <mesh key={i} geometry={geo} material={mat} position={[p1, p2, p3]}>
+          <NodeBillboard node={graphData.nodes[i]} />
+        </mesh>
       ))}
     </group>
   );
