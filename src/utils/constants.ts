@@ -1,5 +1,5 @@
 import { EffectCallback, useEffect, useState } from "react";
-
+export const NODE_WIDTH = 120;
 export const DISABLE_SELECTION_OF_TEXT_CSS = `
 /* Disable selection of text */
   -webkit-user-select: none; /* Chrome all / Safari all */

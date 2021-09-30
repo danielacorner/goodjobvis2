@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { animated, useSpring } from "react-spring";
 import {
   DISABLE_SELECTION_OF_TEXT_CSS,
+  NODE_WIDTH,
   useMounted,
 } from "../../utils/constants";
 import { GraphNodeType } from "../../utils/types";
@@ -40,44 +41,46 @@ export default function NodeBillboard({ node }: { node: GraphNodeType }) {
     <Billboard {...({} as any)} args={[0, 0, 0]}>
       <mesh ref={ref}>
         <Html
-          transform={true}
+          // transform={true}
           sprite={false}
-          style={{
-            width: 0,
-            height: 0,
-            marginLeft: -100,
-            marginTop: -100,
-            opacity: 0.8,
-          }}
+          center={true}
+          // style={{
+          //   width: 0,
+          //   height: 0,
+          //   marginLeft: -100,
+          //   marginTop: -100,
+          //   opacity: 0.8,
+          // }}
         >
-          <AnimatedHtmlStyles style={springOpacity}>
+          <AnimatedStyles style={springOpacity}>
             <AvatarStyles>
               <img src={node?.imageUrl} alt="" />
             </AvatarStyles>
             {/* <TweetsColumn {...{ hasBotScore, tweets, isLight, originalPoster }} /> */}
-          </AnimatedHtmlStyles>
+          </AnimatedStyles>
         </Html>
       </mesh>
     </Billboard>
   );
 }
 
-const AnimatedHtmlStyles = styled(animated.div)`
+const AnimatedStyles = styled(animated.div)`
   pointer-events: none;
   ${DISABLE_SELECTION_OF_TEXT_CSS}
   position: relative;
-  width: 200px;
+  width: ${NODE_WIDTH}px;
 `;
 export const AvatarStyles = styled.div`
-  width: 100%;
-  height: 100%;
+  width: ${NODE_WIDTH}px;
+  height: ${NODE_WIDTH}px;
   transform: scale(0.5);
   border-radius: 50%;
   overflow: hidden;
   pointer-events: none;
-  opacity: 0.7;
+  /* opacity: 0.9; */
   img {
+    object-fit: cover;
     width: 100%;
-    height: auto;
+    height: 100%;
   }
 `;
