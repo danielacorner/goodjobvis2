@@ -30,14 +30,7 @@ export function Graph3D({ graphData }: { graphData: GraphDataType }) {
 }
 function Nodes({ graphData }: { graphData: GraphDataType }) {
   let group = useRef<any>();
-  let theta = 0;
-  useFrame(() => {
-    // Some things maybe shouldn't be declarative, we're in the render-loop here with full access to the instance
-    const r = 5 * Math.sin((THREE as any).Math.degToRad((theta += 0.1)));
-    const s = Math.cos((THREE as any).Math.degToRad(theta * 2));
-    group.current.rotation.set(r, r, r);
-    group.current.scale.set(s, s, s);
-  });
+  useTheForce(group);
   const [geo, mat, coords] = useMemo(() => {
     const geo = new THREE.SphereBufferGeometry(1, 10, 10);
     const mat = new THREE.MeshBasicMaterial({
@@ -59,4 +52,16 @@ function Nodes({ graphData }: { graphData: GraphDataType }) {
       ))}
     </group>
   );
+}
+
+function useTheForce(group: React.MutableRefObject<any>) {
+  let theta = 0;
+
+  useFrame(() => {
+    // Some things maybe shouldn't be declarative, we're in the render-loop here with full access to the instance
+    const r = 5 * Math.sin((THREE as any).Math.degToRad((theta += 0.1)));
+    const s = Math.cos((THREE as any).Math.degToRad(theta * 2));
+    group.current.rotation.set(r, r, r);
+    group.current.scale.set(s, s, s);
+  });
 }
