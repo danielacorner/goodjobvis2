@@ -1,9 +1,10 @@
 import * as React from "react";
 import "./App.css";
-import { Graph } from "./Graph/Graph";
+import { Graph, Graph3D } from "./Graph/Graph";
 import useEventListener from "./hooks/useEventListener";
 import { useWindowSize } from "./hooks/useWindowSize";
 import NOC_DATA from "./assets/NOC-data";
+import { NOCDataType } from "./assets/NOC-types";
 import { NOCImages, NOCThumbnails } from "./NOCImages";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
     <div className="App">
       <div style={{ pointerEvents: "none" }}>
         <Graph graphData={currentStep.graphData} />
+        <Graph3D graphData={currentStep.graphData} />
         <NOCImages />
         <NOCThumbnails />
       </div>
@@ -27,7 +29,11 @@ const NODES = NOC_DATA.map((node) => ({
 }));
 
 // the story
-const STORY_STEPS = [
+type GraphDataType = {
+  nodes: NOCDataType[];
+  links: [];
+};
+const STORY_STEPS: { graphData: GraphDataType }[] = [
   {
     graphData: {
       nodes: NODES,

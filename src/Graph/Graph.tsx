@@ -1,3 +1,4 @@
+import { Canvas } from "@react-three/fiber";
 import { ForceGraph2D } from "react-force-graph";
 import { useForceGraphProps } from "./useForceGraphProps";
 
@@ -13,4 +14,8 @@ export function Graph({ graphData }) {
   return (
     <ForceGraph2D ref={fgRef} graphData={graphData} {...forceGraphProps} />
   );
+}
+
+export function Graph3D({ graphData }) {
+  return <Canvas>{graphData.nodes}</Canvas>;
 }
