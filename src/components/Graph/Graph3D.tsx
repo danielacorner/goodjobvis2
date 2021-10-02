@@ -1,13 +1,16 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { GraphDataType } from "../../utils/types";
-import { useMemo, useRef } from "react";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { OrbitControls } from "@react-three/drei";
-import * as THREE from "three";
-import NodeBillboard from "./NodeBillboard";
+import { Nodes } from "./Nodes/Nodes";
+import { Collisions } from "./Collisions";
+import { Physics } from "@react-three/cannon";
+import { useControls } from "leva";
 
 export function Graph3D({ graphData }: { graphData: GraphDataType }) {
   const windowSize = useWindowSize();
+  const { px, py, pz } = useControls({ px: -2.15, py: 5, pz: 0.1 });
+
   return (
     <Canvas style={{ width: windowSize.width, height: windowSize.height }}>
       <OrbitControls
@@ -24,42 +27,15 @@ export function Graph3D({ graphData }: { graphData: GraphDataType }) {
         // minZoom={0.5}
         // maxZoom={0.5}
       />
-
-      <Nodes {...{ graphData }} />
+      <Physics>
+        <Nodes {...{ graphData }} />
+        <Collisions />
+        <directionalLight position={[px, py, pz]} intensity={4} />
+      </Physics>
     </Canvas>
   );
 }
-function Nodes({ graphData }: { graphData: GraphDataType }) {
-  let group = useRef<any>();
-
-  useTheForce(group, graphData);
-
-  const [geo, mat, coords] = useMemo(() => {
-    const geo = new THREE.SphereBufferGeometry(1, 10, 10);
-    const mat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color("lightblue"),
-    });
-    const array = [...new Array(graphData.nodes.length)];
-    const coords = array.map((i) => [
-      Math.random() * 50 - 25,
-      Math.random() * 50 - 25,
-      Math.random() * 50 - 25,
-    ]);
-    return [geo, mat, coords];
-  }, [graphData.nodes.length]);
-
-  return (
-    <group ref={group}>
-      {coords.map(([p1, p2, p3], i) => (
-        <mesh key={i} geometry={geo} material={mat} position={[p1, p2, p3]}>
-          <NodeBillboard node={graphData.nodes[i]} />
-        </mesh>
-      ))}
-    </group>
-  );
-}
-
-function useTheForce(
+export function useTheForce(
   group: React.MutableRefObject<any>,
   graphData: GraphDataType
 ) {
@@ -74,3 +50,5 @@ function useTheForce(
     group.current.scale.set(s, s, s);
   });
 }
+
+function Lighting() {}

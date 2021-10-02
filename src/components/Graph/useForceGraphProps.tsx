@@ -2,7 +2,11 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 import { useCallback, useRef } from "react";
 import { useControls } from "leva";
 
-type GraphNode = { id_str: string; imageUrl: string };
+type GraphNode = {
+  id_str: string;
+  imageUrl: string;
+  imageUrlThumbnail: string;
+};
 
 export const NODE_DIAMETER = 25;
 export const AVATAR_DIAMETER = NODE_DIAMETER * 4;
@@ -114,7 +118,7 @@ export function useForceGraphProps() {
       //     } else {
       // show profile photo
 
-      drawProfilePhoto(node, ctx, node.imageUrl, imageWidth, imageWidth);
+      // drawProfilePhoto(node, ctx, node.imageUrl, imageWidth, imageWidth);
       //     }
       //   } else if (colorBy === COLOR_BY.media) {
       //     // show media

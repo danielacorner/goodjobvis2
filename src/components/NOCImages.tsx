@@ -28,7 +28,7 @@ export function NOCThumbnails() {
         <img
           key={node.id}
           id={`thumbnail_${node.noc}`}
-          src={`/img/NOC_Thumbnails/${node.noc}.jpg`}
+          src={`/img/NOC_Thumbnails/tn_${node.noc}.jpg`}
           alt={node.job}
         />
       ))}
