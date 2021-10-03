@@ -60,7 +60,7 @@ export default function NodeBillboard({ node }: { node: GraphNodeType }) {
     </Billboard>
   );
 }
-const NODE_WIDTH = 520;
+const NODE_WIDTH = 10;
 
 const AnimatedStyles = styled(animated.div)`
   pointer-events: none;

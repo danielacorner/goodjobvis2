@@ -5,11 +5,20 @@ import NodeBillboard from "./NodeBillboard";
 import { useTheForce } from "../Graph3D";
 import { useSphere } from "@react-three/cannon";
 import { WIDTH_SEGMENTS } from "../../../utils/constants";
+import { useCurrentStepIdx } from "../../../App";
 
-export function Nodes({ graphData }: { graphData: GraphDataType }) {
+export const NODE_RADIUS = 0.1;
+export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.5;
+
+export function Nodes() {
+  const [, , currentStep] = useCurrentStepIdx();
+  const graphData = currentStep.graphData;
+  const nodes = graphData.nodes.slice(0, 100);
+  // const nodes = graphData.nodes
+
   let group = useRef<any>();
 
-  useTheForce(group, graphData);
+  // useTheForce(group, graphData);
 
   const [geo, mat, coords] = useMemo(() => {
     const geo = new THREE.SphereBufferGeometry(
@@ -20,14 +29,17 @@ export function Nodes({ graphData }: { graphData: GraphDataType }) {
     const mat = new THREE.MeshLambertMaterial({
       color: new THREE.Color("lightblue"),
     });
-    const array = [...new Array(graphData.nodes.length)];
+    const array = [...new Array(nodes.length)];
+    const dx = 2;
+    const dy = 5;
+    const dz = 0;
     const coords = array.map((i) => [
-      Math.random() * 50 - 25,
-      Math.random() * 50 - 25,
-      Math.random() * 50 - 25,
+      Math.random() * dx - dx / 2, //x
+      Math.random() * dy - dy / 2, //y
+      Math.random() * dz - dz / 2, //y
     ]);
     return [geo, mat, coords];
-  }, [graphData.nodes.length]);
+  }, [nodes.length]);
 
   return (
     <group ref={group}>
@@ -40,9 +52,6 @@ export function Nodes({ graphData }: { graphData: GraphDataType }) {
     </group>
   );
 }
-
-const NODE_RADIUS = 0.1;
-const NODE_RADIUS_COLLISION_MULTIPLIER = 1.5;
 
 function Node({ node, geo, mat, position }) {
   const [sphereRef, api] = useSphere(() => ({

@@ -6,6 +6,7 @@ export const STORY_STEPS: StoryStepType[] = [
   {
     graphData: {
       nodes: NOC_NODES,
+      // nodes: NOC_NODES,
       links: [],
     },
   },

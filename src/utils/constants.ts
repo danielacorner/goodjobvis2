@@ -1,4 +1,5 @@
 import { EffectCallback, useEffect, useState } from "react";
+
 export const WIDTH_SEGMENTS = 26;
 export const DISABLE_SELECTION_OF_TEXT_CSS = `
 /* Disable selection of text */

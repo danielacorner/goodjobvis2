@@ -1,34 +1,37 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { GraphDataType } from "../../utils/types";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Stats } from "@react-three/drei";
 import { Nodes } from "./Nodes/Nodes";
 import { Collisions } from "./Collisions";
 import { Physics } from "@react-three/cannon";
 import { useControls } from "leva";
 
-export function Graph3D({ graphData }: { graphData: GraphDataType }) {
+export function Graph3D() {
   const windowSize = useWindowSize();
   const { px, py, pz } = useControls({ px: -2.15, py: 5, pz: 0.1 });
 
   return (
     <Canvas style={{ width: windowSize.width, height: windowSize.height }}>
-      <OrbitControls
-        autoRotate={false}
-        autoRotateSpeed={0.1}
-        enableDamping={true}
-        enableZoom={true}
-        enablePan={true}
-        // maxAzimuthAngle={0.5}
-        // maxDistance={500}
-        // minAzimuthAngle={-0.5}
-        // minDistance={50}
-        // minPolarAngle={-0.5}
-        // minZoom={0.5}
-        // maxZoom={0.5}
-      />
+      {process.env.NODE_ENV === "development" && <Stats />}
+      {process.env.NODE_ENV === "development" && (
+        <OrbitControls
+          autoRotate={false}
+          autoRotateSpeed={0.1}
+          enableDamping={true}
+          enableZoom={true}
+          enablePan={true}
+          // maxAzimuthAngle={0.5}
+          // maxDistance={500}
+          // minAzimuthAngle={-0.5}
+          // minDistance={50}
+          // minPolarAngle={-0.5}
+          // minZoom={0.5}
+          // maxZoom={0.5}
+        />
+      )}
       <Physics>
-        <Nodes {...{ graphData }} />
+        <Nodes />
         <Collisions />
         <directionalLight position={[px, py, pz]} intensity={4} />
       </Physics>

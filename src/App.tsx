@@ -21,14 +21,13 @@ const colors = {
 const theme = extendTheme({ colors });
 
 function App() {
-  const [, , currentStep] = useCurrentStepIdx();
   const isScrollEnabled = true;
   return (
     <ChakraProvider {...{ theme }}>
       <div className="App">
         <div style={{ pointerEvents: isScrollEnabled ? "auto" : "none" }}>
           {/* <Graph graphData={currentStep.graphData} /> */}
-          <Graph3D graphData={currentStep.graphData} />
+          <Graph3D />
           <GUI />
           {/* <NOCImages /> */}
           {/* <NOCThumbnails /> */}
