@@ -12,8 +12,8 @@ export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.5;
 
 export function Nodes() {
   const [, , currentStep] = useCurrentStepIdx();
-  const graphData = currentStep.graphData;
-  const nodes = graphData.nodes.slice(0, 100);
+  const graphData = currentStep?.graphData;
+  const nodes = graphData?.nodes?.slice(0, 100) || [];
   // const nodes = graphData.nodes
 
   let group = useRef<any>();
@@ -58,7 +58,7 @@ function Node({ node, geo, mat, position }) {
     mass: 1,
     position,
     linearDamping: 0.1,
-    material: { friction: 0, restitution: 0 },
+    // material: { friction: 0, restitution: 0 },
     geometry: geo,
     args: NODE_RADIUS * NODE_RADIUS_COLLISION_MULTIPLIER,
   }));

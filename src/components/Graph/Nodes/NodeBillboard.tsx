@@ -60,7 +60,7 @@ export default function NodeBillboard({ node }: { node: GraphNodeType }) {
     </Billboard>
   );
 }
-const NODE_WIDTH = 10;
+const NODE_WIDTH = 50;
 
 const AnimatedStyles = styled(animated.div)`
   pointer-events: none;
@@ -74,7 +74,7 @@ export const AvatarStyles = styled.div`
   transform: scale(0.5);
   border-radius: 50%;
   overflow: hidden;
-  pointer-events: none;
+  pointer-events: auto;
   /* opacity: 0.9; */
   img {
     object-fit: cover;

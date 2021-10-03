@@ -12,9 +12,17 @@ export function Graph3D() {
   const { px, py, pz } = useControls({ px: -2.15, py: 5, pz: 0.1 });
 
   return (
-    <Canvas style={{ width: windowSize.width, height: windowSize.height }}>
+    <Canvas
+      style={{
+        width: windowSize.width,
+        height: windowSize.height,
+        position: "fixed",
+        inset: 0,
+        pointerEvents: "none",
+      }}
+    >
       {process.env.NODE_ENV === "development" && <Stats />}
-      {process.env.NODE_ENV === "development" && (
+      {/* {process.env.NODE_ENV === "development" && (
         <OrbitControls
           autoRotate={false}
           autoRotateSpeed={0.1}
@@ -29,8 +37,20 @@ export function Graph3D() {
           // minZoom={0.5}
           // maxZoom={0.5}
         />
-      )}
-      <Physics>
+      )} */}
+      <Physics
+        // shouldInvalidate={isPaused}
+        // {...{ gravity: [0, 0, 0] }}
+
+        defaultContactMaterial={{
+          friction: 1000000,
+          restitution: 0.1,
+          // contactEquationStiffness: 0,
+          // contactEquationRelaxation: 0,
+          // frictionEquationStiffness: 0,
+          // frictionEquationRelaxation: 0,
+        }}
+      >
         <Nodes />
         <Collisions />
         <directionalLight position={[px, py, pz]} intensity={4} />
