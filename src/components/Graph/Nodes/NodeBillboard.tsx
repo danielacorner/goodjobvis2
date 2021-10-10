@@ -9,9 +9,15 @@ import { GraphNodeType } from "../../../utils/types";
 import { useAtom } from "jotai";
 import { tooltipNodeAtom } from "../../../store/store";
 import { useRef } from "react";
-import { PADDING } from "../Collisions";
+const MAX_NUM_IMAGES_TO_DISPLAY = 100;
 
-export default function NodeBillboard({ node }: { node: GraphNodeType }) {
+export default function NodeBillboard({
+  node,
+  idx,
+}: {
+  node: GraphNodeType;
+  idx: number;
+}) {
   const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
   // slowly randomly rotate the billboard content
   // const delay = useRef(Math.random() * Math.PI);
@@ -73,7 +79,9 @@ export default function NodeBillboard({ node }: { node: GraphNodeType }) {
           }}
         >
           <AvatarStyles>
-            <img src={node.imageUrlThumbnail} alt="" />
+            {idx < MAX_NUM_IMAGES_TO_DISPLAY ? (
+              <img src={node.imageUrlThumbnail} alt="" />
+            ) : null}
           </AvatarStyles>
           {/* <TweetsColumn {...{ hasBotScore, tweets, isLight, originalPoster }} /> */}
         </AnimatedStyles>

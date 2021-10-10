@@ -39,6 +39,7 @@ export function NodeTooltip() {
   return (
     <AnimatedNodeTooltipStyles style={springPosition}>
       <img src={tooltipNode?.imageUrl} alt="" />
+      <div className="title">{tooltipNode?.job}</div>
     </AnimatedNodeTooltipStyles>
   );
 }
@@ -48,6 +49,7 @@ const AnimatedNodeTooltipStyles = styled(animated.div)`
   top: 0;
   left: 0;
   width: ${TOOLTIP_WIDTH}px;
+  background: #ffffffd6;
   img {
     width: 100%;
   }

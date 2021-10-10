@@ -64,11 +64,12 @@ export default App;
 
 export function useStoryStepIdx() {
   const scrollHeightPct = useScrollHeightPct();
-  return clamp(
-    Math.round(scrollHeightPct * STORY_STEPS.length - 1),
+  const step = clamp(
+    Math.ceil(scrollHeightPct * STORY_STEPS.length - 1),
     0,
     STORY_STEPS.length - 1
   );
+  return step;
 }
 /** percent (0-1)  */
 function useScrollHeightPct() {

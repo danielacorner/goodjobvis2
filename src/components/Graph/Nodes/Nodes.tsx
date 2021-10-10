@@ -9,7 +9,7 @@ export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.5;
 export function Nodes() {
   const [, , currentStep] = useCurrentStepIdx();
   const graphData = currentStep?.graphData;
-  const nodes = graphData?.nodes?.slice(0, 100) || [];
+  const nodes = graphData?.nodes || [];
   // const nodes = graphData.nodes
 
   let group = useRef<any>();
@@ -42,14 +42,20 @@ export function Nodes() {
       {coords.map(([p1, p2, p3], i) => (
         <Node
           key={i}
-          {...{ node: graphData.nodes[i], geo, mat, position: [p1, p2, p3] }}
+          {...{
+            node: graphData.nodes[i],
+            geo,
+            mat,
+            position: [p1, p2, p3],
+            idx: i,
+          }}
         />
       ))}
     </group>
   );
 }
 
-function Node({ node, geo, mat, position }) {
+function Node({ node, geo, mat, position, idx }) {
   const [sphereRef, api] = useSphere(() => ({
     mass: 1,
     position,
@@ -61,7 +67,7 @@ function Node({ node, geo, mat, position }) {
 
   return (
     <mesh ref={sphereRef} geometry={geo} material={mat} position={position}>
-      <NodeBillboard node={node} />
+      <NodeBillboard node={node} idx={idx} />
     </mesh>
   );
 }
