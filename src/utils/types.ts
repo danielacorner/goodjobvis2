@@ -4,7 +4,7 @@ import { NOC_NODES } from "../assets/NOC-node";
 export type NOCDataType = typeof NOC_DATA[0];
 
 export type GraphNodeType = typeof NOC_NODES[0];
-export type StoryStepType = { graphData: GraphDataType };
+export type StoryStepType = { graphData: GraphDataType; text?: string };
 
 export type GraphDataType = {
   nodes: GraphNodeType[];

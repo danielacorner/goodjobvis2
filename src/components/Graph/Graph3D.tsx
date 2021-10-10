@@ -9,7 +9,12 @@ import { useControls } from "leva";
 
 export function Graph3D() {
   const windowSize = useWindowSize();
-  const { px, py, pz } = useControls({ px: -2.15, py: 5, pz: 0.1 });
+  const { px, py, pz, showStats } = useControls({
+    px: -2.15,
+    py: 5,
+    pz: 0.1,
+    showStats: true,
+  });
 
   return (
     <Canvas
@@ -21,7 +26,7 @@ export function Graph3D() {
         pointerEvents: "none",
       }}
     >
-      {process.env.NODE_ENV === "development" && <Stats />}
+      {process.env.NODE_ENV === "development" && showStats && <Stats />}
       {/* {process.env.NODE_ENV === "development" && (
         <OrbitControls
           autoRotate={false}
