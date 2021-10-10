@@ -43,9 +43,9 @@ export function Graph3D() {
         // {...{ gravity: [0, 0, 0] }}
 
         defaultContactMaterial={{
-          friction: 1000000,
+          contactEquationStiffness: 1e6,
+          // friction: 1000000,
           restitution: 0.1,
-          // contactEquationStiffness: 0,
           // contactEquationRelaxation: 0,
           // frictionEquationStiffness: 0,
           // frictionEquationRelaxation: 0,
@@ -54,6 +54,7 @@ export function Graph3D() {
         <Nodes />
         <Collisions />
         <directionalLight position={[px, py, pz]} intensity={4} />
+        <ambientLight />
       </Physics>
     </Canvas>
   );

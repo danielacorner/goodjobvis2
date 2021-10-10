@@ -6,8 +6,13 @@ import {
   useMounted,
 } from "../../../utils/constants";
 import { GraphNodeType } from "../../../utils/types";
+import { useAtom } from "jotai";
+import { tooltipNodeAtom } from "../../../store/store";
+import { useRef } from "react";
+import { PADDING } from "../Collisions";
 
 export default function NodeBillboard({ node }: { node: GraphNodeType }) {
+  const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
   // slowly randomly rotate the billboard content
   // const delay = useRef(Math.random() * Math.PI);
   // const ref = useRef(null as any);
@@ -33,7 +38,7 @@ export default function NodeBillboard({ node }: { node: GraphNodeType }) {
     // config: isNotABot ? CONFIG_POP_OUT : CONFIG_FADE_IN,
     clamp: true,
   });
-
+  const ref = useRef(null as any);
   return (
     <Billboard {...({} as any)} args={[0, 0, 0]}>
       {/* <mesh ref={ref}> */}
@@ -49,7 +54,24 @@ export default function NodeBillboard({ node }: { node: GraphNodeType }) {
         //   opacity: 0.8,
         // }}
       >
-        <AnimatedStyles style={springOpacity}>
+        <AnimatedStyles
+          style={springOpacity}
+          ref={ref}
+          onMouseEnter={() => {
+            if (!ref.current) {
+              return;
+            }
+            const rect = ref.current.getBoundingClientRect();
+            console.log("🌟🚨 ~ NodeBillboard ~ ref.current", ref.current);
+            console.log("🌟🚨 ~ NodeBillboard ~ rect", rect);
+
+            setTooltipNode({ ...node, position: { x: rect.x, y: rect.y } });
+            console.log("🌟🚨 ~ Node ~ node", node);
+          }}
+          onMouseLeave={() => {
+            setTooltipNode(null);
+          }}
+        >
           <AvatarStyles>
             <img src={node.imageUrlThumbnail} alt="" />
           </AvatarStyles>
@@ -63,7 +85,7 @@ export default function NodeBillboard({ node }: { node: GraphNodeType }) {
 const NODE_WIDTH = 50;
 
 const AnimatedStyles = styled(animated.div)`
-  pointer-events: none;
+  /* pointer-events: none; */
   ${DISABLE_SELECTION_OF_TEXT_CSS}
   position: relative;
   width: ${NODE_WIDTH}px;

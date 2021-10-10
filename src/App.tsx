@@ -9,7 +9,8 @@ import { StoryStepType } from "./utils/types";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { GUI } from "./components/GUI";
-import styled from "styled-components/macro";
+import { AppStyles } from "./AppStyles";
+import { NodeTooltip } from "./NodeTooltip";
 
 // 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
@@ -35,17 +36,11 @@ function App() {
             {/* <NOCThumbnails /> */}
           </div>
         </div>
+        <NodeTooltip />
       </AppStyles>
     </ChakraProvider>
   );
 }
-const AppStyles = styled.div`
-  overflow: auto scroll;
-  height: 100vh;
-  .app-content {
-    height: ${STORY_STEPS.length * 100}vh;
-  }
-`;
 export const currentStepIdxAtom = atom<number>(0);
 export function useCurrentStepIdx(): [number, Function, StoryStepType] {
   const [currentStepIdx, setCurrentStepIdx] = useAtom(currentStepIdxAtom);

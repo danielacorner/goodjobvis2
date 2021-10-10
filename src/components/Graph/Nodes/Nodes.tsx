@@ -1,15 +1,11 @@
-import { GraphDataType } from "../../../utils/types";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import NodeBillboard from "./NodeBillboard";
-import { useTheForce } from "../Graph3D";
 import { useSphere } from "@react-three/cannon";
 import { WIDTH_SEGMENTS } from "../../../utils/constants";
 import { useCurrentStepIdx } from "../../../App";
-
 export const NODE_RADIUS = 0.1;
 export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.5;
-
 export function Nodes() {
   const [, , currentStep] = useCurrentStepIdx();
   const graphData = currentStep?.graphData;
@@ -26,7 +22,7 @@ export function Nodes() {
       WIDTH_SEGMENTS,
       WIDTH_SEGMENTS
     );
-    const mat = new THREE.MeshLambertMaterial({
+    const mat = new THREE.MeshPhongMaterial({
       color: new THREE.Color("lightblue"),
     });
     const array = [...new Array(nodes.length)];
