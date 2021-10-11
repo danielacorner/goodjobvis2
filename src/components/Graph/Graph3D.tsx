@@ -1,11 +1,13 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { GraphDataType } from "../../utils/types";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { OrbitControls, Stats } from "@react-three/drei";
+import { Stats } from "@react-three/drei";
 import { Nodes } from "./Nodes/Nodes";
 import { Collisions } from "./Collisions";
 import { Physics } from "@react-three/cannon";
 import { useControls } from "leva";
+import { useEffect, useState } from "react";
+import { useCurrentStepIdx } from "../../App";
 
 export function Graph3D() {
   const windowSize = useWindowSize();
@@ -15,6 +17,16 @@ export function Graph3D() {
     pz: 0.1,
     showStats: true,
   });
+
+  const [stuff, setStuff] = useState(true);
+  // flicker the nodes when the step changes
+  const [currentStepIdx] = useCurrentStepIdx();
+  useEffect(() => {
+    setStuff(false);
+    setTimeout(() => {
+      setStuff(true);
+    });
+  }, [currentStepIdx]);
 
   return (
     <Canvas
@@ -56,7 +68,7 @@ export function Graph3D() {
           // frictionEquationRelaxation: 0,
         }}
       >
-        <Nodes />
+        {stuff && <Nodes />}
         <Collisions />
         <directionalLight position={[px, py, pz]} intensity={4} />
         <ambientLight />

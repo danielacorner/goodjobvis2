@@ -84,15 +84,9 @@ function useScrollHeightPct() {
         return;
       }
       const scrollHeight = $App.scrollTop;
-      console.log("🌟🚨 ~ useScrollHeightPct ~ scrollHeight", scrollHeight);
-      console.dir($App);
       const scrollableHeight = $App.scrollHeight - windowSize.height;
 
       const newScrollHeightPct = scrollHeight / scrollableHeight;
-      console.log(
-        "🌟🚨 ~ useScrollHeightPct ~ newScrollHeightPct",
-        newScrollHeightPct
-      );
 
       setScrollHeightPct(newScrollHeightPct);
     },

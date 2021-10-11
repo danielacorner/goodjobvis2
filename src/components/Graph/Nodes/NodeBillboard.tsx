@@ -68,11 +68,8 @@ export default function NodeBillboard({
               return;
             }
             const rect = ref.current.getBoundingClientRect();
-            console.log("🌟🚨 ~ NodeBillboard ~ ref.current", ref.current);
-            console.log("🌟🚨 ~ NodeBillboard ~ rect", rect);
 
             setTooltipNode({ ...node, position: { x: rect.x, y: rect.y } });
-            console.log("🌟🚨 ~ Node ~ node", node);
           }}
           onMouseLeave={() => {
             setTooltipNode(null);
