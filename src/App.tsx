@@ -12,6 +12,7 @@ import { GUI } from "./components/GUI";
 import { NodeTooltip } from "./NodeTooltip";
 import { StoryCards } from "./StoryCards";
 import styled from "styled-components/macro";
+import { Leva } from "leva";
 
 // 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
@@ -40,6 +41,16 @@ function App() {
         </div>
         <NodeTooltip />
       </AppStyles>
+      <Leva
+        oneLineLabels={true}
+        // fill             // default = false,  true makes the pane fill the parent dom node it's rendered in
+        // flat             // default = false,  true removes border radius and shadow
+        // oneLineLabels    // default = false, alternative layout for labels, with labels and fields on separate rows
+        // hideTitleBar     // default = false, hides the GUI header
+        // collapsed        // default = false, when true the GUI is collpased
+        // hidden={true}
+        hidden={process.env.NODE_ENV === "production"} // default = false, when true the GUI is hidden
+      />
     </ChakraProvider>
   );
 }

@@ -35,7 +35,7 @@ export function Graph3D() {
         height: windowSize.height,
         position: "fixed",
         inset: 0,
-        pointerEvents: "none",
+        // pointerEvents: "none",
       }}
     >
       {process.env.NODE_ENV === "development" && showStats && <Stats />}
@@ -70,8 +70,10 @@ export function Graph3D() {
       >
         {stuff && <Nodes />}
         <Collisions />
-        <directionalLight position={[px, py, pz]} intensity={4} />
-        <ambientLight />
+        <ambientLight intensity={0.4} />
+        <pointLight position={[150, 150, 150]} intensity={0.3} />
+        {/* <directionalLight position={[px, py, pz]} intensity={1} />
+        <ambientLight intensity={0.1} /> */}
       </Physics>
     </Canvas>
   );
