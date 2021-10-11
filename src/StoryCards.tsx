@@ -5,7 +5,9 @@ export function StoryCards() {
   return (
     <StoryCardsStyles>
       {STORY_STEPS.map((story, idx) => (
-        <StoryStepStyles stepIdx={idx}>{story.text}</StoryStepStyles>
+        <StoryStepStyles key={idx} stepIdx={idx}>
+          {story.text}
+        </StoryStepStyles>
       ))}
     </StoryCardsStyles>
   );
