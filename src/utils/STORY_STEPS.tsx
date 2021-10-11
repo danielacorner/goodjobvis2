@@ -1,7 +1,7 @@
 import { StoryStepType } from "./types";
 import { NOC_NODES } from "../assets/NOC-node";
 const AUTOMATIONRISKS = NOC_NODES.map((d) => d.automationRisk);
-const NOC_STATS = {
+export const NOC_STATS = {
   automationRisk: {
     min: AUTOMATIONRISKS.reduce((acc, cur) => Math.min(acc, cur), Infinity),
     max: AUTOMATIONRISKS.reduce((acc, cur) => Math.max(acc, cur), -Infinity),

@@ -6,7 +6,7 @@ import { useWindowSize } from "./hooks/useWindowSize";
 import { STORY_STEPS } from "./utils/STORY_STEPS";
 import { atom, useAtom } from "jotai";
 import { StoryStepType } from "./utils/types";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, useMediaQuery } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { GUI } from "./components/GUI";
 import { NodeTooltip } from "./NodeTooltip";
@@ -78,7 +78,7 @@ function useScrollHeightPct() {
   const $App = document.querySelector(".App");
   // const $Canvas = document.querySelector(".App .app-content canvas");
   useEventListener(
-    "wheel",
+    "scroll",
     (e) => {
       if (!$App) {
         return;

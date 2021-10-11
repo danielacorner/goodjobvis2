@@ -29,8 +29,12 @@ const STEP_HEIGHT_MULT = 1.5;
 const StoryStepStyles = styled.div`
   position: absolute;
   top: ${({ stepIdx }) => 50 + stepIdx * 100 * STEP_HEIGHT_MULT}vh;
-  left: 6em;
-  max-width: calc(100vw - 12em);
+  left: 2em;
+  max-width: calc(100vw - 4em);
+  @media (min-width: 600px) {
+    left: 6em;
+    max-width: calc(100vw - 12em);
+  }
   font-size: 1.2em;
   background: #ffffffc3;
   padding: 0.5em;

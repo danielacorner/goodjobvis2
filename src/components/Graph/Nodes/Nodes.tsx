@@ -4,6 +4,10 @@ import { useSphere } from "@react-three/cannon";
 import { WIDTH_SEGMENTS } from "../../../utils/constants";
 import { useCurrentStepIdx } from "../../../App";
 import { useEffect, useMemo } from "react";
+import { NOC_STATS } from "../../../utils/STORY_STEPS";
+import { interpolateRdGy } from "d3-scale-chromatic";
+// const colors = interpolateRdGy();
+// const colorScale =
 
 // instanced physics in r3f/cannon https://codesandbox.io/s/r3f-cannon-instanced-physics-g1s88
 
@@ -91,7 +95,24 @@ export function Nodes() {
     // });
   }, []);
 
-  // must re-mount the component each time the nodes change
+  const colors = useMemo(() => {
+    const array = new Float32Array(nodes.length * 3);
+    const color = new THREE.Color();
+    for (let i = 0; i < nodes.length; i++) {
+      const pct = nodes[i].automationRisk / NOC_STATS.automationRisk.max;
+      console.log("🌟🚨 ~ colors ~ pct", pct);
+      const col = new THREE.Color(interpolateRdGy(pct));
+      console.log("🌟🚨 ~ colors ~ col", col);
+
+      color
+        .set(col)
+        // .convertSRGBToLinear()
+        .toArray(array, i * 3);
+    }
+    return array;
+  }, [nodes]);
+  console.log("🌟🚨 ~ colors ~ colors", colors);
+
   return (
     <>
       (
@@ -105,14 +126,12 @@ export function Nodes() {
           attach="geometry"
           args={[NODE_RADIUS, WIDTH_SEGMENTS, WIDTH_SEGMENTS]}
         >
-          {/* <instancedBufferAttribute
-          attachObject={["attributes", "color"]}
-          args={[, 3]}
-        /> */}
+          <instancedBufferAttribute
+            attachObject={["attributes", "color"]}
+            args={[colors, 3]}
+          />
         </sphereBufferGeometry>
-        <meshPhongMaterial
-          color={new THREE.Color("#6bdae2")}
-        ></meshPhongMaterial>
+        <meshPhongMaterial attach="material"></meshPhongMaterial>
       </instancedMesh>
       )
       {/* {isInstanced ? null : (
