@@ -5,7 +5,7 @@ export const STORY_STEPS: StoryStepType[] = [
   {
     graphData: {
       nodes: NOC_NODES.filter(
-        (node) => node.automationRisk >= 0.9 * NOC_STATS.automationRisk.max
+        (node) => node.automationRisk < 0.1 * NOC_STATS.automationRisk.max
       ),
       links: [],
     },
@@ -25,7 +25,7 @@ export const STORY_STEPS: StoryStepType[] = [
         </p>
         <br />
         <p>
-          🤖 All of these jobs have {`>=`} 90% chance of having their tasks
+          👷‍♀️ All of these jobs have {`<`} 10% chance of having their tasks
           automated in the near future...
         </p>
       </div>
@@ -35,14 +35,14 @@ export const STORY_STEPS: StoryStepType[] = [
   {
     graphData: {
       nodes: NOC_NODES.filter(
-        (node) => node.automationRisk < 0.1 * NOC_STATS.automationRisk.max
+        (node) => node.automationRisk >= 0.9 * NOC_STATS.automationRisk.max
       ),
       links: [],
     },
     text: (
       <p>
-        All of these jobs have {`<`} 10% chance of having their tasks automated
-        in the near future...
+        🤖 All of these jobs have {`>=`} 90% chance of having their tasks
+        automated in the near future...
       </p>
     ),
   },
