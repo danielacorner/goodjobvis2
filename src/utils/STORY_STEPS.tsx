@@ -12,38 +12,66 @@ const NOC_STATS = {
 export const STORY_STEPS: StoryStepType[] = [
   {
     graphData: {
+      nodes: NOC_NODES.filter(
+        (node) => node.automationRisk >= 0.9 * NOC_STATS.automationRisk.max
+      ),
+      links: [],
+    },
+    text: (
+      <div>
+        <p>
+          Hey 😀 these are some job categories from the{" "}
+          <a
+            style={{ pointerEvents: "auto" }}
+            href="https://noc.esdc.gc.ca/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            National Occupational Classification (NOC) dataset (2016)
+          </a>
+          .
+        </p>
+        <br />
+        <p>
+          All of these jobs have {`>=`} 90% chance of having their tasks
+          automated in the near future...
+        </p>
+      </div>
+    ),
+  },
+
+  {
+    graphData: {
+      nodes: NOC_NODES.filter(
+        (node) => node.automationRisk < 0.1 * NOC_STATS.automationRisk.max
+      ),
+      links: [],
+    },
+    text: (
+      <p>
+        All of these jobs have {`<`} 10% chance of having their tasks automated
+        in the near future...
+      </p>
+    ),
+  },
+  {
+    graphData: {
       nodes: NOC_NODES,
       links: [],
     },
     text: (
       <div>
-        Hey 😀 this is the{" "}
+        Here is the entire{" "}
         <a
           style={{ pointerEvents: "auto" }}
           href="https://noc.esdc.gc.ca/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          National Occupational Classification dataset (2016)
+          NOC dataset
         </a>
-        . Each circle is a job category...
+        .
       </div>
     ),
-  },
-  {
-    graphData: {
-      nodes: NOC_NODES.filter(
-        (node) => node.automationRisk >= 0.9 * NOC_STATS.automationRisk.max
-      ),
-      links: [],
-    },
-    text: "These nodes have > 90% chance of having their tasks automated in the near future...",
-  },
-  {
-    graphData: { nodes: [NOC_NODES[0], NOC_NODES[1]], links: [] },
-    text: "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀hey step 3",
-  },
-  {
-    graphData: { nodes: [NOC_NODES[0], NOC_NODES[1], NOC_NODES[2]], links: [] },
   },
 ];
