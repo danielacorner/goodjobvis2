@@ -20,7 +20,7 @@ const StoryCardsStyles = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  height: ${STORY_STEPS.length * 100 + 100}vh;
+  height: ${(STORY_STEPS.length + 1.5) * 100}vh;
   background: none;
 `;
 

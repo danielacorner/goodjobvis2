@@ -6,6 +6,8 @@ import { useCurrentStepIdx } from "../../../App";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { NOC_NODES } from "../../../assets/NOC-node";
+import { useAtom } from "jotai";
+import { tooltipNodeAtom } from "../../../store/store";
 // const colors = interpolateRdGy();
 // const colorScale =
 
@@ -153,12 +155,20 @@ export function Nodes() {
     meshRef.current.instanceMatrix.needsUpdate = true;
   });
 
+  const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
   return (
     <>
       (
       <instancedMesh
         onPointerEnter={(e) => {
           console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
+          const node =
+            e.instanceId || e.instanceId === 0
+              ? nodes[e.instanceId]
+              : undefined;
+          if (node) {
+            setTooltipNode({ ...node, position: { x: e.pageX, y: e.pageY } });
+          }
           setHoveredId(e.instanceId);
         }}
         onPointerOut={(e) => setHoveredId(undefined)}
