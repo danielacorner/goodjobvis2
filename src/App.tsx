@@ -6,7 +6,7 @@ import { useWindowSize } from "./hooks/useWindowSize";
 import { STORY_STEPS } from "./utils/STORY_STEPS";
 import { atom, useAtom } from "jotai";
 import { StoryStepType } from "./utils/types";
-import { ChakraProvider, useMediaQuery } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { GUI } from "./components/GUI";
 import { NodeTooltip } from "./NodeTooltip";

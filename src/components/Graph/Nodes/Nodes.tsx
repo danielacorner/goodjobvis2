@@ -4,9 +4,8 @@ import { useSphere } from "@react-three/cannon";
 import { WIDTH_SEGMENTS } from "../../../utils/constants";
 import { useCurrentStepIdx } from "../../../App";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { NOC_STATS } from "../../../utils/STORY_STEPS";
-import { interpolateRdGy } from "d3-scale-chromatic";
 import { useFrame } from "@react-three/fiber";
+import { NOC_NODES } from "../../../assets/NOC-node";
 // const colors = interpolateRdGy();
 // const colorScale =
 
@@ -105,18 +104,14 @@ export function Nodes() {
     // });
   }, []);
   // const tempObject = new THREE.Object3D()
-  const colors = [...new Array(nodes.length)].map((_, idx) =>
-    getNodeColor(nodes, idx)
-  );
+  const colors = nodes.map((n) => n.color);
 
   // const [hovered, set] = useState()
   const colorArray = useMemo(
     () =>
       Float32Array.from(
-        [...new Array(nodes.length)].flatMap((_, i) => {
-          const colHex = getNodeColor(nodes, i);
-
-          return tempColor.set(colHex).toArray();
+        nodes.flatMap((n, i) => {
+          return tempColor.set(n.color || "tomato").toArray();
         })
       ),
     [nodes]
@@ -127,13 +122,24 @@ export function Nodes() {
     if (!meshRef.current) {
       return;
     }
-    const time = state.clock.getElapsedTime();
+    // const time = state.clock.getElapsedTime();
     for (let i = 0; i < nodes.length; i++) {
       if (hovered !== prevRef.current) {
-        const nodeColor = i === hovered ? "white" : getNodeColor(nodes, i);
-        console.log("🌟🚨 ~ useFrame ~ nodeColor", nodeColor);
-        tempColor.set(nodeColor).toArray(colorArray, i * 3);
+        const nodeColor = i === hovered ? "white" : nodes[i].color;
+        tempColor.set(nodeColor || "tomato").toArray(colorArray, i * 3);
         meshRef.current.geometry.attributes.color.needsUpdate = true;
+
+        const scale = (nodes[i].scale = THREE.MathUtils.lerp(
+          nodes[i].scale || 0,
+          i === hovered ? 3 : 1,
+          0.1
+        ));
+        tempObject.scale.setScalar(scale);
+
+        // const scale = i === hovered ? 3 : 1;
+        tempObject.scale.setScalar(scale);
+        // meshRef.current.geometry.attributes.scale.needsUpdate = true;
+        tempObject.updateMatrix();
       }
 
       // tempObject.position.set(5 - i, 5 - 2, 5 - 6);
@@ -142,13 +148,6 @@ export function Nodes() {
       //   Math.sin(1 / 4 + time) +
       //   Math.sin(3 / 4 + time);
       // tempObject.rotation.z = tempObject.rotation.y * 2;
-      // const scale = (data[id].scale = THREE.MathUtils.lerp(
-      //   data[id].scale,
-      //   id === hovered ? 3 : 1,
-      //   0.1
-      // ));
-      // tempObject.scale.setScalar(scale);
-      tempObject.updateMatrix();
       // meshRef.current.setMatrixAt(i, tempObject.matrix);
     }
     meshRef.current.instanceMatrix.needsUpdate = true;
@@ -202,37 +201,19 @@ export function Nodes() {
   );
 }
 
-function getNodeColor(nodes: any, i: number) {
-  const pct = nodes[i].automationRisk / NOC_STATS.automationRisk.max;
-  const col = interpolateRdGy(pct);
-  const rgb = col.slice(`rgb(`.length, -`)`.length).split(", ");
-  const [r, g, b] = rgb.map(Number);
-  const colHex = rgbToHex(r, g, b);
-  return colHex;
-}
+// function Node({ node, geo, mat, position, idx }) {
+//   const [sphereRef, api] = useSphere(() => ({
+//     mass: 1,
+//     position,
+//     linearDamping: 0.1,
+//     // material: { friction: 0, restitution: 0 },
+//     geometry: geo,
+//     args: NODE_RADIUS * NODE_RADIUS_COLLISION_MULTIPLIER,
+//   }));
 
-function Node({ node, geo, mat, position, idx }) {
-  const [sphereRef, api] = useSphere(() => ({
-    mass: 1,
-    position,
-    linearDamping: 0.1,
-    // material: { friction: 0, restitution: 0 },
-    geometry: geo,
-    args: NODE_RADIUS * NODE_RADIUS_COLLISION_MULTIPLIER,
-  }));
-
-  return (
-    <mesh ref={sphereRef} geometry={geo} material={mat} position={position}>
-      <NodeBillboard node={node} idx={idx} />
-    </mesh>
-  );
-}
-
-function componentToHex(c) {
-  var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
-}
-
-function rgbToHex(r, g, b) {
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
+//   return (
+//     <mesh ref={sphereRef} geometry={geo} material={mat} position={position}>
+//       <NodeBillboard node={node} idx={idx} />
+//     </mesh>
+//   );
+// }

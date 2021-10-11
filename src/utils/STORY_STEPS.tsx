@@ -1,13 +1,5 @@
 import { StoryStepType } from "./types";
-import { NOC_NODES } from "../assets/NOC-node";
-const AUTOMATIONRISKS = NOC_NODES.map((d) => d.automationRisk);
-export const NOC_STATS = {
-  automationRisk: {
-    min: AUTOMATIONRISKS.reduce((acc, cur) => Math.min(acc, cur), Infinity),
-    max: AUTOMATIONRISKS.reduce((acc, cur) => Math.max(acc, cur), -Infinity),
-  },
-};
-
+import { NOC_NODES, NOC_STATS } from "../assets/NOC-node";
 // the story
 export const STORY_STEPS: StoryStepType[] = [
   {
@@ -33,7 +25,7 @@ export const STORY_STEPS: StoryStepType[] = [
         </p>
         <br />
         <p>
-          All of these jobs have {`>=`} 90% chance of having their tasks
+          🤖 All of these jobs have {`>=`} 90% chance of having their tasks
           automated in the near future...
         </p>
       </div>
