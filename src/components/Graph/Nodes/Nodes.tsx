@@ -228,53 +228,18 @@ export function Nodes() {
           ></meshPhongMaterial>
         </instancedMesh>
         {nodes.map((node, idx) => (
-          <group
-            onPointerEnter={(e) => {
-              console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
-              const node =
-                e.instanceId || e.instanceId === 0
-                  ? nodes[e.instanceId]
-                  : undefined;
-              if (node) {
-                setTooltipNode({
-                  ...node,
-                  position: { x: e.pageX, y: e.pageY },
-                });
-              }
-              setHoveredId(e.instanceId);
+          <NodeGroup
+            {...{
+              node,
+              nodes,
+              setTooltipNode,
+              setHoveredId,
+              idx,
+              positions,
+              positionsRef,
+              api,
             }}
-            onPointerOut={(e) => setHoveredId(undefined)}
-          >
-            <Node
-              {...{
-                node,
-                idx,
-                position: positions[idx],
-              }}
-            />
-            <Html
-              position={positions[idx] as any}
-              key={Math.random()}
-              // transform={true}
-              // sprite={true}
-              calculatePosition={(el, camera, size) => {
-                if (first) {
-                  first = false;
-                  console.log("🌟🚨 ~ Nodes ~ positionsRef", positionsRef);
-                  console.log("🌟🚨 ~ Nodes ~ el", el);
-                  console.log("🌟🚨 ~ Nodes ~ api", api);
-                  console.log("🌟🚨 ~ Nodes ~ api.at", api.at(idx));
-                  console.log(
-                    "🌟🚨 ~ Nodes ~ instancedSphereRef",
-                    instancedSphereRef
-                  );
-                }
-                return positionsRef.current[idx];
-              }}
-            >
-              hi hi hi
-            </Html>
-          </group>
+          />
         ))}
       </Instances>
       )
@@ -297,6 +262,73 @@ export function Nodes() {
     </>
   );
 }
+function NodeGroup({
+  node,
+  nodes,
+  setTooltipNode,
+  setHoveredId,
+  idx,
+  positions,
+  positionsRef,
+  api,
+}) {
+  const htmlRef = useRef(null as any);
+  useFrame(() => {
+    console.log(
+      "🌟🚨 ~ useFrame ~ positionsRef.current[idx]",
+      positionsRef.current[idx]
+    );
+    // if (positionsRef.current[idx] && htmlRef.current) {
+    //   htmlRef.current.position = positionsRef.current[idx];
+    // }
+  });
+  return (
+    <group
+      key={node.id}
+      onPointerEnter={(e) => {
+        console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
+        const node =
+          e.instanceId || e.instanceId === 0 ? nodes[e.instanceId] : undefined;
+        if (node) {
+          setTooltipNode({
+            ...node,
+            position: { x: e.pageX, y: e.pageY },
+          });
+        }
+        setHoveredId(e.instanceId);
+      }}
+      onPointerOut={(e) => setHoveredId(undefined)}
+    >
+      <Node
+        {...{
+          node,
+          idx,
+          position: positions[idx],
+        }}
+      />
+      <Html
+        position={positions[idx] as any}
+        key={Math.random()}
+        // transform={true}
+        // sprite={true}
+        ref={htmlRef}
+        // calculatePosition={(el, camera, size) => {
+        //   if (first) {
+        //     first = false;
+        //     console.log("🌟🚨 ~ Nodes ~ positionsRef", positionsRef);
+        //     console.log("🌟🚨 ~ Nodes ~ el", el);
+        //     console.log("🌟🚨 ~ Nodes ~ api", api);
+        //     console.log("🌟🚨 ~ Nodes ~ api.at", api.at(idx));
+        //   }
+        //   return positionsRef.current[idx];
+        // }}
+      >
+        hi hi hi
+      </Html>
+    </group>
+  );
+}
+
 const color = new THREE.Color();
 
 function Node({ node, idx, position, ...props }) {
