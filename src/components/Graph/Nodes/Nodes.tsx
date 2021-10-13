@@ -172,6 +172,18 @@ export function Nodes() {
       // nodes
     ]
   );
+  const positionsRef = useRef(positions);
+  useEffect(() => {
+    nodes.forEach(
+      (_, idx) => {
+        api.at(idx).position.subscribe((v) => {
+          positionsRef.current[idx] = v;
+        });
+      },
+      [api]
+    );
+  });
+  // useEffect(() => api.velocity.subscribe((v) => (velocity.current = v)), [api]);
 
   const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
   return (
@@ -242,14 +254,22 @@ export function Nodes() {
             />
             <Html
               position={positions[idx] as any}
+              key={Math.random()}
               // transform={true}
               // sprite={true}
               calculatePosition={(el, camera, size) => {
                 if (first) {
                   first = false;
+                  console.log("🌟🚨 ~ Nodes ~ positionsRef", positionsRef);
                   console.log("🌟🚨 ~ Nodes ~ el", el);
+                  console.log("🌟🚨 ~ Nodes ~ api", api);
+                  console.log("🌟🚨 ~ Nodes ~ api.at", api.at(idx));
+                  console.log(
+                    "🌟🚨 ~ Nodes ~ instancedSphereRef",
+                    instancedSphereRef
+                  );
                 }
-                return [el.position.x, el.position.y, el.position.z];
+                return positionsRef.current[idx];
               }}
             >
               hi hi hi
