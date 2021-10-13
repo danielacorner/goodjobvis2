@@ -8,6 +8,7 @@ import { useFrame } from "@react-three/fiber";
 import { NOC_NODES } from "../../../assets/NOC-node";
 import { useAtom } from "jotai";
 import { tooltipNodeAtom } from "../../../store/store";
+import { Instance, Instances } from "@react-three/drei";
 // const colors = interpolateRdGy();
 // const colorScale =
 
@@ -159,6 +160,26 @@ export function Nodes() {
   return (
     <>
       (
+      {/* Instances https://codesandbox.io/s/floating-instanced-shoes-h8o2d?file=/src/App.js */}
+      <Instances
+        material={mat}
+        geometry={geo}
+        limit={1000} // Optional: max amount of items (for calculating buffer size)
+        range={1000} // Optional: draw-range
+      >
+        {nodes.map((node) => (
+          <Node
+            {...{
+              node,
+              position: [
+                Math.random() * dx - dx / 2, //x
+                Math.random() * dy - dy / 2, //y
+                Math.random() * dz - dz / 2, //y
+              ],
+            }}
+          />
+        ))}
+      </Instances>
       <instancedMesh
         onPointerEnter={(e) => {
           console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
@@ -210,7 +231,34 @@ export function Nodes() {
     </>
   );
 }
+const color = new THREE.Color();
 
+function Node({ node, position, ...props }) {
+  const ref = useRef(null as any);
+  const [hovered, setHover] = useState(false);
+  useFrame((state) => {
+    // const t = state.clock.getElapsedTime() + random * 10000
+    // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
+    // ref.current.position.y = Math.sin(t / 1.5) / 2
+    // ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.4 : 1, 0.1)
+    ref.current?.color.lerp(
+      color.set(hovered ? "red" : "white"),
+      hovered ? 1 : 0.1
+    );
+  });
+  return (
+    <group {...props}>
+      <Instance
+        ref={ref}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHover(true);
+        }}
+        onPointerOut={() => setHover(false)}
+      />
+    </group>
+  );
+}
 // function Node({ node, geo, mat, position, idx }) {
 //   const [sphereRef, api] = useSphere(() => ({
 //     mass: 1,
