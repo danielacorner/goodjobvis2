@@ -18,72 +18,9 @@ export default function NodeBillboard({
   node: GraphNodeType;
   idx: number;
 }) {
-  const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
-  // slowly randomly rotate the billboard content
-  // const delay = useRef(Math.random() * Math.PI);
-  // const ref = useRef(null as any);
-  // useFrame(({ clock }) => {
-  //   if (!ref.current) {
-  //     return;
-  //   }
-  //   const turnPercent = 0.08;
-  //   const speed = 0.5;
-  //   const roty =
-  //     Math.sin((clock.getElapsedTime() - delay.current) * speed) *
-  //     Math.PI *
-  //     turnPercent;
-  //   ref.current.rotation.y = roty;
-  // });
-
-  const mounted = useMounted();
-
-  // const isNotABot = node.user.isNotABot;
-  // fade in on mount
-  const springOpacity = useSpring({
-    opacity: mounted ? 1 : 0,
-    // config: isNotABot ? CONFIG_POP_OUT : CONFIG_FADE_IN,
-    clamp: true,
-  });
-  const ref = useRef(null as any);
   return (
     <Billboard {...({} as any)} args={[0, 0, 0]}>
-      {/* <mesh ref={ref}> */}
-      <Html
-        transform={false}
-        sprite={false}
-        center={true}
-        // style={{
-        //   width: 0,
-        //   height: 0,
-        //   marginLeft: -100,
-        //   marginTop: -100,
-        //   opacity: 0.8,
-        // }}
-      >
-        <AnimatedStyles
-          style={springOpacity}
-          ref={ref}
-          onMouseEnter={() => {
-            if (!ref.current) {
-              return;
-            }
-            const rect = ref.current.getBoundingClientRect();
-
-            setTooltipNode({ ...node, position: { x: rect.x, y: rect.y } });
-          }}
-          onMouseLeave={() => {
-            setTooltipNode(null);
-          }}
-        >
-          <AvatarStyles>
-            {idx < MAX_NUM_IMAGES_TO_DISPLAY ? (
-              <img src={node.imageUrlThumbnail} alt="" />
-            ) : null}
-          </AvatarStyles>
-          {/* <TweetsColumn {...{ hasBotScore, tweets, isLight, originalPoster }} /> */}
-        </AnimatedStyles>
-      </Html>
-      {/* </mesh> */}
+      <NodeBillboardHtml {...{ node, idx }} />
     </Billboard>
   );
 }
@@ -109,3 +46,41 @@ export const AvatarStyles = styled.div`
     height: 100%;
   }
 `;
+export function NodeBillboardHtml({ node, idx, ...rest }) {
+  const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
+
+  const ref = useRef(null as any);
+
+  // fade in on mount
+  const mounted = useMounted();
+  const springOpacity = useSpring({
+    opacity: mounted ? 1 : 0,
+    // config: isNotABot ? CONFIG_POP_OUT : CONFIG_FADE_IN,
+    clamp: true,
+  });
+  return (
+    <Html transform={false} sprite={false} center={true} {...rest}>
+      <AnimatedStyles
+        style={springOpacity}
+        ref={ref}
+        onMouseEnter={() => {
+          if (!ref.current) {
+            return;
+          }
+          const rect = ref.current.getBoundingClientRect();
+
+          setTooltipNode({ ...node, position: { x: rect.x, y: rect.y } });
+        }}
+        onMouseLeave={() => {
+          setTooltipNode(null);
+        }}
+      >
+        <AvatarStyles>
+          {idx < MAX_NUM_IMAGES_TO_DISPLAY ? (
+            <img src={node.imageUrlThumbnail} alt="" />
+          ) : null}
+        </AvatarStyles>
+      </AnimatedStyles>
+    </Html>
+  );
+}

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import NodeBillboard from "./NodeBillboard";
+import NodeBillboard, { NodeBillboardHtml } from "./NodeBillboard";
 import { useSphere } from "@react-three/cannon";
 import { WIDTH_SEGMENTS } from "../../../utils/constants";
 import { useCurrentStepIdx } from "../../../App";
@@ -167,10 +167,11 @@ export function Nodes() {
         limit={1000} // Optional: max amount of items (for calculating buffer size)
         range={1000} // Optional: draw-range
       >
-        {nodes.map((node) => (
+        {nodes.map((node, idx) => (
           <Node
             {...{
               node,
+              idx,
               position: [
                 Math.random() * dx - dx / 2, //x
                 Math.random() * dy - dy / 2, //y
@@ -233,21 +234,28 @@ export function Nodes() {
 }
 const color = new THREE.Color();
 
-function Node({ node, position, ...props }) {
+function Node({ node, idx, position, ...props }) {
   const ref = useRef(null as any);
+  const groupRef = useRef(null as any);
   const [hovered, setHover] = useState(false);
-  useFrame((state) => {
-    // const t = state.clock.getElapsedTime() + random * 10000
-    // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
-    // ref.current.position.y = Math.sin(t / 1.5) / 2
-    // ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.4 : 1, 0.1)
-    ref.current?.color.lerp(
-      color.set(hovered ? "red" : "white"),
-      hovered ? 1 : 0.1
-    );
-  });
+  // useFrame((state) => {
+  //   // const t = state.clock.getElapsedTime() + random * 10000
+  //   // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
+  //   // ref.current.position.y = Math.sin(t / 1.5) / 2
+  //   // ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.4 : 1, 0.1)
+  //   ref.current?.color.lerp(
+  //     color.set(hovered ? "red" : "white"),
+  //     hovered ? 1 : 0.1
+  //   );
+
+  //   groupRef.current.position.set(
+  //     ref.current.position.x,
+  //     ref.current.position.y,
+  //     ref.current.position.z
+  //   );
+  // });
   return (
-    <group {...props}>
+    <group {...props} position={position}>
       <Instance
         ref={ref}
         onPointerOver={(e) => {
@@ -255,7 +263,10 @@ function Node({ node, position, ...props }) {
           setHover(true);
         }}
         onPointerOut={() => setHover(false)}
-      />
+      ></Instance>
+      <group ref={groupRef}>
+        <NodeBillboardHtml node={node} idx={idx} />
+      </group>
     </group>
   );
 }
