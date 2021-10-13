@@ -8,10 +8,10 @@ import { useFrame } from "@react-three/fiber";
 import { NOC_NODES } from "../../../assets/NOC-node";
 import { useAtom } from "jotai";
 import { tooltipNodeAtom } from "../../../store/store";
-import { Instance, Instances } from "@react-three/drei";
+import { Html, Instance, Instances } from "@react-three/drei";
 // const colors = interpolateRdGy();
 // const colorScale =
-
+let first = true;
 // instanced physics in r3f/cannon https://codesandbox.io/s/r3f-cannon-instanced-physics-g1s88
 // instanced nodes https://codesandbox.io/s/r3f-instanced-colors-5o0qu?file=/src/index.js:520-530
 // https://codesandbox.io/s/instanced-vertex-colors-8fo01?from-embed=&file=/src/index.js
@@ -130,7 +130,9 @@ export function Nodes() {
       if (hovered !== prevRef.current) {
         const nodeColor = i === hovered ? "white" : nodes[i].color;
         tempColor.set(nodeColor || "tomato").toArray(colorArray, i * 3);
-        meshRef.current.geometry.attributes.color.needsUpdate = true;
+        if (meshRef.current?.geometry?.attributes?.color) {
+          meshRef.current.geometry.attributes.color.needsUpdate = true;
+        }
 
         const scale = (nodes[i].scale = THREE.MathUtils.lerp(
           nodes[i].scale || 0,
@@ -153,8 +155,23 @@ export function Nodes() {
       // tempObject.rotation.z = tempObject.rotation.y * 2;
       // meshRef.current.setMatrixAt(i, tempObject.matrix);
     }
-    meshRef.current.instanceMatrix.needsUpdate = true;
+    if (meshRef.current?.instancedMatrix) {
+      meshRef.current.instanceMatrix.needsUpdate = true;
+    }
   });
+
+  const positions = useMemo(
+    () =>
+      nodes.map((n) => [
+        Math.random() * dx - dx / 2, //x
+        Math.random() * dy - dy / 2, //y
+        Math.random() * dz - dz / 2, //y
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      ]),
+    [
+      // nodes
+    ]
+  );
 
   const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
   return (
@@ -167,51 +184,79 @@ export function Nodes() {
         limit={1000} // Optional: max amount of items (for calculating buffer size)
         range={1000} // Optional: draw-range
       >
+        <instancedMesh
+          // onPointerEnter={(e) => {
+          //   console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
+          //   const node =
+          //     e.instanceId || e.instanceId === 0
+          //       ? nodes[e.instanceId]
+          //       : undefined;
+          //   if (node) {
+          //     setTooltipNode({ ...node, position: { x: e.pageX, y: e.pageY } });
+          //   }
+          //   setHoveredId(e.instanceId);
+          // }}
+          // onPointerOut={(e) => setHoveredId(undefined)}
+          ref={instancedSphereRef} /* geometry={geo} */
+          // // castShadow
+          // // receiveShadow
+          args={[null as any, null as any, nodes.length]}
+        >
+          <sphereBufferGeometry
+            args={[NODE_RADIUS, WIDTH_SEGMENTS, WIDTH_SEGMENTS]}
+          >
+            <instancedBufferAttribute
+              attachObject={["attributes", "color"]}
+              args={[colorArray, 3]}
+            />
+          </sphereBufferGeometry>
+          <meshPhongMaterial
+            attach="material"
+            vertexColors={true}
+          ></meshPhongMaterial>
+        </instancedMesh>
         {nodes.map((node, idx) => (
-          <Node
-            {...{
-              node,
-              idx,
-              position: [
-                Math.random() * dx - dx / 2, //x
-                Math.random() * dy - dy / 2, //y
-                Math.random() * dz - dz / 2, //y
-              ],
+          <group
+            onPointerEnter={(e) => {
+              console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
+              const node =
+                e.instanceId || e.instanceId === 0
+                  ? nodes[e.instanceId]
+                  : undefined;
+              if (node) {
+                setTooltipNode({
+                  ...node,
+                  position: { x: e.pageX, y: e.pageY },
+                });
+              }
+              setHoveredId(e.instanceId);
             }}
-          />
+            onPointerOut={(e) => setHoveredId(undefined)}
+          >
+            <Node
+              {...{
+                node,
+                idx,
+                position: positions[idx],
+              }}
+            />
+            <Html
+              position={positions[idx] as any}
+              // transform={true}
+              // sprite={true}
+              calculatePosition={(el, camera, size) => {
+                if (first) {
+                  first = false;
+                  console.log("🌟🚨 ~ Nodes ~ el", el);
+                }
+                return [el.position.x, el.position.y, el.position.z];
+              }}
+            >
+              hi hi hi
+            </Html>
+          </group>
         ))}
       </Instances>
-      <instancedMesh
-        onPointerEnter={(e) => {
-          console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
-          const node =
-            e.instanceId || e.instanceId === 0
-              ? nodes[e.instanceId]
-              : undefined;
-          if (node) {
-            setTooltipNode({ ...node, position: { x: e.pageX, y: e.pageY } });
-          }
-          setHoveredId(e.instanceId);
-        }}
-        onPointerOut={(e) => setHoveredId(undefined)}
-        ref={instancedSphereRef} /* geometry={geo} */
-        // castShadow
-        // receiveShadow
-        args={[null as any, null as any, nodes.length]}
-      >
-        <sphereBufferGeometry
-          args={[NODE_RADIUS, WIDTH_SEGMENTS, WIDTH_SEGMENTS]}
-        >
-          <instancedBufferAttribute
-            attachObject={["attributes", "color"]}
-            args={[colorArray, 3]}
-          />
-        </sphereBufferGeometry>
-        <meshPhongMaterial
-          attach="material"
-          vertexColors={true}
-        ></meshPhongMaterial>
-      </instancedMesh>
       )
       {/* {isInstanced ? null : (
         <group>
@@ -238,35 +283,34 @@ function Node({ node, idx, position, ...props }) {
   const ref = useRef(null as any);
   const groupRef = useRef(null as any);
   const [hovered, setHover] = useState(false);
-  // useFrame((state) => {
-  //   // const t = state.clock.getElapsedTime() + random * 10000
-  //   // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
-  //   // ref.current.position.y = Math.sin(t / 1.5) / 2
-  //   // ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.4 : 1, 0.1)
-  //   ref.current?.color.lerp(
-  //     color.set(hovered ? "red" : "white"),
-  //     hovered ? 1 : 0.1
-  //   );
+  useFrame((state) => {
+    // const t = state.clock.getElapsedTime() + random * 10000
+    // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
+    // ref.current.position.y = Math.sin(t / 1.5) / 2
+    // ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.4 : 1, 0.1)
+    ref.current?.color.lerp(
+      color.set(hovered ? "red" : "white"),
+      hovered ? 1 : 0.1
+    );
 
-  //   groupRef.current.position.set(
-  //     ref.current.position.x,
-  //     ref.current.position.y,
-  //     ref.current.position.z
-  //   );
-  // });
+    groupRef.current?.position.set(
+      ref.current.position.x,
+      ref.current.position.y,
+      ref.current.position.z
+    );
+  });
   return (
     <group {...props} position={position}>
       <Instance
         ref={ref}
         onPointerOver={(e) => {
-          e.stopPropagation();
+          // e.stopPropagation();
           setHover(true);
         }}
         onPointerOut={() => setHover(false)}
-      ></Instance>
-      <group ref={groupRef}>
+      >
         <NodeBillboardHtml node={node} idx={idx} />
-      </group>
+      </Instance>
     </group>
   );
 }
@@ -286,3 +330,35 @@ function Node({ node, idx, position, ...props }) {
 //     </mesh>
 //   );
 // }
+
+// const oldInstancedMesh = <instancedMesh
+// onPointerEnter={(e) => {
+//   console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
+//   const node =
+//     e.instanceId || e.instanceId === 0
+//       ? nodes[e.instanceId]
+//       : undefined;
+//   if (node) {
+//     setTooltipNode({ ...node, position: { x: e.pageX, y: e.pageY } });
+//   }
+//   setHoveredId(e.instanceId);
+// }}
+// onPointerOut={(e) => setHoveredId(undefined)}
+// ref={instancedSphereRef} /* geometry={geo} */
+// // castShadow
+// // receiveShadow
+// args={[null as any, null as any, nodes.length]}
+// >
+// <sphereBufferGeometry
+//   args={[NODE_RADIUS, WIDTH_SEGMENTS, WIDTH_SEGMENTS]}
+// >
+//   <instancedBufferAttribute
+//     attachObject={["attributes", "color"]}
+//     args={[colorArray, 3]}
+//   />
+// </sphereBufferGeometry>
+// <meshPhongMaterial
+//   attach="material"
+//   vertexColors={true}
+// ></meshPhongMaterial>
+// </instancedMesh>
