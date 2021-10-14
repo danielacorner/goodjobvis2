@@ -305,16 +305,11 @@ const color = new THREE.Color();
 function Node({ node, idx, position, ...props }) {
   const ref = useRef(null as any);
   const groupRef = useRef(null as any);
-  const htmlRef = useRef(null as any);
 
   const [instancedSphereRef, api] = useSphere(
     () => ({
       mass: 1,
-      position: [
-        Math.random() * dx - dx / 2, //x
-        Math.random() * dy - dy / 2, //y
-        Math.random() * dz - dz / 2, //y
-      ],
+      position,
       linearDamping: 0.1,
       // material: { friction: 0, restitution: 0 },
       // geometry: geo,
@@ -324,56 +319,38 @@ function Node({ node, idx, position, ...props }) {
   );
 
   const [hovered, setHover] = useState(false);
-  useFrame((state) => {
-    // const t = state.clock.getElapsedTime() + random * 10000
-    // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
-    // ref.current.position.y = Math.sin(t / 1.5) / 2
-    // ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.4 : 1, 0.1)
-    ref.current?.color.lerp(
-      color.set(hovered ? "red" : "white"),
-      hovered ? 1 : 0.1
-    );
+  // useFrame((state) => {
+  //   // const t = state.clock.getElapsedTime() + random * 10000
+  //   // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
+  //   // ref.current.position.y = Math.sin(t / 1.5) / 2
+  //   // ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.4 : 1, 0.1)
+  //   ref.current?.color.lerp(
+  //     color.set(hovered ? "red" : "white"),
+  //     hovered ? 1 : 0.1
+  //   );
 
-    if (htmlRef.current?.position?.set) {
-      htmlRef.current?.position?.set(
-        ref.current.position.x,
-        ref.current.position.y,
-        ref.current.position.z
-      );
-      console.log("🌟🚨 ~ useFrame ~ htmlRef.current", htmlRef.current);
-      console.log("🌟🚨 ~ useFrame ~ ref.current", ref.current);
-    }
-  });
+  //   if (htmlRef.current?.position?.set) {
+  //     htmlRef.current?.position?.set(
+  //       ref.current.position.x,
+  //       ref.current.position.y,
+  //       ref.current.position.z
+  //     );
+  //     console.log("🌟🚨 ~ useFrame ~ htmlRef.current", htmlRef.current);
+  //     console.log("🌟🚨 ~ useFrame ~ ref.current", ref.current);
+  //   }
+  // });
   return (
-    <group {...props} position={position} ref={groupRef}>
-      <Instance
-        ref={instancedSphereRef}
-        onPointerOver={(e) => {
-          // e.stopPropagation();
-          setHover(true);
-        }}
-        onPointerOut={() => setHover(false)}
-      >
-        <NodeBillboardHtml node={node} idx={idx} />
-        <group ref={htmlRef}>
-          <Html
-          // position={position}
-          // transform={true}
-          // sprite={true}
-          // calculatePosition={(el, camera, size) => {
-          //   if (first) {
-          //     first = false;
-          //     console.log("🌟🚨 ~ Nodes ~ positionsRef", positionsRef);
-          //     console.log("🌟🚨 ~ Nodes ~ el", el);
-          //     console.log("🌟🚨 ~ Nodes ~ api", api);
-          //     console.log("🌟🚨 ~ Nodes ~ api.at", api.at(idx));
-          //   }
-          //   return positionsRef.current[idx];
-          // }}
-          >
-            hi hi hi
-          </Html>
-        </group>
+    <group {...props} ref={groupRef}>
+      <Instance ref={instancedSphereRef}>
+        <NodeBillboardHtml
+          node={node}
+          idx={idx}
+          onPointerEnter={(e) => {
+            e.stopPropagation();
+            setHover(true);
+          }}
+          onPointerLeave={() => setHover(false)}
+        />
       </Instance>
     </group>
   );

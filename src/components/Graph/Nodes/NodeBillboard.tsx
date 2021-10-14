@@ -46,7 +46,13 @@ export const AvatarStyles = styled.div`
     height: 100%;
   }
 `;
-export function NodeBillboardHtml({ node, idx, ...rest }) {
+export function NodeBillboardHtml({
+  node,
+  idx,
+  onPointerEnter = (() => {}) as any,
+  onPointerLeave = (() => {}) as any,
+  ...rest
+}) {
   const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
 
   const ref = useRef(null as any);
@@ -63,16 +69,18 @@ export function NodeBillboardHtml({ node, idx, ...rest }) {
       <AnimatedStyles
         style={springOpacity}
         ref={ref}
-        onMouseEnter={() => {
+        onMouseEnter={(e) => {
           if (!ref.current) {
             return;
           }
           const rect = ref.current.getBoundingClientRect();
 
           setTooltipNode({ ...node, position: { x: rect.x, y: rect.y } });
+          onPointerEnter(e);
         }}
-        onMouseLeave={() => {
+        onMouseLeave={(e) => {
           setTooltipNode(null);
+          onPointerLeave(e);
         }}
       >
         <AvatarStyles>
