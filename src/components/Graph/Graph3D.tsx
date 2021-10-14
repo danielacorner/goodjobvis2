@@ -1,13 +1,15 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { GraphDataType } from "../../utils/types";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { Stats } from "@react-three/drei";
+import { OrbitControls, Stats } from "@react-three/drei";
 import { Nodes } from "./Nodes/Nodes";
 import { Collisions } from "./Collisions";
 import { Physics } from "@react-three/cannon";
 import { useControls } from "leva";
 import { useEffect, useState } from "react";
 import { useCurrentStepIdx } from "../../App";
+import { tooltipNodeAtom } from "../../store/store";
+import { useAtom } from "jotai";
 
 export function Graph3D() {
   const windowSize = useWindowSize();
@@ -22,6 +24,7 @@ export function Graph3D() {
   // so that the instances can reboot
   const [flicker, setFlicker] = useState(true);
   const [currentStepIdx] = useCurrentStepIdx();
+  const [, setTooltipNode] = useAtom(tooltipNodeAtom);
   useEffect(() => {
     setFlicker(false);
     setTimeout(() => {
@@ -36,7 +39,32 @@ export function Graph3D() {
         height: windowSize.height,
         position: "fixed",
         inset: 0,
-        // pointerEvents: "none",
+      }}
+      // orthographic={false}
+      // children                      // Either a function child (which receives state) or regular children
+      // gl                            // Props that go into the default webGL-renderer
+      // camera                        // Props that go into the default camera
+      // raycaster                     // Props that go into the default raycaster
+      // shadowMap                     // Props that go into gl.shadowMap, can also be set true for PCFsoft
+      // colorManagement = false       // Auto sRGBEncoding encoding for all colors and textures + ACESFilmic
+      // vr = false                    // Switches renderer to VR mode, then uses gl.setAnimationLoop
+      // gl2 = false                   // Enables webgl2
+      // concurrent = false            // Enables React concurrent mode
+      // concurrent = false            // Enables React concurrent mode
+      // resize = undefined            // Resize config, see react-use-measure's options
+      // orthographic = false          // Creates an orthographic camera if true
+      // noEvents = false              // Switch off raytracing and event support
+      // pixelRatio = undefined        // You could provide window.devicePixelRatio if you like
+      // invalidateFrameloop = false   // When true it only renders on changes, when false it's a game loop
+      // updateDefaultCamera = true    // Adjusts default camera on size changes
+      // onCreated                     // Callback when vdom is ready (you can block first render via promise)
+      onPointerMissed={() => setTooltipNode(null)}
+      gl={{ alpha: true, stencil: false, depth: true, antialias: false }}
+      camera={{
+        position: [0, 0, -10],
+        fov: 35,
+        near: 0.1,
+        far: 2000,
       }}
     >
       {process.env.NODE_ENV === "development" && showStats && <Stats />}
