@@ -18,6 +18,10 @@ let first = true;
 const tempColor = new THREE.Color();
 const tempObject = new THREE.Object3D();
 
+const dx = 2;
+const dy = 5;
+const dz = 0;
+
 export const NODE_RADIUS = 0.1;
 export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.5;
 
@@ -37,10 +41,6 @@ export function Nodes() {
   // let group = useRef<any>();
 
   // useTheForce(group, graphData);
-
-  const dx = 2;
-  const dy = 5;
-  const dz = 0;
 
   const [geo, mat, coords] = useMemo(() => {
     const geo = new THREE.SphereBufferGeometry(
@@ -121,44 +121,44 @@ export function Nodes() {
   );
   const [hovered, setHoveredId] = useState<number | undefined>(undefined);
 
-  useFrame((state) => {
-    if (!meshRef.current) {
-      return;
-    }
-    // const time = state.clock.getElapsedTime();
-    for (let i = 0; i < nodes.length; i++) {
-      if (hovered !== prevRef.current) {
-        const nodeColor = i === hovered ? "white" : nodes[i].color;
-        tempColor.set(nodeColor || "tomato").toArray(colorArray, i * 3);
-        if (meshRef.current?.geometry?.attributes?.color) {
-          meshRef.current.geometry.attributes.color.needsUpdate = true;
-        }
+  // useFrame((state) => {
+  //   if (!meshRef.current) {
+  //     return;
+  //   }
+  //   // const time = state.clock.getElapsedTime();
+  //   for (let i = 0; i < nodes.length; i++) {
+  //     if (hovered !== prevRef.current) {
+  //       const nodeColor = i === hovered ? "white" : nodes[i].color;
+  //       tempColor.set(nodeColor || "tomato").toArray(colorArray, i * 3);
+  //       if (meshRef.current?.geometry?.attributes?.color) {
+  //         meshRef.current.geometry.attributes.color.needsUpdate = true;
+  //       }
 
-        const scale = (nodes[i].scale = THREE.MathUtils.lerp(
-          nodes[i].scale || 0,
-          i === hovered ? 3 : 1,
-          0.1
-        ));
-        tempObject.scale.setScalar(scale);
+  //       const scale = (nodes[i].scale = THREE.MathUtils.lerp(
+  //         nodes[i].scale || 0,
+  //         i === hovered ? 3 : 1,
+  //         0.1
+  //       ));
+  //       tempObject.scale.setScalar(scale);
 
-        // const scale = i === hovered ? 3 : 1;
-        tempObject.scale.setScalar(scale);
-        // meshRef.current.geometry.attributes.scale.needsUpdate = true;
-        tempObject.updateMatrix();
-      }
+  //       // const scale = i === hovered ? 3 : 1;
+  //       tempObject.scale.setScalar(scale);
+  //       // meshRef.current.geometry.attributes.scale.needsUpdate = true;
+  //       tempObject.updateMatrix();
+  //     }
 
-      // tempObject.position.set(5 - i, 5 - 2, 5 - 6);
-      // tempObject.rotation.y =
-      //   Math.sin(i / 4 + time) +
-      //   Math.sin(1 / 4 + time) +
-      //   Math.sin(3 / 4 + time);
-      // tempObject.rotation.z = tempObject.rotation.y * 2;
-      // meshRef.current.setMatrixAt(i, tempObject.matrix);
-    }
-    if (meshRef.current?.instancedMatrix) {
-      meshRef.current.instanceMatrix.needsUpdate = true;
-    }
-  });
+  //     // tempObject.position.set(5 - i, 5 - 2, 5 - 6);
+  //     // tempObject.rotation.y =
+  //     //   Math.sin(i / 4 + time) +
+  //     //   Math.sin(1 / 4 + time) +
+  //     //   Math.sin(3 / 4 + time);
+  //     // tempObject.rotation.z = tempObject.rotation.y * 2;
+  //     // meshRef.current.setMatrixAt(i, tempObject.matrix);
+  //   }
+  //   if (meshRef.current?.instancedMatrix) {
+  //     meshRef.current.instanceMatrix.needsUpdate = true;
+  //   }
+  // });
 
   const positions = useMemo(
     () =>
@@ -168,9 +168,7 @@ export function Nodes() {
         Math.random() * dz - dz / 2, //y
         // eslint-disable-next-line react-hooks/exhaustive-deps
       ]),
-    [
-      // nodes
-    ]
+    [nodes]
   );
   const positionsRef = useRef(positions);
   useEffect(() => {
@@ -196,6 +194,40 @@ export function Nodes() {
         limit={1000} // Optional: max amount of items (for calculating buffer size)
         range={1000} // Optional: draw-range
       >
+        {nodes.map((node, idx) => (
+          <NodeGroup
+            key={node.id}
+            {...{
+              node,
+              nodes,
+              setTooltipNode,
+              setHoveredId,
+              idx,
+              positions,
+              positionsRef,
+              api,
+            }}
+          />
+        ))}
+      </Instances>
+      )
+      {/* {isInstanced ? null : (
+        <group>
+          {coords.map(([p1, p2, p3], i) => (
+            <Node
+              key={i}
+              {...{
+                node: graphData.nodes[i],
+                geo,
+                mat,
+                position: [p1, p2, p3],
+                idx: i,
+              }}
+            />
+          ))}
+        </group>
+      )} */}
+      {false && (
         <instancedMesh
           // onPointerEnter={(e) => {
           //   console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
@@ -227,38 +259,7 @@ export function Nodes() {
             vertexColors={true}
           ></meshPhongMaterial>
         </instancedMesh>
-        {nodes.map((node, idx) => (
-          <NodeGroup
-            {...{
-              node,
-              nodes,
-              setTooltipNode,
-              setHoveredId,
-              idx,
-              positions,
-              positionsRef,
-              api,
-            }}
-          />
-        ))}
-      </Instances>
-      )
-      {/* {isInstanced ? null : (
-        <group>
-          {coords.map(([p1, p2, p3], i) => (
-            <Node
-              key={i}
-              {...{
-                node: graphData.nodes[i],
-                geo,
-                mat,
-                position: [p1, p2, p3],
-                idx: i,
-              }}
-            />
-          ))}
-        </group>
-      )} */}
+      )}
     </>
   );
 }
@@ -272,19 +273,8 @@ function NodeGroup({
   positionsRef,
   api,
 }) {
-  const htmlRef = useRef(null as any);
-  useFrame(() => {
-    console.log(
-      "🌟🚨 ~ useFrame ~ positionsRef.current[idx]",
-      positionsRef.current[idx]
-    );
-    // if (positionsRef.current[idx] && htmlRef.current) {
-    //   htmlRef.current.position = positionsRef.current[idx];
-    // }
-  });
   return (
     <group
-      key={node.id}
       onPointerEnter={(e) => {
         console.log("🌟🚨 ~ Nodes ~ PointerEnter e", e);
         const node =
@@ -306,25 +296,6 @@ function NodeGroup({
           position: positions[idx],
         }}
       />
-      <Html
-        position={positions[idx] as any}
-        key={Math.random()}
-        // transform={true}
-        // sprite={true}
-        ref={htmlRef}
-        // calculatePosition={(el, camera, size) => {
-        //   if (first) {
-        //     first = false;
-        //     console.log("🌟🚨 ~ Nodes ~ positionsRef", positionsRef);
-        //     console.log("🌟🚨 ~ Nodes ~ el", el);
-        //     console.log("🌟🚨 ~ Nodes ~ api", api);
-        //     console.log("🌟🚨 ~ Nodes ~ api.at", api.at(idx));
-        //   }
-        //   return positionsRef.current[idx];
-        // }}
-      >
-        hi hi hi
-      </Html>
     </group>
   );
 }
@@ -334,6 +305,24 @@ const color = new THREE.Color();
 function Node({ node, idx, position, ...props }) {
   const ref = useRef(null as any);
   const groupRef = useRef(null as any);
+  const htmlRef = useRef(null as any);
+
+  const [instancedSphereRef, api] = useSphere(
+    () => ({
+      mass: 1,
+      position: [
+        Math.random() * dx - dx / 2, //x
+        Math.random() * dy - dy / 2, //y
+        Math.random() * dz - dz / 2, //y
+      ],
+      linearDamping: 0.1,
+      // material: { friction: 0, restitution: 0 },
+      // geometry: geo,
+      args: NODE_RADIUS * NODE_RADIUS_COLLISION_MULTIPLIER,
+    }),
+    ref
+  );
+
   const [hovered, setHover] = useState(false);
   useFrame((state) => {
     // const t = state.clock.getElapsedTime() + random * 10000
@@ -345,16 +334,20 @@ function Node({ node, idx, position, ...props }) {
       hovered ? 1 : 0.1
     );
 
-    groupRef.current?.position.set(
-      ref.current.position.x,
-      ref.current.position.y,
-      ref.current.position.z
-    );
+    if (htmlRef.current?.position?.set) {
+      htmlRef.current?.position?.set(
+        ref.current.position.x,
+        ref.current.position.y,
+        ref.current.position.z
+      );
+      console.log("🌟🚨 ~ useFrame ~ htmlRef.current", htmlRef.current);
+      console.log("🌟🚨 ~ useFrame ~ ref.current", ref.current);
+    }
   });
   return (
-    <group {...props} position={position}>
+    <group {...props} position={position} ref={groupRef}>
       <Instance
-        ref={ref}
+        ref={instancedSphereRef}
         onPointerOver={(e) => {
           // e.stopPropagation();
           setHover(true);
@@ -362,6 +355,25 @@ function Node({ node, idx, position, ...props }) {
         onPointerOut={() => setHover(false)}
       >
         <NodeBillboardHtml node={node} idx={idx} />
+        <group ref={htmlRef}>
+          <Html
+          // position={position}
+          // transform={true}
+          // sprite={true}
+          // calculatePosition={(el, camera, size) => {
+          //   if (first) {
+          //     first = false;
+          //     console.log("🌟🚨 ~ Nodes ~ positionsRef", positionsRef);
+          //     console.log("🌟🚨 ~ Nodes ~ el", el);
+          //     console.log("🌟🚨 ~ Nodes ~ api", api);
+          //     console.log("🌟🚨 ~ Nodes ~ api.at", api.at(idx));
+          //   }
+          //   return positionsRef.current[idx];
+          // }}
+          >
+            hi hi hi
+          </Html>
+        </group>
       </Instance>
     </group>
   );

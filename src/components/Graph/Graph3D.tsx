@@ -18,13 +18,14 @@ export function Graph3D() {
     showStats: true,
   });
 
-  const [stuff, setStuff] = useState(true);
   // flicker the nodes when the step changes
+  // so that the instances can reboot
+  const [flicker, setFlicker] = useState(true);
   const [currentStepIdx] = useCurrentStepIdx();
   useEffect(() => {
-    setStuff(false);
+    setFlicker(false);
     setTimeout(() => {
-      setStuff(true);
+      setFlicker(true);
     });
   }, [currentStepIdx]);
 
@@ -68,7 +69,7 @@ export function Graph3D() {
           // frictionEquationRelaxation: 0,
         }}
       >
-        {stuff && <Nodes />}
+        {flicker && <Nodes />}
         <Collisions />
         <ambientLight intensity={0.4} />
         <pointLight position={[150, 150, 150]} intensity={0.3} />
