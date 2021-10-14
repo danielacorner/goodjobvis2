@@ -14,13 +14,17 @@ const MAX_NUM_IMAGES_TO_DISPLAY = 100;
 export default function NodeBillboard({
   node,
   idx,
+  onPointerEnter = (() => {}) as any,
+  onPointerLeave = (() => {}) as any,
 }: {
   node: GraphNodeType;
   idx: number;
+  onPointerEnter: Function;
+  onPointerLeave: Function;
 }) {
   return (
     <Billboard {...({} as any)} args={[0, 0, 0]}>
-      <NodeBillboardHtml {...{ node, idx }} />
+      <NodeBillboardHtml {...{ node, idx, onPointerEnter, onPointerLeave }} />
     </Billboard>
   );
 }
@@ -31,11 +35,12 @@ const AnimatedStyles = styled(animated.div)`
   ${DISABLE_SELECTION_OF_TEXT_CSS}
   position: relative;
   width: ${NODE_WIDTH}px;
+  transform: scale(0.5);
 `;
 export const AvatarStyles = styled.div`
   width: ${NODE_WIDTH}px;
   height: ${NODE_WIDTH}px;
-  transform: scale(0.5);
+  transform: scale(0.3);
   border-radius: 50%;
   overflow: hidden;
   pointer-events: auto;
@@ -65,7 +70,7 @@ export function NodeBillboardHtml({
     clamp: true,
   });
   return (
-    <Html transform={false} sprite={false} center={true} {...rest}>
+    <Html transform={true} sprite={true} center={true} {...rest}>
       <AnimatedStyles
         style={springOpacity}
         ref={ref}

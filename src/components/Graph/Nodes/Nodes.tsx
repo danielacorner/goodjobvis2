@@ -22,8 +22,8 @@ const dx = 2;
 const dy = 5;
 const dz = 0;
 
-export const NODE_RADIUS = 0.1;
-export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.5;
+export const NODE_RADIUS = 0.12;
+export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.2;
 
 export function Nodes() {
   const [, , currentStep] = useCurrentStepIdx();

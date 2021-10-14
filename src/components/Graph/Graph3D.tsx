@@ -4,7 +4,7 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 import { Stats } from "@react-three/drei";
 import { Nodes } from "./Nodes/Nodes";
 import { Collisions } from "./Collisions";
-import { Debug, Physics } from "@react-three/cannon";
+import { Physics } from "@react-three/cannon";
 import { useControls } from "leva";
 import { useEffect, useState } from "react";
 import { useCurrentStepIdx } from "../../App";
@@ -69,14 +69,12 @@ export function Graph3D() {
           // frictionEquationRelaxation: 0,
         }}
       >
-        <Debug>
-          {flicker && <Nodes />}
-          <Collisions />
-          <ambientLight intensity={0.4} />
-          <pointLight position={[150, 150, 150]} intensity={0.3} />
-          {/* <directionalLight position={[px, py, pz]} intensity={1} />
+        {flicker && <Nodes />}
+        <Collisions />
+        <ambientLight intensity={0.4} />
+        <pointLight position={[150, 150, 150]} intensity={0.3} />
+        {/* <directionalLight position={[px, py, pz]} intensity={1} />
         <ambientLight intensity={0.1} /> */}
-        </Debug>
       </Physics>
     </Canvas>
   );
