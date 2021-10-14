@@ -3,18 +3,17 @@ import { useAtom } from "jotai";
 import styled from "styled-components/macro";
 import { animated, useSpring } from "react-spring";
 import { tooltipNodeAtom, TooltipNodeType } from "./store/store";
-import { useWindowSize } from "./hooks/useWindowSize";
 
-const TOOLTIP_WIDTH = 300;
+export const TOOLTIP_WIDTH = 300;
 export const TOOLTIP_MIN_HEIGHT = 200;
+export const TOOLTIP_IMG_MAX_HEIGHT = 300;
 
 export function NodeTooltip() {
-  const windowSize = useWindowSize();
   const INITIAL_POSITION = {
     x: TOOLTIP_WIDTH / 2,
     y: 0,
   };
-  const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
+  const [tooltipNode] = useAtom(tooltipNodeAtom);
   const prevTooltipNodeRef = React.useRef<TooltipNodeType | null>(null);
   React.useEffect(() => {
     if (tooltipNode) {
@@ -52,5 +51,8 @@ const AnimatedNodeTooltipStyles = styled(animated.div)`
   background: #ffffffd6;
   img {
     width: 100%;
+    max-height: ${TOOLTIP_IMG_MAX_HEIGHT}px;
+    object-fit: cover;
+    overflow: hidden;
   }
 `;

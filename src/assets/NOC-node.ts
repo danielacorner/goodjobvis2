@@ -1,4 +1,4 @@
-import { interpolateRdGy, interpolateRdYlGn } from "d3-scale-chromatic";
+import { interpolateRdYlGn } from "d3-scale-chromatic";
 import NOC_DATA from "./NOC-data";
 
 export const AUTOMATIONRISKS = NOC_DATA.map((node) => node.automationRisk);

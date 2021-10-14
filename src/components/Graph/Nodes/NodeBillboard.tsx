@@ -5,61 +5,15 @@ import {
   DISABLE_SELECTION_OF_TEXT_CSS,
   useMounted,
 } from "../../../utils/constants";
-import { GraphNodeType } from "../../../utils/types";
-import { useAtom } from "jotai";
-import { tooltipNodeAtom } from "../../../store/store";
 import { useRef } from "react";
-const MAX_NUM_IMAGES_TO_DISPLAY = 100;
 
-export default function NodeBillboard({
-  node,
-  idx,
-  onPointerEnter = (() => {}) as any,
-  onPointerLeave = (() => {}) as any,
-}: {
-  node: GraphNodeType;
-  idx: number;
-  onPointerEnter: Function;
-  onPointerLeave: Function;
-}) {
-  return (
-    <Billboard {...({} as any)} args={[0, 0, 0]}>
-      <NodeBillboardHtml {...{ node, idx, onPointerEnter, onPointerLeave }} />
-    </Billboard>
-  );
-}
-const NODE_WIDTH = 50;
-
-const AnimatedStyles = styled(animated.div)`
-  /* pointer-events: none; */
-  ${DISABLE_SELECTION_OF_TEXT_CSS}
-  position: relative;
-  width: ${NODE_WIDTH}px;
-  transform: scale(0.5);
-`;
-export const AvatarStyles = styled.div`
-  width: ${NODE_WIDTH}px;
-  height: ${NODE_WIDTH}px;
-  transform: scale(0.3);
-  border-radius: 50%;
-  overflow: hidden;
-  pointer-events: auto;
-  /* opacity: 0.9; */
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-`;
 export function NodeBillboardHtml({
   node,
-  idx,
-  onPointerEnter = (() => {}) as any,
-  onPointerLeave = (() => {}) as any,
+  showImage,
+  onPointerOver = (() => {}) as any,
+  onPointerOut = (() => {}) as any,
   ...rest
 }) {
-  const [tooltipNode, setTooltipNode] = useAtom(tooltipNodeAtom);
-
   const ref = useRef(null as any);
 
   // fade in on mount
@@ -70,30 +24,44 @@ export function NodeBillboardHtml({
     clamp: true,
   });
   return (
-    <Html transform={true} sprite={true} center={true} {...rest}>
-      <AnimatedStyles
-        style={springOpacity}
-        ref={ref}
-        onMouseEnter={(e) => {
-          if (!ref.current) {
-            return;
-          }
-          const rect = ref.current.getBoundingClientRect();
-
-          setTooltipNode({ ...node, position: { x: rect.x, y: rect.y } });
-          onPointerEnter(e);
-        }}
-        onMouseLeave={(e) => {
-          setTooltipNode(null);
-          onPointerLeave(e);
-        }}
-      >
+    <Html center={true} {...rest}>
+      <AnimatedStyles style={springOpacity} ref={ref}>
         <AvatarStyles>
-          {idx < MAX_NUM_IMAGES_TO_DISPLAY ? (
-            <img src={node.imageUrlThumbnail} alt="" />
-          ) : null}
+          {showImage ? <img src={node.imageUrlThumbnail} alt="" /> : null}
         </AvatarStyles>
+        <div
+          className="mousePadding"
+          onMouseEnter={onPointerOver}
+          onMouseLeave={onPointerOut}
+        ></div>
       </AnimatedStyles>
     </Html>
   );
 }
+
+const NODE_WIDTH = 25;
+
+const AnimatedStyles = styled(animated.div)`
+  ${DISABLE_SELECTION_OF_TEXT_CSS}
+  position: relative;
+  width: ${NODE_WIDTH}px;
+  position: relative;
+  .mousePadding {
+    position: absolute;
+    pointer-events: auto;
+    inset: -10px;
+  }
+`;
+
+export const AvatarStyles = styled.div`
+  width: ${NODE_WIDTH}px;
+  height: ${NODE_WIDTH}px;
+  border-radius: 50%;
+  overflow: hidden;
+  opacity: 0.9;
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+`;
