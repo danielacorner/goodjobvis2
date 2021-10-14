@@ -18,8 +18,8 @@ export function GUI() {
 
   return (
     <GuiStyles>
-      {currentStepIdx > 0 && <BtnPrev />}
-      {currentStepIdx < STORY_STEPS.length - 1 && <BtnNext />}
+      {/* {currentStepIdx > 0 && <BtnPrev />}
+      {currentStepIdx < STORY_STEPS.length - 1 && <BtnNext />} */}
     </GuiStyles>
   );
 }

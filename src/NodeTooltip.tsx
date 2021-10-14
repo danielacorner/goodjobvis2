@@ -6,7 +6,7 @@ import { tooltipNodeAtom, TooltipNodeType } from "./store/store";
 
 export const TOOLTIP_WIDTH = 300;
 export const TOOLTIP_MIN_HEIGHT = 200;
-export const TOOLTIP_IMG_MAX_HEIGHT = 300;
+export const TOOLTIP_IMG_MAX_HEIGHT = 240;
 
 export function NodeTooltip() {
   const INITIAL_POSITION = {
