@@ -68,12 +68,12 @@ export function Graph3D() {
       }}
     >
       {process.env.NODE_ENV === "development" && showStats && <Stats />}
-      {/* {process.env.NODE_ENV === "development" && (
+      {process.env.NODE_ENV === "development" && (
         <OrbitControls
           autoRotate={false}
           autoRotateSpeed={0.1}
           enableDamping={true}
-          enableZoom={true}
+          enableZoom={false}
           enablePan={true}
           // maxAzimuthAngle={0.5}
           // maxDistance={500}
@@ -83,7 +83,7 @@ export function Graph3D() {
           // minZoom={0.5}
           // maxZoom={0.5}
         />
-      )} */}
+      )}
       <Physics
         // shouldInvalidate={isPaused}
         // {...{ gravity: [0, 0, 0] }}

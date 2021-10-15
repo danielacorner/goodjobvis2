@@ -24,7 +24,7 @@ export function NodeBillboardHtml({
     clamp: true,
   });
   return (
-    <Html center={true} {...rest}>
+    <Html transform={true} sprite={true} center={true} {...rest}>
       <AnimatedStyles style={springOpacity} ref={ref}>
         <AvatarStyles>
           {showImage ? <img src={node.imageUrlThumbnail} alt="" /> : null}
@@ -39,7 +39,7 @@ export function NodeBillboardHtml({
   );
 }
 
-const NODE_WIDTH = 25;
+const NODE_WIDTH = 7;
 
 const AnimatedStyles = styled(animated.div)`
   ${DISABLE_SELECTION_OF_TEXT_CSS}

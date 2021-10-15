@@ -130,7 +130,7 @@ function Node({ node, showImage, position, setHoveredId, ...props }) {
   const groupRef = useRef(null as any);
   const [, setTooltipNode] = useAtom(tooltipNodeAtom);
 
-  const [instancedSphereRef, api] = useSphere(
+  const [sphereRef, api] = useSphere(
     () => ({
       mass: 1,
       position,
@@ -158,7 +158,7 @@ function Node({ node, showImage, position, setHoveredId, ...props }) {
   // https://github.com/pmndrs/drei#instances
   return (
     <group {...props} ref={groupRef}>
-      <Instance ref={instancedSphereRef} color={node.color}>
+      <Instance ref={sphereRef} color={node.color}>
         <NodeBillboardHtml
           node={node}
           showImage={showImage}
