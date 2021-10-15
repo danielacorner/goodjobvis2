@@ -49,7 +49,7 @@ const AnimatedStyles = styled(animated.div)`
   .mousePadding {
     position: absolute;
     pointer-events: auto;
-    inset: -10px;
+    inset: -2px;
   }
 `;
 

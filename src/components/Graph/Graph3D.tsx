@@ -4,7 +4,7 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 import { OrbitControls, Stats } from "@react-three/drei";
 import { Nodes } from "./Nodes/Nodes";
 import { Collisions } from "./Collisions";
-import { Physics } from "@react-three/cannon";
+import { Debug, Physics } from "@react-three/cannon";
 import { useControls } from "leva";
 import { useEffect, useState } from "react";
 import { useCurrentStepIdx } from "../../App";
