@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 import styled from "styled-components/macro";
 import { animated, useSpring } from "react-spring";
@@ -15,11 +15,12 @@ export function NodeTooltip() {
   };
   const [tooltipNode] = useAtom(tooltipNodeAtom);
   const prevTooltipNodeRef = React.useRef<TooltipNodeType | null>(null);
-  React.useEffect(() => {
+  useEffect(() => {
     if (tooltipNode) {
       prevTooltipNodeRef.current = tooltipNode;
     }
   }, [tooltipNode]);
+
   console.log("🌟🚨 ~ NodeTooltip ~ tooltipNode", tooltipNode);
   const prevTooltipNode = prevTooltipNodeRef.current;
   const springPosition = useSpring({

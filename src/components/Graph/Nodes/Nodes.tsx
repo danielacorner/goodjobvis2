@@ -28,8 +28,10 @@ export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.2;
 
 export function Nodes() {
   const [, , currentStep] = useCurrentStepIdx();
-  const graphData = currentStep?.graphData;
-  const nodes = useMemo(() => graphData?.nodes || [], [graphData]);
+  const nodes = useMemo(
+    () => currentStep?.graphData?.nodes || [],
+    [currentStep]
+  );
 
   const [geo, mat, coords] = useMemo(() => {
     const geo = new THREE.SphereBufferGeometry(
@@ -48,8 +50,6 @@ export function Nodes() {
     ]);
     return [geo, mat, coords];
   }, [nodes]);
-
-  const [, setHoveredId] = useState<number | undefined>(undefined);
 
   const positions = useMemo(
     () =>
@@ -76,7 +76,6 @@ export function Nodes() {
           {...{
             node,
             nodes,
-            setHoveredId,
             showImage: idx < MAX_NUM_IMAGES_TO_DISPLAY,
             position: positions[idx],
           }}
@@ -88,10 +87,10 @@ export function Nodes() {
 
 const color = new THREE.Color();
 
-function Node({ node, showImage, position, setHoveredId }) {
+function Node({ node, showImage, position }) {
+  console.log("🌟🚨 ~ Node ~ node", node);
   const [hovered, setHover] = useState(false);
   const ref = useRef(null as any);
-  const [, setTooltipNode] = useAtom(tooltipNodeAtom);
 
   const [sphereRef, api] = useSphere(
     () => ({
@@ -105,7 +104,7 @@ function Node({ node, showImage, position, setHoveredId }) {
     ref
   );
 
-  useFrame((state) => {
+  useFrame(() => {
     // const t = state.clock.getElapsedTime() + random * 10000
     // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
     // ref.current.position.y = Math.sin(t / 1.5) / 2
@@ -119,32 +118,11 @@ function Node({ node, showImage, position, setHoveredId }) {
     );
   });
 
-  const windowSize = useWindowSize();
-
   // https://github.com/pmndrs/drei#instances
   return (
     <group>
       <Instance ref={sphereRef} color={node.color}>
-        <NodeBillboardHtml
-          node={node}
-          showImage={showImage}
-          onPointerOver={(e) => {
-            e.stopPropagation();
-            setTooltipNode({
-              ...node,
-              position: {
-                x: Math.min(e.clientX, windowSize.width - TOOLTIP_WIDTH - 24),
-                y: e.clientY - TOOLTIP_MIN_HEIGHT / 2,
-              },
-            });
-            setHoveredId(node.id);
-            setHover(true);
-          }}
-          onPointerOut={() => {
-            setHover(false);
-            setHoveredId(node.id);
-          }}
-        />
+        <NodeBillboardHtml {...{ node, showImage, setHover }} />
       </Instance>
     </group>
   );

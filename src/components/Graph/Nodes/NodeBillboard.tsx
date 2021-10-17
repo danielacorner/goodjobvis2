@@ -5,14 +5,13 @@ import {
   DISABLE_SELECTION_OF_TEXT_CSS,
   useMounted,
 } from "../../../utils/constants";
+import { useAtom } from "jotai";
+import { useWindowSize } from "../../../hooks/useWindowSize";
+import { TOOLTIP_WIDTH, TOOLTIP_MIN_HEIGHT } from "../../../NodeTooltip";
+import { tooltipNodeAtom } from "../../../store/store";
+import { useEffect } from "react";
 
-export function NodeBillboardHtml({
-  node,
-  showImage,
-  onPointerOver = (() => {}) as any,
-  onPointerOut = (() => {}) as any,
-  ...rest
-}) {
+export function NodeBillboardHtml({ node, showImage, setHover }) {
   // fade in on mount
   const mounted = useMounted();
   const springOpacity = useSpring({
@@ -20,17 +19,32 @@ export function NodeBillboardHtml({
     // config: isNotABot ? CONFIG_POP_OUT : CONFIG_FADE_IN,
     clamp: true,
   });
+  const windowSize = useWindowSize();
+  const [, setTooltipNode] = useAtom(tooltipNodeAtom);
+
   return (
     <Billboard>
-      <Html transform={true} sprite={false} center={true} {...rest}>
+      <Html transform={true} sprite={false} center={true}>
         <AnimatedStyles style={springOpacity}>
           <AvatarStyles>
             {showImage ? <img src={node.imageUrlThumbnail} alt="" /> : null}
           </AvatarStyles>
           <div
             className="mousePadding"
-            onMouseEnter={onPointerOver}
-            onMouseLeave={onPointerOut}
+            onMouseEnter={(e) => {
+              e.stopPropagation();
+              setTooltipNode({
+                ...node,
+                position: {
+                  x: Math.min(e.clientX, windowSize.width - TOOLTIP_WIDTH - 24),
+                  y: e.clientY - TOOLTIP_MIN_HEIGHT / 2,
+                },
+              });
+              setHover(true);
+            }}
+            onMouseLeave={() => {
+              setHover(false);
+            }}
           ></div>
         </AnimatedStyles>
       </Html>

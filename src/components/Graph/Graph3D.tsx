@@ -8,8 +8,6 @@ import { Debug, Physics } from "@react-three/cannon";
 import { useControls } from "leva";
 import { Fragment, useEffect, useState } from "react";
 import { useCurrentStepIdx } from "../../App";
-import { tooltipNodeAtom } from "../../store/store";
-import { useAtom } from "jotai";
 
 export function Graph3D() {
   const windowSize = useWindowSize();
@@ -24,7 +22,6 @@ export function Graph3D() {
   // so that the instances can reboot
   const [flicker, setFlicker] = useState(true);
   const [currentStepIdx] = useCurrentStepIdx();
-  const [, setTooltipNode] = useAtom(tooltipNodeAtom);
   useEffect(() => {
     setFlicker(false);
     setTimeout(() => {
@@ -58,7 +55,7 @@ export function Graph3D() {
       // invalidateFrameloop = false   // When true it only renders on changes, when false it's a game loop
       // updateDefaultCamera = true    // Adjusts default camera on size changes
       // onCreated                     // Callback when vdom is ready (you can block first render via promise)
-      onPointerMissed={() => setTooltipNode(null)}
+      // onPointerMissed={() => { }}
       gl={{ alpha: true, stencil: false, depth: true, antialias: false }}
       camera={{
         position: [0, 0, -10],
