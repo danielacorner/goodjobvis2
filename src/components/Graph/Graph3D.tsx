@@ -6,7 +6,7 @@ import { Nodes } from "./Nodes/Nodes";
 import { Collisions } from "./Collisions";
 import { Debug, Physics } from "@react-three/cannon";
 import { useControls } from "leva";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useCurrentStepIdx } from "../../App";
 import { tooltipNodeAtom } from "../../store/store";
 import { useAtom } from "jotai";
@@ -97,15 +97,22 @@ export function Graph3D() {
           // frictionEquationRelaxation: 0,
         }}
       >
-        {flicker && <Nodes />}
-        <Collisions />
-        <ambientLight intensity={0.4} />
-        <pointLight position={[150, 150, 150]} intensity={0.3} />
-        {/* <directionalLight position={[px, py, pz]} intensity={1} />
+        <DebugSometimes>
+          {flicker && <Nodes />}
+          <Collisions />
+          <ambientLight intensity={0.4} />
+          <pointLight position={[150, 150, 150]} intensity={0.3} />
+          {/* <directionalLight position={[px, py, pz]} intensity={1} />
         <ambientLight intensity={0.1} /> */}
+        </DebugSometimes>
       </Physics>
     </Canvas>
   );
+}
+function DebugSometimes({ children }) {
+  const { showDebug } = useControls({ showDebug: false });
+  const DebugOrNot = showDebug ? Debug : Fragment;
+  return <DebugOrNot>{children}</DebugOrNot>;
 }
 export function useTheForce(
   group: React.MutableRefObject<any>,

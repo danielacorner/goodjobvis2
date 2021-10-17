@@ -21,4 +21,4 @@ export function useMounted() {
   });
   return mounted;
 }
-export const MAX_NUM_IMAGES_TO_DISPLAY = 100;
+export const MAX_NUM_IMAGES_TO_DISPLAY = 500;

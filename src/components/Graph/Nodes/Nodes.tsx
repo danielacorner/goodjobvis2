@@ -49,27 +49,6 @@ export function Nodes() {
     return [geo, mat, coords];
   }, [nodes]);
 
-  const isInstanced = true;
-  // const isInstanced = nodes.length > 100;
-
-  const meshRef = useRef(null as any);
-  const prevRef = useRef(null as any);
-  const [instancedSphereRef, api] = useSphere(
-    () => ({
-      mass: 1,
-      position: [
-        Math.random() * dx - dx / 2, //x
-        Math.random() * dy - dy / 2, //y
-        Math.random() * dz - dz / 2, //y
-      ],
-      linearDamping: 0.1,
-      // material: { friction: 0, restitution: 0 },
-      // geometry: geo,
-      args: NODE_RADIUS * NODE_RADIUS_COLLISION_MULTIPLIER,
-    }),
-    meshRef
-  );
-
   const [, setHoveredId] = useState<number | undefined>(undefined);
 
   const positions = useMemo(
@@ -82,19 +61,7 @@ export function Nodes() {
       ]),
     [nodes]
   );
-  const positionsRef = useRef(positions);
-  useEffect(() => {
-    nodes.forEach(
-      (_, idx) => {
-        api.at(idx).position.subscribe((v) => {
-          positionsRef.current[idx] = v;
-        });
-      },
-      [api]
-    );
-  });
 
-  const [, setTooltipNode] = useAtom(tooltipNodeAtom);
   return (
     // {/* Instances https://codesandbox.io/s/floating-instanced-shoes-h8o2d?file=/src/App.js */}
     <Instances
@@ -109,12 +76,9 @@ export function Nodes() {
           {...{
             node,
             nodes,
-            setTooltipNode,
             setHoveredId,
             showImage: idx < MAX_NUM_IMAGES_TO_DISPLAY,
             position: positions[idx],
-            positionsRef,
-            api,
           }}
         />
       ))}
@@ -124,10 +88,9 @@ export function Nodes() {
 
 const color = new THREE.Color();
 
-function Node({ node, showImage, position, setHoveredId, ...props }) {
+function Node({ node, showImage, position, setHoveredId }) {
   const [hovered, setHover] = useState(false);
   const ref = useRef(null as any);
-  const groupRef = useRef(null as any);
   const [, setTooltipNode] = useAtom(tooltipNodeAtom);
 
   const [sphereRef, api] = useSphere(
@@ -146,7 +109,10 @@ function Node({ node, showImage, position, setHoveredId, ...props }) {
     // const t = state.clock.getElapsedTime() + random * 10000
     // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
     // ref.current.position.y = Math.sin(t / 1.5) / 2
-    // ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.4 : 1, 0.1)
+    ref.current.scale.x =
+      ref.current.scale.y =
+      ref.current.scale.z =
+        THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.3 : 1, 0.1);
     ref.current?.color.lerp(
       color.set(hovered ? "white" : node.color),
       hovered ? 1 : 0.1
@@ -157,7 +123,7 @@ function Node({ node, showImage, position, setHoveredId, ...props }) {
 
   // https://github.com/pmndrs/drei#instances
   return (
-    <group {...props} ref={groupRef}>
+    <group>
       <Instance ref={sphereRef} color={node.color}>
         <NodeBillboardHtml
           node={node}

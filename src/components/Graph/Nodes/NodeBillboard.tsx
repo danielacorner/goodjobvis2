@@ -5,7 +5,6 @@ import {
   DISABLE_SELECTION_OF_TEXT_CSS,
   useMounted,
 } from "../../../utils/constants";
-import { useRef } from "react";
 
 export function NodeBillboardHtml({
   node,
@@ -14,8 +13,6 @@ export function NodeBillboardHtml({
   onPointerOut = (() => {}) as any,
   ...rest
 }) {
-  const ref = useRef(null as any);
-
   // fade in on mount
   const mounted = useMounted();
   const springOpacity = useSpring({
@@ -24,18 +21,20 @@ export function NodeBillboardHtml({
     clamp: true,
   });
   return (
-    <Html transform={true} sprite={true} center={true} {...rest}>
-      <AnimatedStyles style={springOpacity} ref={ref}>
-        <AvatarStyles>
-          {showImage ? <img src={node.imageUrlThumbnail} alt="" /> : null}
-        </AvatarStyles>
-        <div
-          className="mousePadding"
-          onMouseEnter={onPointerOver}
-          onMouseLeave={onPointerOut}
-        ></div>
-      </AnimatedStyles>
-    </Html>
+    <Billboard>
+      <Html transform={true} sprite={false} center={true} {...rest}>
+        <AnimatedStyles style={springOpacity}>
+          <AvatarStyles>
+            {showImage ? <img src={node.imageUrlThumbnail} alt="" /> : null}
+          </AvatarStyles>
+          <div
+            className="mousePadding"
+            onMouseEnter={onPointerOver}
+            onMouseLeave={onPointerOut}
+          ></div>
+        </AnimatedStyles>
+      </Html>
+    </Billboard>
   );
 }
 

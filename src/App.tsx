@@ -39,8 +39,8 @@ function App() {
           </div>
           <StoryCards />
         </div>
-        <NodeTooltip />
       </AppStyles>
+      <NodeTooltip />
       <Leva
         oneLineLabels={true}
         // fill             // default = false,  true makes the pane fill the parent dom node it's rendered in

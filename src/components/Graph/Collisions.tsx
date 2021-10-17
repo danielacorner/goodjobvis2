@@ -9,7 +9,7 @@ export function Collisions() {
   const { viewport } = useThree();
   const width = viewport.width * (FULL_WIDTH - PADDING);
   const height = viewport.height * 0.02;
-  const depth = NODE_RADIUS * NODE_RADIUS_COLLISION_MULTIPLIER * 1.3;
+  const depth = NODE_RADIUS * NODE_RADIUS_COLLISION_MULTIPLIER * 1.000001;
 
   // back, front
   usePlane(() => ({ position: [0, 0, -depth], rotation: [0, 0, 0] }));
