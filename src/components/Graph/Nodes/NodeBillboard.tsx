@@ -9,7 +9,6 @@ import { useAtom } from "jotai";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { TOOLTIP_WIDTH, TOOLTIP_MIN_HEIGHT } from "../../../NodeTooltip";
 import { tooltipNodeAtom } from "../../../store/store";
-import { useEffect } from "react";
 
 export function NodeBillboardHtml({ node, showImage, setHover }) {
   // fade in on mount

@@ -88,7 +88,6 @@ export function Nodes() {
 const color = new THREE.Color();
 
 function Node({ node, showImage, position }) {
-  console.log("🌟🚨 ~ Node ~ node", node);
   const [hovered, setHover] = useState(false);
   const ref = useRef(null as any);
 

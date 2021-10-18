@@ -1,7 +1,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { GraphDataType } from "../../utils/types";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { OrbitControls, Stats } from "@react-three/drei";
+import { Environment, OrbitControls, Stats } from "@react-three/drei";
 import { Nodes } from "./Nodes/Nodes";
 import { Collisions } from "./Collisions";
 import { Debug, Physics } from "@react-three/cannon";
@@ -97,10 +97,9 @@ export function Graph3D() {
         <DebugSometimes>
           {flicker && <Nodes />}
           <Collisions />
-          <ambientLight intensity={0.4} />
-          <pointLight position={[150, 150, 150]} intensity={0.3} />
-          {/* <directionalLight position={[px, py, pz]} intensity={1} />
-        <ambientLight intensity={0.1} /> */}
+          <ambientLight intensity={0.2} />
+          <spotLight position={[10, 10, 10]} intensity={1.2} />
+          <Environment preset="sunset" />
         </DebugSometimes>
       </Physics>
     </Canvas>

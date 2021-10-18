@@ -21,7 +21,6 @@ export function NodeTooltip() {
     }
   }, [tooltipNode]);
 
-  console.log("🌟🚨 ~ NodeTooltip ~ tooltipNode", tooltipNode);
   const prevTooltipNode = prevTooltipNodeRef.current;
   const springPosition = useSpring({
     transform: `translate3d(${
