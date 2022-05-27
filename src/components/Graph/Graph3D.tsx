@@ -6,9 +6,9 @@ import { Nodes } from "./Nodes/Nodes";
 import { Collisions } from "./Collisions";
 // import { Debug, Physics } from "@react-three/cannon";
 import { useControls } from "leva";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useCurrentStepIdx } from "../../App";
-import { Physics } from "@react-three/rapier";
+import { Debug, Physics } from "@react-three/rapier";
 // https://github.com/pmndrs/react-three-rapier
 
 export function Graph3D() {
@@ -30,7 +30,9 @@ export function Graph3D() {
       setFlicker(true);
     });
   }, [currentStepIdx]);
-
+  const { showDebug } = useControls({
+    showDebug: process.env.NODE_ENV === "development",
+  });
   return (
     <Canvas
       style={{
@@ -84,6 +86,7 @@ export function Graph3D() {
         />
       )}
       <Physics
+      // colliders="ball"
       // shouldInvalidate={isPaused}
       // {...{ gravity: [0, 0, 0] }}
 
@@ -96,22 +99,17 @@ export function Graph3D() {
       //   // frictionEquationRelaxation: 0,
       // }}
       >
-        <DebugSometimes>
-          {flicker && <Nodes />}
-          {/* <Collisions /> */}
-          <ambientLight intensity={0.2} />
-          <spotLight position={[10, 10, 10]} intensity={1.2} />
-          <Environment preset="sunset" />
-        </DebugSometimes>
+        {flicker && <Nodes />}
+        <Collisions />
+        <ambientLight intensity={0.2} />
+        <spotLight position={[10, 10, 10]} intensity={1.2} />
+        <Environment preset="sunset" />
+        {showDebug && <Debug />}
       </Physics>
     </Canvas>
   );
 }
-function DebugSometimes({ children }) {
-  const { showDebug } = useControls({ showDebug: false });
-  const DebugOrNot = showDebug ? Fragment : Fragment;
-  return <DebugOrNot>{children}</DebugOrNot>;
-}
+
 export function useTheForce(
   group: React.MutableRefObject<any>,
   graphData: GraphDataType

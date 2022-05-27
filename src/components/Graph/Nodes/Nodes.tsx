@@ -10,10 +10,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { tooltipNodeAtom } from "../../../store/store";
 import { Instance, Instances, Sphere } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { TOOLTIP_MIN_HEIGHT, TOOLTIP_WIDTH } from "../../../NodeTooltip";
-import { BallCollider, RigidBody } from "@react-three/rapier";
+import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
+import { FULL_WIDTH, PADDING } from "../Collisions";
 
 // instanced physics in r3f/cannon https://codesandbox.io/s/r3f-cannon-instanced-physics-g1s88
 // instanced nodes https://codesandbox.io/s/r3f-instanced-colors-5o0qu?file=/src/index.js:520-530
@@ -66,12 +67,13 @@ export function Nodes() {
 
   return (
     // {/* Instances https://codesandbox.io/s/floating-instanced-shoes-h8o2d?file=/src/App.js */}
-    <Instances
-      material={mat}
-      geometry={geo}
-      limit={1000} // Optional: max amount of items (for calculating buffer size)
-      range={1000} // Optional: draw-range
-    >
+    // <Instances
+    //   material={mat}
+    //   geometry={geo}
+    //   limit={1000} // Optional: max amount of items (for calculating buffer size)
+    //   range={1000} // Optional: draw-range
+    // >
+    <>
       {nodes.map((node, idx) => (
         <Node
           key={node.id}
@@ -83,7 +85,8 @@ export function Nodes() {
           }}
         />
       ))}
-    </Instances>
+    </>
+    // </Instances>
   );
 }
 
@@ -113,22 +116,42 @@ function Node({ node, showImage, position }) {
     //   ref.current.scale.y =
     //   ref.current.scale.z =
     //     THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.3 : 1, 0.1);
-    ref.current?.color.lerp(
-      color.set(hovered ? "white" : node.color),
-      hovered ? 1 : 0.1
-    );
+    // ref.current?.color.lerp(
+    //   color.set(hovered ? "white" : node.color),
+    //   hovered ? 1 : 0.1
+    // );
   });
-
+  const { viewport } = useThree();
+  const width = viewport.width * (FULL_WIDTH - PADDING);
+  const height = viewport.height * 0.02;
   // https://github.com/pmndrs/drei#instances
+
+  // const rigidBodyRef = useRef<RapierRigidBody>(null);
+
+  // useFrame(() => {
+  //   const ballPosition = ref.current.children[0].position;
+  //   if (ballPosition.y < -height) {
+  //     ref.current.children[0].position.set(0, height, 0);
+  //     // ballPosition.y = height;
+  //   }
+  //   console.log(
+  //     "🌟🚨 ~ file: Nodes.tsx ~ line 121 ~ useFrame ~ ref.current",
+  //     ref.current.children[0].position.y
+  //   );
+  // });
   return (
-    <group>
-      <Instance ref={ref} /* ref={sphereRef} */ color={node.color}>
-        <RigidBody>
-          <NodeBillboardHtml {...{ node, showImage, setHover }} />
-          {/* <Sphere /> */}
-          <BallCollider args={[0.5]} position={[0, Math.random() * 100, 0]} />
-        </RigidBody>
-      </Instance>
-    </group>
+    // <Instance ref={ref} /* ref={sphereRef} */>
+    <RigidBody
+      // ref={rigidBodyRef}
+      position={[randBetween(-0.4, 0.4) * width, randBetween(2, 4) * height, 0]}
+    >
+      <NodeBillboardHtml {...{ node, showImage, setHover }} />
+      <Sphere args={[NODE_RADIUS]} material-color={node.color} />
+      <BallCollider args={[NODE_RADIUS]} />
+    </RigidBody>
+    // </Instance>
   );
+}
+function randBetween(min, max) {
+  return Math.random() * (max - min) + min;
 }

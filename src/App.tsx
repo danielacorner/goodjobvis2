@@ -1,5 +1,4 @@
 import "./App.css";
-import { Graph3D } from "./components/Graph/Graph3D";
 import useEventListener from "./hooks/useEventListener";
 import { useWindowSize } from "./hooks/useWindowSize";
 import { STORY_STEPS } from "./utils/STORY_STEPS";
@@ -12,8 +11,8 @@ import { NodeTooltip } from "./NodeTooltip";
 import { StoryCards } from "./StoryCards";
 import styled from "styled-components/macro";
 import { Leva } from "leva";
-import { ChartjsGraph } from "./components/Graph/ChartjsGraph";
 import { useState } from "react";
+import { DataViz } from "./components/DataViz/DataViz";
 
 // 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
@@ -54,19 +53,6 @@ function App() {
         hidden={process.env.NODE_ENV === "production"} // default = false, when true the GUI is hidden
       />
     </ChakraProvider>
-  );
-}
-
-function DataViz() {
-  // const [graphType, setGraphType] = useState<"2dScatter" | "3dPile">("3dPile");
-  const [currentStepIdx] = useCurrentStepIdx();
-  const graphType = currentStepIdx === 2 ? "2dScatter" : "3dPile";
-
-  return (
-    <>
-      {graphType === "2dScatter" && <ChartjsGraph />}
-      {graphType === "3dPile" && <Graph3D />}
-    </>
   );
 }
 
