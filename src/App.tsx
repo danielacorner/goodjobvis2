@@ -1,4 +1,3 @@
-import * as React from "react";
 import "./App.css";
 import { Graph3D } from "./components/Graph/Graph3D";
 import useEventListener from "./hooks/useEventListener";
@@ -13,6 +12,8 @@ import { NodeTooltip } from "./NodeTooltip";
 import { StoryCards } from "./StoryCards";
 import styled from "styled-components/macro";
 import { Leva } from "leva";
+import { ChartjsGraph } from "./components/Graph/ChartjsGraph";
+import { useState } from "react";
 
 // 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
@@ -32,7 +33,8 @@ function App() {
         <div className="app-content">
           <div style={{ pointerEvents: isScrollEnabled ? "auto" : "none" }}>
             {/* <Graph graphData={currentStep.graphData} /> */}
-            <Graph3D />
+            <DataViz />
+
             <GUI />
             {/* <NOCImages /> */}
             {/* <NOCThumbnails /> */}
@@ -52,6 +54,19 @@ function App() {
         hidden={process.env.NODE_ENV === "production"} // default = false, when true the GUI is hidden
       />
     </ChakraProvider>
+  );
+}
+
+function DataViz() {
+  // const [graphType, setGraphType] = useState<"2dScatter" | "3dPile">("3dPile");
+  const [currentStepIdx] = useCurrentStepIdx();
+  const graphType = currentStepIdx === 2 ? "2dScatter" : "3dPile";
+
+  return (
+    <>
+      {graphType === "2dScatter" && <ChartjsGraph />}
+      {graphType === "3dPile" && <Graph3D />}
+    </>
   );
 }
 
@@ -85,7 +100,7 @@ export function useStoryStepIdx() {
 /** percent (0-1)  */
 function useScrollHeightPct() {
   const windowSize = useWindowSize();
-  const [scrollHeightPct, setScrollHeightPct] = React.useState(0);
+  const [scrollHeightPct, setScrollHeightPct] = useState(0);
   const $App = document.querySelector(".App");
   // const $Canvas = document.querySelector(".App .app-content canvas");
   useEventListener(

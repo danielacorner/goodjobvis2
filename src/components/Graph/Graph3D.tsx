@@ -4,10 +4,12 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 import { Environment, OrbitControls, Stats } from "@react-three/drei";
 import { Nodes } from "./Nodes/Nodes";
 import { Collisions } from "./Collisions";
-import { Debug, Physics } from "@react-three/cannon";
+// import { Debug, Physics } from "@react-three/cannon";
 import { useControls } from "leva";
 import { Fragment, useEffect, useState } from "react";
 import { useCurrentStepIdx } from "../../App";
+import { Physics } from "@react-three/rapier";
+// https://github.com/pmndrs/react-three-rapier
 
 export function Graph3D() {
   const windowSize = useWindowSize();
@@ -82,21 +84,21 @@ export function Graph3D() {
         />
       )}
       <Physics
-        // shouldInvalidate={isPaused}
-        // {...{ gravity: [0, 0, 0] }}
+      // shouldInvalidate={isPaused}
+      // {...{ gravity: [0, 0, 0] }}
 
-        defaultContactMaterial={{
-          contactEquationStiffness: 1e6,
-          // friction: 1000000,
-          restitution: 0.1,
-          // contactEquationRelaxation: 0,
-          // frictionEquationStiffness: 0,
-          // frictionEquationRelaxation: 0,
-        }}
+      // defaultContactMaterial={{
+      //   contactEquationStiffness: 1e6,
+      //   // friction: 1000000,
+      //   restitution: 0.1,
+      //   // contactEquationRelaxation: 0,
+      //   // frictionEquationStiffness: 0,
+      //   // frictionEquationRelaxation: 0,
+      // }}
       >
         <DebugSometimes>
           {flicker && <Nodes />}
-          <Collisions />
+          {/* <Collisions /> */}
           <ambientLight intensity={0.2} />
           <spotLight position={[10, 10, 10]} intensity={1.2} />
           <Environment preset="sunset" />
@@ -107,7 +109,7 @@ export function Graph3D() {
 }
 function DebugSometimes({ children }) {
   const { showDebug } = useControls({ showDebug: false });
-  const DebugOrNot = showDebug ? Debug : Fragment;
+  const DebugOrNot = showDebug ? Fragment : Fragment;
   return <DebugOrNot>{children}</DebugOrNot>;
 }
 export function useTheForce(

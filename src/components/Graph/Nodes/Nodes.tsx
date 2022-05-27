@@ -9,10 +9,12 @@ import { useCurrentStepIdx } from "../../../App";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { tooltipNodeAtom } from "../../../store/store";
-import { Instance, Instances } from "@react-three/drei";
+import { Instance, Instances, Sphere } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import { TOOLTIP_MIN_HEIGHT, TOOLTIP_WIDTH } from "../../../NodeTooltip";
+import { BallCollider, RigidBody } from "@react-three/rapier";
+
 // instanced physics in r3f/cannon https://codesandbox.io/s/r3f-cannon-instanced-physics-g1s88
 // instanced nodes https://codesandbox.io/s/r3f-instanced-colors-5o0qu?file=/src/index.js:520-530
 // https://codesandbox.io/s/instanced-vertex-colors-8fo01?from-embed=&file=/src/index.js
@@ -91,26 +93,26 @@ function Node({ node, showImage, position }) {
   const [hovered, setHover] = useState(false);
   const ref = useRef(null as any);
 
-  const [sphereRef, api] = useSphere(
-    () => ({
-      mass: 1,
-      position,
-      linearDamping: 0.1,
-      // material: { friction: 0, restitution: 0 },
-      // geometry: geo,
-      args: NODE_RADIUS * NODE_RADIUS_COLLISION_MULTIPLIER,
-    }),
-    ref
-  );
+  // const [sphereRef, api] = useSphere(
+  //   () => ({
+  //     mass: 1,
+  //     position,
+  //     linearDamping: 0.1,
+  //     // material: { friction: 0, restitution: 0 },
+  //     // geometry: geo,
+  //     args: NODE_RADIUS * NODE_RADIUS_COLLISION_MULTIPLIER,
+  //   }),
+  //   ref
+  // );
 
   useFrame(() => {
     // const t = state.clock.getElapsedTime() + random * 10000
     // ref.current.rotation.set(Math.cos(t / 4) / 2, Math.sin(t / 4) / 2, Math.cos(t / 1.5) / 2)
     // ref.current.position.y = Math.sin(t / 1.5) / 2
-    ref.current.scale.x =
-      ref.current.scale.y =
-      ref.current.scale.z =
-        THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.3 : 1, 0.1);
+    // ref.current.scale.x =
+    //   ref.current.scale.y =
+    //   ref.current.scale.z =
+    //     THREE.MathUtils.lerp(ref.current.scale.z, hovered ? 1.3 : 1, 0.1);
     ref.current?.color.lerp(
       color.set(hovered ? "white" : node.color),
       hovered ? 1 : 0.1
@@ -120,8 +122,12 @@ function Node({ node, showImage, position }) {
   // https://github.com/pmndrs/drei#instances
   return (
     <group>
-      <Instance ref={sphereRef} color={node.color}>
-        <NodeBillboardHtml {...{ node, showImage, setHover }} />
+      <Instance ref={ref} /* ref={sphereRef} */ color={node.color}>
+        <RigidBody>
+          <NodeBillboardHtml {...{ node, showImage, setHover }} />
+          {/* <Sphere /> */}
+          <BallCollider args={[0.5]} position={[0, Math.random() * 100, 0]} />
+        </RigidBody>
       </Instance>
     </group>
   );
