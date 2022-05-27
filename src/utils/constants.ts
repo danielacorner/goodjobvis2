@@ -22,3 +22,7 @@ export function useMounted() {
   return mounted;
 }
 export const MAX_NUM_IMAGES_TO_DISPLAY = 500;
+export const FULL_WIDTH = 0.5;
+export const PADDING = 0.08;
+export const NODE_RADIUS = 0.12;
+export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.2;

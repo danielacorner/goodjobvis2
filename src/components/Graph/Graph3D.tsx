@@ -7,8 +7,8 @@ import { Collisions } from "./Collisions";
 // import { Debug, Physics } from "@react-three/cannon";
 import { useControls } from "leva";
 import { useEffect, useState } from "react";
-import { useCurrentStepIdx } from "../../App";
 import { Debug, Physics } from "@react-three/rapier";
+import { useCurrentStepIdx } from "../../store/store";
 // https://github.com/pmndrs/react-three-rapier
 
 export function Graph3D() {
@@ -31,7 +31,7 @@ export function Graph3D() {
     });
   }, [currentStepIdx]);
   const { showDebug } = useControls({
-    showDebug: process.env.NODE_ENV === "development",
+    showDebug: false,
   });
   return (
     <Canvas

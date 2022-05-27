@@ -1,10 +1,14 @@
 import { Plane } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
-import { NODE_RADIUS, NODE_RADIUS_COLLISION_MULTIPLIER } from "./Nodes/Nodes";
-export const FULL_WIDTH = 0.5;
+import {
+  FULL_WIDTH,
+  PADDING,
+  NODE_RADIUS,
+  NODE_RADIUS_COLLISION_MULTIPLIER,
+} from "../../utils/constants";
+
 const CENTERED = 0.15;
-export const PADDING = 0.08;
 
 export function Collisions() {
   const { viewport } = useThree();
@@ -38,7 +42,8 @@ export function Collisions() {
   // }));
 
   const planeProps = {
-    color: "lightblue",
+    "material-opacity": 0,
+    "material-transparent": true,
     args: [100, 100, 1, 1] as any,
   };
   return (

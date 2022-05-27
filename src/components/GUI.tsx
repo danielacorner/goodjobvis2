@@ -1,14 +1,11 @@
-import * as React from "react";
 import { useEffect } from "react";
-import { STORY_STEPS } from "../utils/STORY_STEPS";
 import { Button } from "@chakra-ui/react";
-import { useAtom } from "jotai";
 import styled from "styled-components/macro";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { useCurrentStepIdx, useStoryStepIdx, currentStepIdxAtom } from "../App";
+import { useCurrentStepIdx, useStoryStepIdx } from "../store/store";
 
 export function GUI() {
-  const [currentStepIdx, setCurrentStepIdx] = useCurrentStepIdx();
+  const [, setCurrentStepIdx] = useCurrentStepIdx();
 
   /** Listen to scroll, and direct the story */
   const storyStepIdx = useStoryStepIdx();
@@ -24,7 +21,7 @@ export function GUI() {
   );
 }
 function BtnPrev() {
-  const [, setCurrentStepIdx] = useAtom(currentStepIdxAtom);
+  const [, setCurrentStepIdx] = useCurrentStepIdx();
 
   return (
     <Button
@@ -40,7 +37,7 @@ function BtnPrev() {
   );
 }
 function BtnNext() {
-  const [, setCurrentStepIdx] = useAtom(currentStepIdxAtom);
+  const [, setCurrentStepIdx] = useCurrentStepIdx();
 
   return (
     <Button

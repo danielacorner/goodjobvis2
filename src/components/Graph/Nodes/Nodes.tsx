@@ -1,33 +1,27 @@
 import * as THREE from "three";
 import { NodeBillboardHtml } from "./NodeBillboard";
-import { useSphere } from "@react-three/cannon";
 import {
+  FULL_WIDTH,
   MAX_NUM_IMAGES_TO_DISPLAY,
+  NODE_RADIUS,
+  PADDING,
   WIDTH_SEGMENTS,
 } from "../../../utils/constants";
-import { useCurrentStepIdx } from "../../../App";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useAtom } from "jotai";
-import { tooltipNodeAtom } from "../../../store/store";
-import { Instance, Instances, Sphere } from "@react-three/drei";
+import { useMemo, useRef, useState } from "react";
+import { useCurrentStepIdx } from "../../../store/store";
+import { Sphere } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useWindowSize } from "../../../hooks/useWindowSize";
-import { TOOLTIP_MIN_HEIGHT, TOOLTIP_WIDTH } from "../../../NodeTooltip";
-import { BallCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
-import { FULL_WIDTH, PADDING } from "../Collisions";
+import { BallCollider, RigidBody } from "@react-three/rapier";
 
 // instanced physics in r3f/cannon https://codesandbox.io/s/r3f-cannon-instanced-physics-g1s88
 // instanced nodes https://codesandbox.io/s/r3f-instanced-colors-5o0qu?file=/src/index.js:520-530
 // https://codesandbox.io/s/instanced-vertex-colors-8fo01?from-embed=&file=/src/index.js
-const tempColor = new THREE.Color();
-const tempObject = new THREE.Object3D();
+// const tempColor = new THREE.Color();
+// const tempObject = new THREE.Object3D();
 
 const dx = 2;
 const dy = 5;
 const dz = 0;
-
-export const NODE_RADIUS = 0.12;
-export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.2;
 
 export function Nodes() {
   const [, , currentStep] = useCurrentStepIdx();
