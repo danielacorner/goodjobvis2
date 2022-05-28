@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 import styled from "styled-components";
 import { animated, useSpring } from "react-spring";
-import { tooltipNodeAtom, TooltipNodeType } from "./store/store";
+import {
+  tooltipNodeAtom,
+  TooltipNodeType,
+  useTooltipNode,
+} from "./store/store";
 
 export const TOOLTIP_WIDTH = 300;
 export const TOOLTIP_MIN_HEIGHT = 200;
@@ -13,7 +17,7 @@ export function NodeTooltip() {
     x: TOOLTIP_WIDTH / 2,
     y: 0,
   };
-  const [tooltipNode] = useAtom(tooltipNodeAtom);
+  const [tooltipNode] = useTooltipNode();
   const prevTooltipNodeRef = React.useRef<TooltipNodeType | null>(null);
   useEffect(() => {
     if (tooltipNode) {

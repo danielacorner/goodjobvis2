@@ -6,6 +6,9 @@ import {
   LineElement,
   Tooltip,
   Legend,
+  ChartData,
+  BubbleDataPoint,
+  Chart,
 } from "chart.js";
 import { Scatter } from "react-chartjs-2";
 import { NOC_NODES } from "../../assets/NOC-node";
@@ -24,21 +27,23 @@ export function ChartjsGraph() {
 
   const datasets = useMemo(() => {
     const groups = NOC_NODES.reduce((acc, node) => {
-      return { ...acc, [node.cluster]: (acc[node.cluster] || []).concat(node) };
+      return {
+        ...acc,
+        [node.industry]: (acc[node.industry] || []).concat(node),
+      };
     }, {} as { [key: string]: NOCDataType[] });
     const datasetsFromGroups = Object.entries(groups).map(
-      ([cluster, nodes]) => {
-        console.log(
-          "🌟🚨 ~ file: ChartjsGraph.tsx ~ line 31 ~ datasets ~ cluster",
-          cluster
-        );
+      ([industry, nodes]) => {
         return {
-          label: cluster,
+          label: industry,
           data: nodes.map((node) => ({
             x: Math.random() * 100,
             y: Math.random() * 100,
             r: Math.random() * 25,
-          })),
+            tooltip: {
+              title: `${node.job}`,
+            },
+          })) as BubbleDataPoint[],
           backgroundColor: CLUSTER_COLORS[nodes[0].cluster],
         };
       }
@@ -52,6 +57,12 @@ export function ChartjsGraph() {
         height={height}
         width={width}
         options={{
+          onHover: (...args) => {
+            console.log(
+              "🌟🚨 ~ file: ChartjsGraph.tsx ~ line 58 ~ ChartjsGraph ~ args",
+              args
+            );
+          },
           scales: {
             y: {
               beginAtZero: true,
@@ -61,6 +72,42 @@ export function ChartjsGraph() {
             padding: 50,
           },
           color: "black",
+          plugins: {
+            tooltip: {
+              callbacks: {
+                // title: (item) => {
+                //   const {
+                //     chart,
+                //     dataIndex,
+                //     dataset,
+                //     datasetIndex,
+                //     element,
+                //     formattedValue,
+                //     label,
+                //     parsed,
+                //     raw,
+                //   }: {
+                //     chart: Chart;
+                //     dataIndex: number;
+                //     dataset;
+                //     datasetIndex: number;
+                //     element: PointElement;
+                //     formattedValue: string;
+                //     label: string;
+                //     parsed: { x: number; y: number; _custom: number };
+                //     raw: {
+                //       x: number;
+                //       y: number;
+                //       r: number;
+                //       tooltip: { title: string };
+                //     };
+                //   } = item[0] as any;
+                //   const node: NOCDataType = dataset.data[dataIndex];
+                //   return `${raw.tooltip.title}`;
+                // },
+              },
+            },
+          },
         }}
         data={{
           datasets,
