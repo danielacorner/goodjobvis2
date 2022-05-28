@@ -1,16 +1,13 @@
 import "./App.css";
-import useEventListener from "./hooks/useEventListener";
-import { useWindowSize } from "./hooks/useWindowSize";
 import { STORY_STEPS } from "./utils/STORY_STEPS";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { GUI } from "./components/GUI";
 import { NodeTooltip } from "./NodeTooltip";
 import { StoryCards } from "./StoryCards";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { Leva } from "leva";
 import { DataViz } from "./components/DataViz/DataViz";
-
 // 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
   brand: {

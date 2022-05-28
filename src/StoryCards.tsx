@@ -1,4 +1,4 @@
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { STORY_STEPS } from "./utils/STORY_STEPS";
 
 export function StoryCards() {

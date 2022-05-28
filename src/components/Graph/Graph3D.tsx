@@ -68,8 +68,8 @@ export function Graph3D() {
         far: 2000,
       }}
     >
-      {process.env.NODE_ENV === "development" && showStats && <Stats />}
-      {process.env.NODE_ENV === "development" && (
+      {import.meta.env.NODE_ENV === "development" && showStats && <Stats />}
+      {import.meta.env.NODE_ENV === "development" && (
         <OrbitControls
           autoRotate={false}
           autoRotateSpeed={0.1}

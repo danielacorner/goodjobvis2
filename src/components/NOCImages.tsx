@@ -1,6 +1,6 @@
 import * as React from "react";
 import NOC_DATA from "../assets/NOC-data";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 
 /** a hidden image per NOC */
 export function NOCImages() {

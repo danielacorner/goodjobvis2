@@ -1,3 +1,4 @@
+import React from "react";
 import { StoryStepType } from "./types";
 import { NOC_NODES, NOC_STATS } from "../assets/NOC-node";
 // the story

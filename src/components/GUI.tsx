@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Button } from "@chakra-ui/react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useCurrentStepIdx, useStoryStepIdx } from "../store/store";
 

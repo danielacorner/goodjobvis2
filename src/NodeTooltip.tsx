@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useAtom } from "jotai";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { animated, useSpring } from "react-spring";
 import { tooltipNodeAtom, TooltipNodeType } from "./store/store";
 

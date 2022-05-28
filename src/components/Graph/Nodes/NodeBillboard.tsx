@@ -1,4 +1,4 @@
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { Html, Billboard } from "@react-three/drei";
 import { animated, useSpring } from "react-spring";
 import {
