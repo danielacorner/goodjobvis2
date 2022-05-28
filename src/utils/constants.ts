@@ -27,16 +27,16 @@ export const PADDING = 0.08;
 export const NODE_RADIUS = 0.12;
 export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.2;
 const d3SchemeCategory10 = [
-  "#1f77b4",
-  "#ff7f0e",
-  "#2ca02c",
-  "#d62728",
-  "#9467bd",
-  "#8c564b",
-  "#e377c2",
-  "#7f7f7f",
-  "#bcbd22",
-  "#17becf",
+  "rgba(31,119,180, 1)",
+  "rgba(255,127,14, 1)",
+  "rgba(44,160,44, 1)",
+  "rgba(214,39,40, 1)",
+  "rgba(148,103,189, 1)",
+  "rgba(140,86,75, 1)",
+  "rgba(227,119,194, 1)",
+  "rgba(127,127,127, 1)",
+  "rgba(188,189,34, 1)",
+  "rgba(23,190,207, 1)",
 ];
 const palette = d3SchemeCategory10;
 export const CLUSTER_COLORS = {
