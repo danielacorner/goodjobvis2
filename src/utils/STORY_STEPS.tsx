@@ -49,7 +49,8 @@ export const STORY_STEPS: StoryStepType[] = [
   },
   {
     graphData: {
-      nodes: NOC_NODES,
+      nodes: [],
+      // nodes: NOC_NODES,
       links: [],
     },
     text: (
