@@ -11,8 +11,8 @@ export type GraphNodeType = typeof NOC_NODES[0] & {
 export type StoryStepType = {
   graphData: GraphDataType;
   text?: string | ReactNode;
-  xKey?: keyof NOCDataType;
-  yKey?: keyof NOCDataType;
+  xKey?: keyof NOCDataType | "VARIABLE";
+  yKey?: keyof NOCDataType | "VARIABLE";
   // https://www.chartjs.org/docs/latest/axes/
   xScaleType?: "linear" | "logarithmic" | "time";
   yScaleType?: "linear" | "logarithmic" | "time";

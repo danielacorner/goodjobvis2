@@ -116,4 +116,18 @@ export const STORY_STEPS: StoryStepType[] = [
     xKey: "s10Reading",
     yKey: "automationRisk",
   },
+  {
+    graphData: {
+      nodes: [],
+      // nodes: NOC_NODES,
+      links: [],
+    },
+    text: (
+      <StepStyles>
+        Go ahead and compare any two variables on the axes...
+      </StepStyles>
+    ),
+    xKey: "VARIABLE",
+    yKey: "VARIABLE",
+  },
 ];

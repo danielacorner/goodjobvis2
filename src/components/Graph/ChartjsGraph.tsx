@@ -12,14 +12,13 @@ import {
 import { NOC_NODES } from "../../assets/NOC-node";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { Bubble } from "react-chartjs-2";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NOCDataType } from "../../utils/types";
 import { CLUSTER_COLORS } from "../../utils/constants";
-import { useState } from "react";
 import { STORY_STEPS } from "../../utils/STORY_STEPS";
 import { useCurrentStepIdx } from "../../store/store";
 import zoomPlugin from "chartjs-plugin-zoom";
-
+import { AxisControls } from "./AxisControls";
 // https://www.chartjs.org/docs/latest/
 
 // https://react-chartjs-2.netlify.app/examples/bubble-chart
@@ -32,7 +31,9 @@ ChartJS.register(
   Legend,
   zoomPlugin
 );
-
+const NOC_NUMERICAL_KEYS = Object.entries(NOC_NODES[0])
+  .filter(([key, val]) => typeof val === "number")
+  .map(([key]) => key);
 export function ChartjsGraph() {
   const { width, height } = useWindowSize();
 
@@ -46,10 +47,39 @@ export function ChartjsGraph() {
     yScaleType: currentStep.yScaleType ?? null,
   };
 
-  const datasets = useMemo(getDatasets(xKey, yKey, width), [xKey, yKey, width]);
+  // allow manual control of axis keys
+  const [{ xKeyState, yKeyState }, setKeyState] = useState({
+    xKeyState: xKey,
+    yKeyState: yKey,
+  });
+  // update when the step changes
+  useEffect(() => {
+    setKeyState({
+      xKeyState: xKey,
+      yKeyState: yKey,
+    });
+  }, [xKey, yKey]);
+
+  const datasets = useMemo(getDatasets(xKeyState, yKeyState, width), [
+    xKeyState,
+    yKeyState,
+    width,
+  ]);
 
   return (
     <ChartStyles>
+      {xKey === "VARIABLE" && (
+        <AxisControls
+          {...{
+            xOptions: NOC_NUMERICAL_KEYS,
+            yOptions: NOC_NUMERICAL_KEYS,
+            xKey: xKeyState,
+            setXKey: (x) => setKeyState((p) => ({ ...p, xKeyState: x })),
+            yKey: yKeyState,
+            setYKey: (y) => setKeyState((p) => ({ ...p, yKeyState: y })),
+          }}
+        />
+      )}
       <Bubble
         height={height}
         width={width}
@@ -67,19 +97,19 @@ export function ChartjsGraph() {
             x: {
               type: xScaleType ?? "linear",
               title: {
-                display: Boolean(xKey),
-                text: String(xKey) ?? undefined,
+                display: Boolean(xKeyState),
+                text: String(xKeyState) ?? undefined,
               },
-              display: Boolean(xKey),
+              display: Boolean(xKeyState && xKeyState !== "VARIABLE"),
             },
             y: {
               beginAtZero: true,
               type: yScaleType ?? "linear",
               title: {
-                display: Boolean(yKey),
-                text: String(yKey) ?? undefined,
+                display: Boolean(yKeyState),
+                text: String(yKeyState) ?? undefined,
               },
-              display: Boolean(yKey),
+              display: Boolean(yKeyState && yKeyState !== "VARIABLE"),
             },
           },
           layout: {
@@ -95,6 +125,7 @@ export function ChartjsGraph() {
               },
             },
             tooltip: {},
+            // https://www.chartjs.org/chartjs-plugin-zoom/latest/guide/usage.html
             zoom: {
               zoom: {
                 wheel: {
@@ -142,8 +173,8 @@ function getDatasets(
             const area = node.workers;
             const scale = 0.4 * (width < 768 ? 0.3 : 1);
             return {
-              x: xKey ? node[xKey] : Math.random(),
-              y: yKey ? node[yKey] : Math.random(),
+              x: xKey && xKey !== "VARIABLE" ? node[xKey] : Math.random(),
+              y: yKey && yKey !== "VARIABLE" ? node[yKey] : Math.random(),
               r: Math.sqrt(area / Math.PI) * scale,
               tooltip: {
                 title: `${node.job}`,
