@@ -19,7 +19,10 @@ const StoryCardsStyles = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  height: ${(STORY_STEPS.length + 2.5) * 100}vh;
+  height: calc(
+    ${STORY_STEPS.length * 1.5 /* extra height for card text height */ * 100}vh +
+      6em
+  );
   background: none;
 `;
 
