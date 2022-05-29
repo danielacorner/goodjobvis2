@@ -38,7 +38,7 @@ function useScrollHeightPct() {
         return;
       }
       const scrollHeight = $App.scrollTop;
-      const scrollableHeight = $App.scrollHeight - windowSize.height;
+      const scrollableHeight = $App.scrollHeight;
 
       const newScrollHeightPct = scrollHeight / scrollableHeight;
 

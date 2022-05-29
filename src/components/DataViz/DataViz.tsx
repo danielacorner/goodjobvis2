@@ -3,9 +3,8 @@ import { ChartjsGraph } from "../Graph/ChartjsGraph";
 import { useCurrentStepIdx } from "../../store/store";
 
 export function DataViz() {
-  // const [graphType, setGraphType] = useState<"2dScatter" | "3dPile">("3dPile");
   const [currentStepIdx] = useCurrentStepIdx();
-  const graphType = currentStepIdx === 2 ? "2dScatter" : "3dPile";
+  const graphType = currentStepIdx >= 2 ? "2dScatter" : "3dPile";
 
   return (
     <>

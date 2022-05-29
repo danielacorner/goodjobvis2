@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { STORY_STEPS } from "./utils/STORY_STEPS";
+import { STORY_STEPS } from "../utils/STORY_STEPS";
 
 export function StoryCards() {
   return (
@@ -15,12 +15,11 @@ export function StoryCards() {
 const StoryCardsStyles = styled.div`
   pointer-events: none;
   z-index: 9;
-  /* position: fixed; */
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: ${(STORY_STEPS.length + 1.5) * 100}vh;
+  height: ${(STORY_STEPS.length + 2.5) * 100}vh;
   background: none;
 `;
 
@@ -28,7 +27,7 @@ const STEP_HEIGHT_MULT = 1.5;
 
 const StoryStepStyles = styled.div`
   position: absolute;
-  top: ${({ stepIdx }) => 50 + stepIdx * 100 * STEP_HEIGHT_MULT}vh;
+  top: calc(${({ stepIdx }) => stepIdx * 100 * STEP_HEIGHT_MULT}vh + 50vh);
   left: 2em;
   max-width: calc(100vw - 4em);
   @media (min-width: 600px) {

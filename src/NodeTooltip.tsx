@@ -1,12 +1,7 @@
 import React, { useEffect } from "react";
-import { useAtom } from "jotai";
 import styled from "styled-components";
 import { animated, useSpring } from "react-spring";
-import {
-  tooltipNodeAtom,
-  TooltipNodeType,
-  useTooltipNode,
-} from "./store/store";
+import { TooltipNodeType, useTooltipNode } from "./store/store";
 
 export const TOOLTIP_WIDTH = 300;
 export const TOOLTIP_MIN_HEIGHT = 200;

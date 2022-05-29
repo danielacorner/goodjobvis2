@@ -1,5 +1,4 @@
 import { EffectCallback, useEffect, useState } from "react";
-import colors from "nice-color-palettes";
 export const WIDTH_SEGMENTS = 26;
 export const DISABLE_SELECTION_OF_TEXT_CSS = `
 /* Disable selection of text */

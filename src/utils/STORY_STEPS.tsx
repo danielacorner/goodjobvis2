@@ -1,6 +1,14 @@
-import React from "react";
 import { StoryStepType } from "./types";
 import { NOC_NODES, NOC_STATS } from "../assets/NOC-node";
+import styled from "styled-components";
+
+const StepStyles = styled.div`
+  a {
+    color: #3381d0;
+  }
+`;
+
+console.log("🌟🚨 ~ file: STORY_STEPS.tsx ~ line 18 ~ NOC_NODES", NOC_NODES);
 // the story
 export const STORY_STEPS: StoryStepType[] = [
   {
@@ -11,7 +19,7 @@ export const STORY_STEPS: StoryStepType[] = [
       links: [],
     },
     text: (
-      <div>
+      <StepStyles>
         <p>
           Hey 😀 these are some job categories from the{" "}
           <a
@@ -29,7 +37,7 @@ export const STORY_STEPS: StoryStepType[] = [
           👷‍♀️ All of these jobs have {`<`} 10% chance of having their tasks
           automated in the near future...
         </p>
-      </div>
+      </StepStyles>
     ),
   },
 
@@ -42,8 +50,9 @@ export const STORY_STEPS: StoryStepType[] = [
     },
     text: (
       <p>
-        🤖 All of these jobs have {`>=`} 90% chance of having their tasks
-        automated in the near future...
+        On the other hand, all of{" "}
+        <span style={{ fontSize: "italic" }}>these</span> jobs have {`>`} 90%
+        chance of having their tasks automated in the near future... 🤖
       </p>
     ),
   },
@@ -54,7 +63,7 @@ export const STORY_STEPS: StoryStepType[] = [
       links: [],
     },
     text: (
-      <div>
+      <StepStyles>
         Here is the entire{" "}
         <a
           style={{ pointerEvents: "auto" }}
@@ -64,8 +73,41 @@ export const STORY_STEPS: StoryStepType[] = [
         >
           NOC dataset
         </a>
-        .
-      </div>
+        . It describes <b>{NOC_NODES.length}</b> jobs, and comes with lots of
+        different data.
+      </StepStyles>
     ),
+  },
+  {
+    graphData: {
+      nodes: [],
+      // nodes: NOC_NODES,
+      links: [],
+    },
+    text: (
+      <StepStyles>
+        For example, we can sort jobs by common statistics like <em>Salary</em>{" "}
+        and <em>Years of Education</em>...
+      </StepStyles>
+    ),
+    xKey: "yearsStudy",
+    yKey: "salaryLow",
+    yScaleType: "logarithmic",
+  },
+  {
+    graphData: {
+      nodes: [],
+      // nodes: NOC_NODES,
+      links: [],
+    },
+    text: (
+      <StepStyles>
+        ...or we could even ask something like {`"`}How does{" "}
+        <em>Reading Skill</em> affect a job{`'`}s <em>Risk of Automation</em>?
+        {`"`}.
+      </StepStyles>
+    ),
+    xKey: "s10Reading",
+    yKey: "automationRisk",
   },
 ];

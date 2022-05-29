@@ -4,7 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { GUI } from "./components/GUI";
 import { NodeTooltip } from "./NodeTooltip";
-import { StoryCards } from "./StoryCards";
+import { StoryCards } from "./StoryScrollyTeller/StoryCards";
 import styled from "styled-components";
 import { Leva } from "leva";
 import { DataViz } from "./components/DataViz/DataViz";
@@ -44,7 +44,7 @@ function App() {
         // hideTitleBar     // default = false, hides the GUI header
         // collapsed        // default = false, when true the GUI is collpased
         // hidden={true}
-        hidden={process.env.NODE_ENV === "production"} // default = false, when true the GUI is hidden
+        hidden={import.meta.env.NODE_ENV === "production"} // default = false, when true the GUI is hidden
       />
     </ChakraProvider>
   );

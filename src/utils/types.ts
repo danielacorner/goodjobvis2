@@ -11,6 +11,10 @@ export type GraphNodeType = typeof NOC_NODES[0] & {
 export type StoryStepType = {
   graphData: GraphDataType;
   text?: string | ReactNode;
+  xKey?: keyof NOCDataType;
+  yKey?: keyof NOCDataType;
+  xScaleType?: "linear" | "logarithmic";
+  yScaleType?: "linear" | "logarithmic";
 };
 
 export type GraphDataType = {
