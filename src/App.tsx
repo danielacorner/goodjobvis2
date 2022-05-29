@@ -51,7 +51,7 @@ function App() {
 }
 
 export const AppStyles = styled.div`
-  background: #bbd686;
+  background: #f5ffe1;
   overflow: auto scroll;
   height: 100vh;
   .app-content {
