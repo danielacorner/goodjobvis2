@@ -18,6 +18,7 @@ import { CLUSTER_COLORS } from "../../utils/constants";
 import { useState } from "react";
 import { STORY_STEPS } from "../../utils/STORY_STEPS";
 import { useCurrentStepIdx } from "../../store/store";
+import zoomPlugin from "chartjs-plugin-zoom";
 
 // https://www.chartjs.org/docs/latest/
 
@@ -28,7 +29,8 @@ ChartJS.register(
   PointElement,
   LineElement,
   Tooltip,
-  Legend
+  Legend,
+  zoomPlugin
 );
 
 export function ChartjsGraph() {
@@ -93,6 +95,17 @@ export function ChartjsGraph() {
               },
             },
             tooltip: {},
+            zoom: {
+              zoom: {
+                wheel: {
+                  enabled: false,
+                },
+                pinch: {
+                  enabled: true,
+                },
+                mode: "xy",
+              },
+            },
           },
         }}
         data={{

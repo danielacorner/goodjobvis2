@@ -13,8 +13,9 @@ export type StoryStepType = {
   text?: string | ReactNode;
   xKey?: keyof NOCDataType;
   yKey?: keyof NOCDataType;
-  xScaleType?: "linear" | "logarithmic";
-  yScaleType?: "linear" | "logarithmic";
+  // https://www.chartjs.org/docs/latest/axes/
+  xScaleType?: "linear" | "logarithmic" | "time";
+  yScaleType?: "linear" | "logarithmic" | "time";
 };
 
 export type GraphDataType = {

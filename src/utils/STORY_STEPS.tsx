@@ -53,8 +53,7 @@ export const STORY_STEPS: StoryStepType[] = [
     },
     text: (
       <p>
-        On the other hand, all of{" "}
-        <span style={{ fontSize: "italic" }}>these</span> jobs have a{" "}
+        On the other hand, all of <em>these</em> jobs have a{" "}
         <span style={{ background: lightRed }}>{`>`} 90% chance</span> of having
         their tasks automated in the near future... 🤖
       </p>
