@@ -44,7 +44,7 @@ function App() {
         // hideTitleBar     // default = false, hides the GUI header
         // collapsed        // default = false, when true the GUI is collpased
         // hidden={true}
-        hidden={import.meta.env.NODE_ENV === "production"} // default = false, when true the GUI is hidden
+        hidden={true} // default = false, when true the GUI is hidden
       />
     </ChakraProvider>
   );

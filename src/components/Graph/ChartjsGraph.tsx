@@ -44,7 +44,7 @@ export function ChartjsGraph() {
     yScaleType: currentStep.yScaleType ?? null,
   };
 
-  const datasets = useMemo(getDatasets(xKey, yKey), [xKey, yKey]);
+  const datasets = useMemo(getDatasets(xKey, yKey, width), [xKey, yKey, width]);
 
   return (
     <ChartStyles>
@@ -109,7 +109,8 @@ const ChartStyles = styled.div`
 
 function getDatasets(
   xKey: string | null,
-  yKey: string | null
+  yKey: string | null,
+  width: number
 ): () => { label: string; data: BubbleDataPoint[]; backgroundColor: string }[] {
   return () => {
     const groups = NOC_NODES.reduce((acc, node) => {
@@ -126,11 +127,11 @@ function getDatasets(
           label: industry,
           data: nodes.map((node) => {
             const area = node.workers;
-            const SCALE = 0.4;
+            const scale = 0.4 * (width < 768 ? 0.3 : 1);
             return {
               x: xKey ? node[xKey] : Math.random(),
               y: yKey ? node[yKey] : Math.random(),
-              r: Math.sqrt(area / Math.PI) * SCALE,
+              r: Math.sqrt(area / Math.PI) * scale,
               tooltip: {
                 title: `${node.job}`,
                 node,

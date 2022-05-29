@@ -73,8 +73,8 @@ export const STORY_STEPS: StoryStepType[] = [
         >
           NOC dataset
         </a>
-        . It describes <b>{NOC_NODES.length}</b> jobs, and comes with lots of
-        different data.
+        . It describes <b>{NOC_NODES.length}</b> jobs (circle area = number of
+        workers)
       </StepStyles>
     ),
   },
@@ -86,8 +86,9 @@ export const STORY_STEPS: StoryStepType[] = [
     },
     text: (
       <StepStyles>
-        For example, we can sort jobs by common statistics like <em>Salary</em>{" "}
-        and <em>Years of Education</em>...
+        The dataset comes with a lot of different data. For example, we can sort
+        jobs by common statistics like <em>Salary</em> and{" "}
+        <em>Years of Education</em>...
       </StepStyles>
     ),
     xKey: "yearsStudy",
@@ -102,9 +103,8 @@ export const STORY_STEPS: StoryStepType[] = [
     },
     text: (
       <StepStyles>
-        ...or we could even ask something like {`"`}How does{" "}
-        <em>Reading Skill</em> affect a job{`'`}s <em>Risk of Automation</em>?
-        {`"`}.
+        ...or we could ask a question like {`"`}How does <em>Reading Skill</em>{" "}
+        correlate with a job{`'`}s <em>Risk of Automation</em>?{`"`}.
       </StepStyles>
     ),
     xKey: "s10Reading",
