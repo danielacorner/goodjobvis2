@@ -16,8 +16,13 @@ export type StoryStepType = {
   // https://www.chartjs.org/docs/latest/axes/
   xScaleType?: "linear" | "logarithmic" | "time";
   yScaleType?: "linear" | "logarithmic" | "time";
+  stepName?: StepNames;
+  nextStepOptions?: StepNames[];
 };
-
+export enum StepNames {
+  CYOA = "CYOA",
+  Step2 = "Step2",
+}
 export type GraphDataType = {
   nodes: GraphNodeType[];
   links: [];

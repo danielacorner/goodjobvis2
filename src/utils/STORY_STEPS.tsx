@@ -1,4 +1,4 @@
-import { StoryStepType } from "./types";
+import { StepNames, StoryStepType } from "./types";
 import { NOC_NODES, NOC_STATS } from "../assets/NOC-node";
 import styled from "styled-components";
 const lightGreen = "#b0f2b870";
@@ -116,6 +116,7 @@ export const STORY_STEPS: StoryStepType[] = [
     xKey: "s10Reading",
     yKey: "automationRisk",
   },
+  // TODO: choose your own adventure!
   {
     graphData: {
       nodes: [],
@@ -129,5 +130,19 @@ export const STORY_STEPS: StoryStepType[] = [
     ),
     xKey: "VARIABLE",
     yKey: "VARIABLE",
+    stepName: StepNames.CYOA,
+    nextStepOptions: [StepNames.Step2],
+  },
+  {
+    graphData: {
+      nodes: [],
+      // nodes: NOC_NODES,
+      links: [],
+    },
+    text: <StepStyles>Step 2</StepStyles>,
+    xKey: "VARIABLE",
+    yKey: "VARIABLE",
+    stepName: StepNames.Step2,
+    nextStepOptions: [StepNames.CYOA],
   },
 ];
