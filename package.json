@@ -12,7 +12,7 @@
     "@react-three/cannon": "^6.3.0",
     "@react-three/drei": "^9.11.3",
     "@react-three/fiber": "^8.0.19",
-    "@react-three/rapier": "^0.1.2",
+    "@react-three/rapier": "^0.2.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
