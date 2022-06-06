@@ -19,10 +19,7 @@ export type StoryStepType = {
   stepName?: StepNames;
   nextStepOptions?: StepNames[];
 };
-export enum StepNames {
-  CYOA = "CYOA",
-  Step2 = "Step2",
-}
+export type StepNames = "Step1" | "Step2";
 export type GraphDataType = {
   nodes: GraphNodeType[];
   links: [];

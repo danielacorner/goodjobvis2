@@ -130,8 +130,8 @@ export const STORY_STEPS: StoryStepType[] = [
     ),
     xKey: "VARIABLE",
     yKey: "VARIABLE",
-    stepName: StepNames.CYOA,
-    nextStepOptions: [StepNames.Step2],
+    stepName: "Step1",
+    nextStepOptions: ["Step2"],
   },
   {
     graphData: {
@@ -142,7 +142,7 @@ export const STORY_STEPS: StoryStepType[] = [
     text: <StepStyles>Step 2</StepStyles>,
     xKey: "VARIABLE",
     yKey: "VARIABLE",
-    stepName: StepNames.Step2,
-    nextStepOptions: [StepNames.CYOA],
+    stepName: "Step2",
+    nextStepOptions: ["Step1"],
   },
 ];
