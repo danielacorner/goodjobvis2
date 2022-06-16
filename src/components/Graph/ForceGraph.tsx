@@ -40,6 +40,15 @@ export function ForceGraph() {
   return (
     <ForceGraphStyles>
       <Sigma
+        // onSigmaException
+        // onClickEdge
+        // onOverNode
+        // onOutNode
+        // onOverEdge
+        // onOutEdge
+        // onClickStage
+
+        onClickNode={(e) => console.log("click node: " + e.data.node.label)}
         onOverNode={(e) => console.log("Mouse over node: " + e.data.node.label)}
         graph={{
           ...myGraph,
@@ -54,7 +63,7 @@ export function ForceGraph() {
           height: "100vh",
           width: "100%",
         }}
-        settings={{ drawEdges: false, clone: false }}
+        settings={{ drawEdges: false, clone: false, enableZoom: false }}
         renderer="webgl"
         // renderer="canvas"
       >
@@ -91,6 +100,7 @@ export function ForceGraphOld() {
   );
 }
 const ForceGraphStyles = styled.div`
+  pointer-events: none;
   position: fixed;
   inset: 0;
 `;
