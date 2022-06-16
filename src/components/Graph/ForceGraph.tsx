@@ -6,11 +6,63 @@ import { useEffect, useRef } from "react";
 import { NOCDataType } from "../../utils/types";
 import * as d3 from "d3";
 import { useControls } from "leva";
+import {
+  Sigma,
+  SigmaEnableWebGL,
+  RandomizeNodePositions,
+  RelativeSize,
+  NodeShapes,
+} from "react-sigma";
+// react-sigma https://dunnock.github.io/react-sigma/?path=/story/plugins--noverlap
+// react-sigma https://github.com/dunnock/react-sigma#components-reference
+
+const myGraph = {
+  nodes: NOC_NODES,
+  edges: [],
+  // edges: [{ id: "e1", source: "n1", target: "n2", label: "SEES" }],
+};
+type Sigma$Node$Shapes =
+  | "def"
+  | "pacman"
+  | "star"
+  | "equilateral"
+  | "cross"
+  | "diamond"
+  | "circle"
+  | "square";
 
 export function ForceGraph() {
+  return (
+    <ForceGraphStyles>
+      <Sigma
+        graph={{
+          ...myGraph,
+          nodes: myGraph.nodes.map((node) => ({
+            ...node,
+            size: Math.random() * 10,
+          })),
+        }}
+        style={{
+          height: "100%",
+          width: "100%",
+        }}
+        settings={{ drawEdges: false, clone: false }}
+        renderer="webgl"
+        // renderer="canvas"
+      >
+        <NodeShapes default={"star" as Sigma$Node$Shapes} />
+        {/* <SigmaEnableWebGL /> */}
+        <RandomizeNodePositions />
+      </Sigma>
+    </ForceGraphStyles>
+  );
+}
+
+export function ForceGraphOld() {
   const { width, height } = useWindowSize();
   const ref = useRef();
   useTheForce(ref);
+
   return (
     <ForceGraphStyles className="ForceGraphStyles">
       <ForceGraph2D
@@ -50,49 +102,43 @@ function useTheForce(ref) {
     ref.current.d3Force("charge", null);
     ref.current.d3Force("center", null);
 
-    ref.current.d3Force(
-      "x",
-      d3
-        .forceX()
-        .strength(strengthX * MULT)
-        .x(function (d, i) {
-          if (i === 0) {
-            console.log(
-              "🌟🚨 ~ file: ForceGraph.tsx ~ line 78 ~ ref.current.d3Force ~ d",
-              d
-            );
-          }
-          const datum = d as NOCDataType;
-          return datum.automationRisk;
-        })
-    );
-    ref.current.d3Force(
-      "y",
-      d3
-        .forceY()
-        .strength(strengthY * MULT)
-        .y(height / 2)
-    );
-    ref.current.d3Force(
-      "center",
-      d3
-        .forceCenter()
-        .x(width / 2)
-        .y(height / 2)
-    ); // Attraction to the center of the svg area
-    ref.current.d3Force(
-      "charge",
-      d3.forceManyBody().strength(strengthCharge * MULT)
-    ); // Nodes are attracted one each other of value is > 0
-    ref.current.d3Force(
-      "collide",
-      d3
-        .forceCollide()
-        .strength(strengthCollide * MULT)
-        .radius(32)
-        .iterations(1)
-    ); // Force that avoids circle overlapping
-  }, [strengthX, strengthY, strengthCharge, strengthCollide]);
+    // ref.current.d3Force(
+    //   "x",
+    //   d3
+    //     .forceX()
+    //     .strength(strengthX * MULT)
+    //     .x(function (d, i) {
+    //       if (i === 0) {
+    //         console.log(
+    //           "🌟🚨 ~ file: ForceGraph.tsx ~ line 78 ~ ref.current.d3Force ~ d",
+    //           d
+    //         );
+    //       }
+    //       const datum = d as NOCDataType;
+    //       return datum.automationRisk;
+    //     })
+    // );
+    // ref.current.d3Force(
+    //   "y",
+    //   d3
+    //     .forceY()
+    //     .strength(strengthY * MULT)
+    //     .y(height / 2)
+    // );
+    ref.current.d3Force("center", d3.forceCenter().x(0).y(0)); // Attraction to the center of the svg area
+    // ref.current.d3Force(
+    //   "charge",
+    //   d3.forceManyBody().strength(strengthCharge * MULT)
+    // ); // Nodes are attracted one each other of value is > 0
+    // ref.current.d3Force(
+    //   "collide",
+    //   d3
+    //     .forceCollide()
+    //     .strength(strengthCollide * MULT)
+    //     .radius(32)
+    //     .iterations(1)
+    // ); // Force that avoids circle overlapping
+  }, [strengthX, strengthY, strengthCharge, strengthCollide, ref]);
   // gravitate nodes together
   // ref.current.d3Force(
   //   "gravity",

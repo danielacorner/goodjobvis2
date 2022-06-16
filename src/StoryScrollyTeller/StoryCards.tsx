@@ -48,7 +48,7 @@ const StoryStepStyles = styled.div`
     max-width: calc(100vw - 12em);
   }
   font-size: 1.2em;
-  background: #ffffffc3;
+  background: #ffffffed;
   padding: 0.5em;
   box-shadow: 1px 2px 4px 0px #00000024;
   border-radius: 8px;
