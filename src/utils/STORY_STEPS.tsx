@@ -1,4 +1,4 @@
-import { StepNames, StoryStepType } from "./types";
+import { StoryStepType } from "./types";
 import { NOC_NODES, NOC_STATS } from "../assets/NOC-node";
 import styled from "styled-components";
 const lightGreen = "#b0f2b870";
@@ -10,7 +10,6 @@ const StepStyles = styled.div`
   }
 `;
 
-console.log("🌟🚨 ~ file: STORY_STEPS.tsx ~ line 18 ~ NOC_NODES", NOC_NODES);
 // the story
 export const STORY_STEPS: StoryStepType[] = [
   {

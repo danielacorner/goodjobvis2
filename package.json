@@ -20,6 +20,8 @@
     "chartjs-plugin-zoom": "^1.2.1",
     "d3": "^7.4.4",
     "d3-scale-chromatic": "^3.0.0",
+    "echarts": "^5.3.2",
+    "echarts-for-react": "^3.0.2",
     "framer-motion": "^6.3.4",
     "jotai": "^1.6.7",
     "leva": "^0.9.27",
