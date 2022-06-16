@@ -125,5 +125,3 @@ export function useTheForce(
     group.current.scale.set(s, s, s);
   });
 }
-
-function Lighting() {}

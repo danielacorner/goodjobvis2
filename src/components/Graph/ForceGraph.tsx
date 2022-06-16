@@ -33,14 +33,17 @@ const ForceGraphStyles = styled.div`
   position: fixed;
   inset: 0;
 `;
+const MULT = 0.001;
 function useTheForce(ref) {
   const { width, height } = useWindowSize();
-
-  const { strengthY, strengthCharge, strengthCollide } = useControls({
-    strengthY: 0,
-    strengthCharge: 0,
-    strengthCollide: 0,
-  });
+  const { strengthY, strengthX, strengthCharge, strengthCollide } = useControls(
+    {
+      strengthY: 0,
+      strengthX: 0,
+      strengthCharge: 0,
+      strengthCollide: 0,
+    }
+  );
 
   useEffect(() => {
     ref.current.d3Force("link", null);
@@ -51,7 +54,7 @@ function useTheForce(ref) {
       "x",
       d3
         .forceX()
-        .strength(0.5)
+        .strength(strengthX * MULT)
         .x(function (d, i) {
           if (i === 0) {
             console.log(
@@ -67,7 +70,7 @@ function useTheForce(ref) {
       "y",
       d3
         .forceY()
-        .strength(strengthY)
+        .strength(strengthY * MULT)
         .y(height / 2)
     );
     ref.current.d3Force(
@@ -77,12 +80,19 @@ function useTheForce(ref) {
         .x(width / 2)
         .y(height / 2)
     ); // Attraction to the center of the svg area
-    ref.current.d3Force("charge", d3.forceManyBody().strength(strengthCharge)); // Nodes are attracted one each other of value is > 0
+    ref.current.d3Force(
+      "charge",
+      d3.forceManyBody().strength(strengthCharge * MULT)
+    ); // Nodes are attracted one each other of value is > 0
     ref.current.d3Force(
       "collide",
-      d3.forceCollide().strength(strengthCollide).radius(32).iterations(1)
+      d3
+        .forceCollide()
+        .strength(strengthCollide * MULT)
+        .radius(32)
+        .iterations(1)
     ); // Force that avoids circle overlapping
-  }, [strengthY, strengthCharge, strengthCollide]);
+  }, [strengthX, strengthY, strengthCharge, strengthCollide]);
   // gravitate nodes together
   // ref.current.d3Force(
   //   "gravity",

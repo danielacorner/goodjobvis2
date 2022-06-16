@@ -1,5 +1,5 @@
 import { useEventListener } from "@chakra-ui/react";
-import { atom, useAtom } from "jotai";
+import { atom, SetStateAction, useAtom } from "jotai";
 import { useState } from "react";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { STORY_STEPS } from "../utils/STORY_STEPS";
@@ -11,7 +11,11 @@ export type TooltipNodeType = GraphNodeType & {
 export const tooltipNodeAtom = atom<TooltipNodeType | null>(null);
 
 export const currentStepIdxAtom = atom<number>(0);
-export function useCurrentStepIdx(): [number, Function, StoryStepType] {
+export function useCurrentStepIdx(): [
+  number,
+  (update: SetStateAction<number>) => void,
+  StoryStepType
+] {
   const [currentStepIdx, setCurrentStepIdx] = useAtom(currentStepIdxAtom);
   return [currentStepIdx, setCurrentStepIdx, STORY_STEPS[currentStepIdx]];
 }

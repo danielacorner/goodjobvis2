@@ -60,11 +60,10 @@ export function ChartjsGraph() {
     });
   }, [xKey, yKey]);
 
-  const datasets = useMemo(getDatasets(xKeyState, yKeyState, width), [
-    xKeyState,
-    yKeyState,
-    width,
-  ]);
+  const datasets = useMemo(
+    () => getDatasets(xKeyState, yKeyState, width),
+    [xKeyState, yKeyState, width]
+  );
 
   // only allow zoom/pan on the last step?
   const pinchEnabled = currentStepIdx === STORY_STEPS.length - 1;
@@ -159,37 +158,33 @@ function getDatasets(
   xKey: string | null,
   yKey: string | null,
   width: number
-): () => { label: string; data: BubbleDataPoint[]; backgroundColor: string }[] {
-  return () => {
-    const groups = NOC_NODES.reduce((acc, node) => {
-      return {
-        ...acc,
-        [node.industry]: (acc[node.industry] || []).concat(node),
-      };
-    }, {} as { [key: string]: NOCDataType[] });
-    const datasetsFromGroups = Object.entries(groups).map(
-      ([industry, nodes]) => {
-        const color = CLUSTER_COLORS[nodes[0].cluster];
-        const opacity = 0.7;
+): { label: string; data: BubbleDataPoint[]; backgroundColor: string }[] {
+  const groups = NOC_NODES.reduce((acc, node) => {
+    return {
+      ...acc,
+      [node.industry]: (acc[node.industry] || []).concat(node),
+    };
+  }, {} as { [key: string]: NOCDataType[] });
+  const datasetsFromGroups = Object.entries(groups).map(([industry, nodes]) => {
+    const color = CLUSTER_COLORS[nodes[0].cluster];
+    const opacity = 0.7;
+    return {
+      label: industry,
+      data: nodes.map((node) => {
+        const area = node.workers;
+        const scale = 0.4 * (width < 768 ? 0.3 : 1);
         return {
-          label: industry,
-          data: nodes.map((node) => {
-            const area = node.workers;
-            const scale = 0.4 * (width < 768 ? 0.3 : 1);
-            return {
-              x: xKey && xKey !== "VARIABLE" ? node[xKey] : Math.random(),
-              y: yKey && yKey !== "VARIABLE" ? node[yKey] : Math.random(),
-              r: Math.sqrt(area / Math.PI) * scale,
-              tooltip: {
-                title: `${node.job}`,
-                node,
-              },
-            };
-          }) as BubbleDataPoint[],
-          backgroundColor: `${color.slice(0, -2)} ${opacity})`,
+          x: xKey && xKey !== "VARIABLE" ? node[xKey] : Math.random(),
+          y: yKey && yKey !== "VARIABLE" ? node[yKey] : Math.random(),
+          r: Math.sqrt(area / Math.PI) * scale,
+          tooltip: {
+            title: `${node.job}`,
+            node,
+          },
         };
-      }
-    );
-    return datasetsFromGroups;
-  };
+      }) as BubbleDataPoint[],
+      backgroundColor: `${color.slice(0, -2)} ${opacity})`,
+    };
+  });
+  return datasetsFromGroups;
 }

@@ -75,8 +75,8 @@ export const STORY_STEPS: StoryStepType[] = [
         >
           NOC dataset
         </a>
-        . It describes <b>{NOC_NODES.length}</b> jobs. Here each circle's area
-        represents the number of workers in Canada.
+        . It describes <b>{NOC_NODES.length}</b> jobs. Here each circle{"'"}s
+        area represents the number of workers in Canada.
       </StepStyles>
     ),
   },
