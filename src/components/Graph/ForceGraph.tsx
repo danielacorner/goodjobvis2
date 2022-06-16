@@ -33,6 +33,33 @@ type Sigma$Node$Shapes =
   | "square";
 
 export function ForceGraph() {
+  return (
+    <ForceGraphStyles>
+      <Sigma
+        graph={{
+          ...myGraph,
+          nodes: myGraph.nodes.map((node) => ({
+            ...node,
+            size: Math.random() * 10,
+          })),
+        }}
+        style={{
+          height: "100%",
+          width: "100%",
+        }}
+        settings={{ drawEdges: false, clone: false }}
+        renderer="webgl"
+        // renderer="canvas"
+      >
+        <NodeShapes default={"star" as Sigma$Node$Shapes} />
+        {/* <SigmaEnableWebGL /> */}
+        <RandomizeNodePositions />
+      </Sigma>
+    </ForceGraphStyles>
+  );
+}
+
+export function ForceGraphOld() {
   const { width, height } = useWindowSize();
   function filterNodesFn(node) {
     return true;
