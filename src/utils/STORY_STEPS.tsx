@@ -14,6 +14,7 @@ const StepStyles = styled.div`
 export const STORY_STEPS: StoryStepType[] = [
   {
     graphType: "3dPile",
+    // TODO add colorBy
     graphData: {
       nodes: NOC_NODES.filter(
         (node) => node.automationRisk < 0.1 * NOC_STATS.automationRisk.max
@@ -36,7 +37,7 @@ export const STORY_STEPS: StoryStepType[] = [
         </p>
         <br />
         <p>
-          👷‍♀️ All of <em>these</em> jobs have a{" "}
+          All of <em>these</em> jobs have a{" "}
           <span style={{ background: lightGreen }}>{`<`} 10% chance</span> of
           having their tasks automated in the near future...
         </p>
@@ -61,7 +62,22 @@ export const STORY_STEPS: StoryStepType[] = [
     ),
   },
   {
-    graphType: "force",
+    graphType: "react-force-graph",
+    graphData: {
+      nodes: NOC_NODES.filter(
+        (node) => node.automationRisk >= 0.9 * NOC_STATS.automationRisk.max
+      ),
+      links: [],
+    },
+    text: (
+      <StepStyles>
+        Let{"'"}s size each job category by number of workers 👷‍♀️, so we can get
+        a better idea about how big each job category is:
+      </StepStyles>
+    ),
+  },
+  {
+    graphType: "react-sigma",
     graphData: {
       nodes: NOC_NODES,
       links: [],
@@ -77,8 +93,7 @@ export const STORY_STEPS: StoryStepType[] = [
         >
           NOC dataset
         </a>
-        . It describes <b>{NOC_NODES.length}</b> jobs. Here each circle{"'"}s
-        area represents the number of workers in Canada.
+        . It describes <b>{NOC_NODES.length}</b> jobs.
       </StepStyles>
     ),
   },
@@ -91,11 +106,10 @@ export const STORY_STEPS: StoryStepType[] = [
     },
     text: (
       <StepStyles>
-        The dataset comes with a lot of different data.
+        The dataset comes with a lot of different data. For example,
         <br />
-        For example, we can sort jobs by statistics like <em>
-          Salary
-        </em> and <em>Years of Education</em>...
+        we can sort jobs by statistics like <em>Salary</em> and{" "}
+        <em>Years of Education</em>...
       </StepStyles>
     ),
     xKey: "yearsStudy",

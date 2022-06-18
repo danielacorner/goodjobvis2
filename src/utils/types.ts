@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import NOC_DATA from "../assets/NOC-data";
 import { NOC_NODES } from "../assets/NOC-node";
 
@@ -9,7 +8,7 @@ export type GraphNodeType = typeof NOC_NODES[0] & {
   scale: number;
 };
 export type StoryStepType = {
-  graphType: "3dPile" | "force" | "2dScatter";
+  graphType: "3dPile" | "react-force-graph" | "2dScatter" | "react-sigma";
   graphData: GraphDataType;
   text?: string | JSX.Element | (() => JSX.Element);
   xKey?: keyof NOCDataType | "VARIABLE";

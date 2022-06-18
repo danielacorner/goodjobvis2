@@ -43,7 +43,7 @@ function App() {
         // oneLineLabels    // default = false, alternative layout for labels, with labels and fields on separate rows
         // hideTitleBar     // default = false, hides the GUI header
         // collapsed        // default = false, when true the GUI is collpased
-        // hidden={true} // default = false, when true the GUI is hidden
+        hidden={process.env.NODE_ENV !== "development"} // default = false, when true the GUI is hidden
       />
     </ChakraProvider>
   );

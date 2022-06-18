@@ -11,7 +11,7 @@ import { Debug, Physics } from "@react-three/rapier";
 import { useCurrentStepIdx } from "../../store/store";
 // https://github.com/pmndrs/react-three-rapier
 
-export function Graph3D() {
+export function R3FGraph3D() {
   const windowSize = useWindowSize();
   const { px, py, pz, showStats } = useControls({
     px: -2.15,

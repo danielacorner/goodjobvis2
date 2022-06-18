@@ -1,8 +1,8 @@
 import { ReactForceGraph } from "../Graph/ReactForceGraph";
-import { Graph3D } from "../Graph/Graph3D";
+import { R3FGraph3D } from "../Graph/R3FGraph3D";
 import { ChartjsGraph } from "../Graph/ChartjsGraph";
 import { useCurrentStoryStep } from "../../store/store";
-// import { ForceGraph } from "../Graph/ForceGraph";
+import { SigmaForceGraph } from "../Graph/SigmaForceGraph";
 
 export function DataViz() {
   const { graphType } = useCurrentStoryStep();
@@ -14,11 +14,12 @@ export function DataViz() {
     <>
       {graphType === "2dScatter" ? (
         <ChartjsGraph />
-      ) : graphType === "force" ? (
+      ) : graphType === "react-force-graph" ? (
         <ReactForceGraph />
-      ) : // <ForceGraph />
-      graphType === "3dPile" ? (
-        <Graph3D />
+      ) : graphType === "react-sigma" ? (
+        <SigmaForceGraph />
+      ) : graphType === "3dPile" ? (
+        <R3FGraph3D />
       ) : null}
     </>
   );

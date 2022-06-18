@@ -37,15 +37,16 @@ export function ReactForceGraph() {
           // warmupTicks: 1,
           // cooldownTicks: 1000 * 100,
           // cooldownTime: 1000,
-          // d3AlphaDecay: 0.1,
-          // d3VelocityDecay: 0.1,
+          d3AlphaDecay: 0.1,
+          d3VelocityDecay: 0.6,
           // d3AlphaMin: 0.1,
-          nodeRelSize: 3,
+          nodeRelSize: 1,
           nodeVal: (node) => {
             return (node as GraphNodeType).workers;
           },
           nodeColor: (node) => {
-            return INDUSTRY_COLORS[(node as GraphNodeType).industry];
+            //   return INDUSTRY_COLORS[(node as GraphNodeType).industry];
+            return (node as GraphNodeType).color /* automationRisk color */;
           },
           backgroundColor: colors.appBackground,
         }}

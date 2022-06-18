@@ -32,7 +32,7 @@ type Sigma$Node$Shapes =
   | "circle"
   | "square";
 
-export function ForceGraph() {
+export function SigmaForceGraph() {
   const { width, height } = useWindowSize();
   function filterNodesFn(node) {
     return true;
