@@ -13,7 +13,7 @@ const StepStyles = styled.div`
 // the story
 export const STORY_STEPS: StoryStepType[] = [
   {
-    graphType: "force",
+    graphType: "3dPile",
     graphData: {
       nodes: NOC_NODES.filter(
         (node) => node.automationRisk < 0.1 * NOC_STATS.automationRisk.max
@@ -63,8 +63,7 @@ export const STORY_STEPS: StoryStepType[] = [
   {
     graphType: "force",
     graphData: {
-      nodes: [],
-      // nodes: NOC_NODES,
+      nodes: NOC_NODES,
       links: [],
     },
     text: (

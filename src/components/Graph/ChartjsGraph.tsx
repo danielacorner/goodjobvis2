@@ -171,12 +171,11 @@ function getDatasets(
     return {
       label: industry,
       data: nodes.map((node) => {
-        const area = node.workers;
         const scale = 0.4 * (width < 768 ? 0.3 : 1);
         return {
           x: xKey && xKey !== "VARIABLE" ? node[xKey] : Math.random(),
           y: yKey && yKey !== "VARIABLE" ? node[yKey] : Math.random(),
-          r: Math.sqrt(area / Math.PI) * scale,
+          r: radiusFromCircleArea(node.workers) * scale,
           tooltip: {
             title: `${node.job}`,
             node,
@@ -187,4 +186,8 @@ function getDatasets(
     };
   });
   return datasetsFromGroups;
+}
+
+function radiusFromCircleArea(area: number): number {
+  return Math.sqrt(area / Math.PI);
 }
