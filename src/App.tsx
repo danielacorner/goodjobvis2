@@ -1,4 +1,3 @@
-import "./App.css";
 import { STORY_STEPS } from "./utils/STORY_STEPS";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
@@ -8,15 +7,16 @@ import { StoryCards } from "./StoryScrollyTeller/StoryCards";
 import styled from "styled-components";
 import { Leva } from "leva";
 import { DataViz } from "./components/DataViz/DataViz";
+import { colors } from "./utils/constants";
 // 2. Extend the theme to include custom colors, fonts, etc
-const colors = {
+const chakraColors = {
   brand: {
     900: "#1a365d",
     800: "#153e75",
     700: "#2a69ac",
   },
 };
-const theme = extendTheme({ colors });
+const theme = extendTheme({ colors: chakraColors });
 
 function App() {
   const isScrollEnabled = true;
@@ -50,7 +50,7 @@ function App() {
 }
 
 export const AppStyles = styled.div`
-  background: #f5ffe1;
+  background: ${colors.appBackground};
   overflow: auto scroll;
   height: 100vh;
   .app-content {

@@ -50,3 +50,19 @@ export const CLUSTER_COLORS = {
   "9": palette[8],
   "10": palette[9],
 };
+
+export const colors = {
+  appBackground: "#f5ffe1",
+};
+export const INDUSTRY_COLORS = {
+  Management: d3SchemeCategory10[0],
+  "Art, culture, recreation, sport": d3SchemeCategory10[1],
+  "Trades, transport, equipment operators": d3SchemeCategory10[2],
+  "Business, finance, administration": d3SchemeCategory10[3],
+  "Education, law & social, community & government": d3SchemeCategory10[4],
+  "Natural & applied sciences": d3SchemeCategory10[5],
+  "Manufacturing & utilities": d3SchemeCategory10[6],
+  Health: d3SchemeCategory10[7],
+  "Sales and service": d3SchemeCategory10[8],
+  "Natural resources, agriculture, production": d3SchemeCategory10[9],
+};

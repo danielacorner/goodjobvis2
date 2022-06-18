@@ -23,10 +23,7 @@ export function Graph3D() {
   // flicker the nodes when the step changes
   // so that the instances can reboot
   const [flicker, setFlicker] = useState(true);
-  console.log(
-    "🌟🚨 ~ file: Graph3D.tsx ~ line 26 ~ Graph3D ~ flicker",
-    flicker
-  );
+
   const [currentStepIdx] = useCurrentStepIdx();
   useEffect(() => {
     setFlicker(false);
