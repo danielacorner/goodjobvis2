@@ -56,5 +56,6 @@ export function ReactForceGraph() {
 }
 const ReactForceGraphStyles = styled.div`
   position: fixed;
+  pointer-events: none;
   inset: 0;
 `;
