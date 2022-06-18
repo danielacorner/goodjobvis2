@@ -13,11 +13,14 @@ export const tooltipNodeAtom = atom<TooltipNodeType | null>(null);
 export const currentStepIdxAtom = atom<number>(0);
 export function useCurrentStepIdx(): [
   number,
-  (update: SetStateAction<number>) => void,
-  StoryStepType
+  (update: SetStateAction<number>) => void
 ] {
   const [currentStepIdx, setCurrentStepIdx] = useAtom(currentStepIdxAtom);
-  return [currentStepIdx, setCurrentStepIdx, STORY_STEPS[currentStepIdx]];
+  return [currentStepIdx, setCurrentStepIdx];
+}
+export function useCurrentStoryStep(): StoryStepType {
+  const [currentStepIdx] = useCurrentStepIdx();
+  return STORY_STEPS[currentStepIdx];
 }
 
 export function useStoryStepIdx() {

@@ -13,6 +13,7 @@ const StepStyles = styled.div`
 // the story
 export const STORY_STEPS: StoryStepType[] = [
   {
+    graphType: "3dPile",
     graphData: {
       nodes: NOC_NODES.filter(
         (node) => node.automationRisk < 0.1 * NOC_STATS.automationRisk.max
@@ -44,6 +45,7 @@ export const STORY_STEPS: StoryStepType[] = [
   },
 
   {
+    graphType: "3dPile",
     graphData: {
       nodes: NOC_NODES.filter(
         (node) => node.automationRisk >= 0.9 * NOC_STATS.automationRisk.max
@@ -59,6 +61,7 @@ export const STORY_STEPS: StoryStepType[] = [
     ),
   },
   {
+    graphType: "force",
     graphData: {
       nodes: [],
       // nodes: NOC_NODES,
@@ -81,6 +84,7 @@ export const STORY_STEPS: StoryStepType[] = [
     ),
   },
   {
+    graphType: "2dScatter",
     graphData: {
       nodes: [],
       // nodes: NOC_NODES,
@@ -100,6 +104,7 @@ export const STORY_STEPS: StoryStepType[] = [
     yScaleType: "logarithmic",
   },
   {
+    graphType: "2dScatter",
     graphData: {
       nodes: [],
       // nodes: NOC_NODES,
@@ -117,6 +122,7 @@ export const STORY_STEPS: StoryStepType[] = [
   },
   // TODO: choose your own adventure!
   {
+    graphType: "2dScatter",
     graphData: {
       nodes: [],
       // nodes: NOC_NODES,
@@ -133,6 +139,7 @@ export const STORY_STEPS: StoryStepType[] = [
     nextStepOptions: ["Step2"],
   },
   {
+    graphType: "2dScatter",
     graphData: {
       nodes: [],
       // nodes: NOC_NODES,

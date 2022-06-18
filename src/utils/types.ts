@@ -9,8 +9,9 @@ export type GraphNodeType = typeof NOC_NODES[0] & {
   scale: number;
 };
 export type StoryStepType = {
+  graphType: "3dPile" | "force" | "2dScatter";
   graphData: GraphDataType;
-  text?: string | ReactNode;
+  text?: string | JSX.Element | (() => JSX.Element);
   xKey?: keyof NOCDataType | "VARIABLE";
   yKey?: keyof NOCDataType | "VARIABLE";
   // https://www.chartjs.org/docs/latest/axes/

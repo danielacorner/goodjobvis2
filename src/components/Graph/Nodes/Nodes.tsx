@@ -8,7 +8,7 @@ import {
   WIDTH_SEGMENTS,
 } from "../../../utils/constants";
 import { useMemo, useRef, useState } from "react";
-import { useCurrentStepIdx } from "../../../store/store";
+import { useCurrentStoryStep } from "../../../store/store";
 import { Sphere } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { BallCollider, RigidBody } from "@react-three/rapier";
@@ -24,11 +24,8 @@ const dy = 5;
 const dz = 0;
 
 export function Nodes() {
-  const [, , currentStep] = useCurrentStepIdx();
-  const nodes = useMemo(
-    () => currentStep?.graphData?.nodes || [],
-    [currentStep]
-  );
+  const { graphData } = useCurrentStoryStep();
+  const nodes = useMemo(() => graphData?.nodes || [], [graphData]);
 
   const [geo, mat, coords] = useMemo(() => {
     const geo = new THREE.SphereBufferGeometry(

@@ -4,20 +4,25 @@ import { STORY_STEPS } from "../utils/STORY_STEPS";
 export function StoryCards() {
   return (
     <StoryCardsStyles>
-      {STORY_STEPS.map((step, idx) => (
-        <StoryStepStyles key={idx} stepIdx={idx}>
-          <div className="text">{step.text}</div>
-          {step.nextStepOptions && (
-            <div className="options">
-              {step.nextStepOptions.map((nextStepName, idx) => (
-                <div key={idx} className="option">
-                  {nextStepName}
-                </div>
-              ))}
+      {STORY_STEPS.map((step, idx) => {
+        const Text = step.text;
+        return (
+          <StoryStepStyles key={idx} stepIdx={idx}>
+            <div className="text">
+              {typeof Text === "function" ? <Text /> : Text}
             </div>
-          )}
-        </StoryStepStyles>
-      ))}
+            {step.nextStepOptions && (
+              <div className="options">
+                {step.nextStepOptions.map((nextStepName, idx) => (
+                  <div key={idx} className="option">
+                    {nextStepName}
+                  </div>
+                ))}
+              </div>
+            )}
+          </StoryStepStyles>
+        );
+      })}
     </StoryCardsStyles>
   );
 }
