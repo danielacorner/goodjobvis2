@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { STORY_STEPS } from "../utils/STORY_STEPS";
+import { STORY_STEPS } from "../STORY_STEPS";
 
 export function StoryCards() {
   return (

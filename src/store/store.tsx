@@ -2,7 +2,7 @@ import { useEventListener } from "@chakra-ui/react";
 import { atom, SetStateAction, useAtom } from "jotai";
 import { useState } from "react";
 import { useWindowSize } from "../hooks/useWindowSize";
-import { STORY_STEPS } from "../utils/STORY_STEPS";
+import { STORY_STEPS } from "../STORY_STEPS";
 import { GraphNodeType, StoryStepType } from "../utils/types";
 export const isCoolAtom = atom<boolean>(true);
 export type TooltipNodeType = GraphNodeType & {

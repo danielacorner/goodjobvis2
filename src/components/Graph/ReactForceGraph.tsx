@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ForceGraph3D } from "react-force-graph";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { useCurrentStoryStep } from "../../store/store";
-import { colors, INDUSTRY_COLORS } from "../../utils/constants";
+import { colors } from "../../utils/constants";
 import { GraphNodeType } from "../../utils/types";
 
 export function ReactForceGraph() {
@@ -15,15 +15,34 @@ export function ReactForceGraph() {
   // const graphWithUsers = useGraphWithUsersAndLinks();
   // useTheForce(fgRef.current, graphWithUsers);
 
-  const fgRef = useRef();
+  const fgRef = useRef<any>(null);
+  const distance = 1400;
+
+  useEffect(() => {
+    if (!fgRef.current) {
+      return;
+    }
+    fgRef.current.cameraPosition({ z: distance });
+
+    // camera orbit
+    let angle = 0;
+    setInterval(() => {
+      fgRef.current.cameraPosition({
+        x: distance * Math.sin(angle),
+        z: distance * Math.cos(angle),
+      });
+      angle += Math.PI / 300;
+    }, 10);
+  }, []);
 
   const { width, height } = useWindowSize();
 
   return (
+    // https://github.com/vasturiano/react-force-graph
     // <ForceGraph2D ref={fgRef} graphData={graphData} {...forceGraphProps} />
     <ReactForceGraphStyles>
       <ForceGraph3D
-        // ref={fgRef}
+        ref={fgRef}
         graphData={{
           nodes: graphData.nodes,
           links: graphData.links,

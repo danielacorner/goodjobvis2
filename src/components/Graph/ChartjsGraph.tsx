@@ -15,7 +15,7 @@ import { Bubble } from "react-chartjs-2";
 import { useEffect, useMemo, useState } from "react";
 import { NOCDataType } from "../../utils/types";
 import { CLUSTER_COLORS } from "../../utils/constants";
-import { STORY_STEPS } from "../../utils/STORY_STEPS";
+import { STORY_STEPS } from "../../STORY_STEPS";
 import { useCurrentStepIdx } from "../../store/store";
 import zoomPlugin from "chartjs-plugin-zoom";
 import { AxisControls } from "./AxisControls";

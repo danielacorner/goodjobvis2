@@ -1,5 +1,5 @@
-import { StoryStepType } from "./types";
-import { NOC_NODES, NOC_STATS } from "../assets/NOC-node";
+import { StoryStepType } from "./utils/types";
+import { NOC_NODES, NOC_STATS } from "./assets/NOC-node";
 import styled from "styled-components";
 const lightGreen = "#b0f2b870";
 const lightRed = "#f2b0b06f";
@@ -11,7 +11,7 @@ const StepStyles = styled.div`
 `;
 
 // the story
-export const STORY_STEPS: StoryStepType[] = [
+const STORY_STEPS_PROD: StoryStepType[] = [
   {
     graphType: "3dPile",
     // TODO add colorBy
@@ -165,3 +165,8 @@ export const STORY_STEPS: StoryStepType[] = [
     nextStepOptions: ["Step1"],
   },
 ];
+
+const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(2);
+
+export const STORY_STEPS =
+  process.env.NODE_ENV === "development" ? STORY_STEPS_DEV : STORY_STEPS_PROD;

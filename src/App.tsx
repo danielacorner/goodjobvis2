@@ -1,4 +1,4 @@
-import { STORY_STEPS } from "./utils/STORY_STEPS";
+import { STORY_STEPS } from "./STORY_STEPS";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { GUI } from "./components/GUI";
