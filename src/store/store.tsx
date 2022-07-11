@@ -63,3 +63,12 @@ function clamp(value, min, max) {
 export function useTooltipNode() {
   return useAtom(tooltipNodeAtom);
 }
+
+export const fadeOutAtom = atom<boolean>(false);
+export function useFadeOut(): [
+  boolean,
+  (update: SetStateAction<boolean>) => void
+] {
+  const [fadeOut, setFadeOut] = useAtom(fadeOutAtom);
+  return [fadeOut, setFadeOut];
+}

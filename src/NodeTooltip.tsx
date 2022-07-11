@@ -22,15 +22,16 @@ export function NodeTooltip() {
 
   const prevTooltipNode = prevTooltipNodeRef.current;
   const springPosition = useSpring({
+    opacity: tooltipNode ? 1 : 0,
     transform: `translate3d(${
-      tooltipNode?.position.x ||
-      prevTooltipNode?.position.x ||
+      tooltipNode?.position?.x ||
+      prevTooltipNode?.position?.x ||
       INITIAL_POSITION.x
     }px,${
-      tooltipNode?.position.y
-        ? tooltipNode?.position.y - TOOLTIP_MIN_HEIGHT
-        : prevTooltipNode?.position.y
-        ? prevTooltipNode?.position.y - TOOLTIP_MIN_HEIGHT
+      tooltipNode?.position?.y
+        ? tooltipNode?.position?.y - TOOLTIP_MIN_HEIGHT
+        : prevTooltipNode?.position?.y
+        ? prevTooltipNode?.position?.y - TOOLTIP_MIN_HEIGHT
         : INITIAL_POSITION.y
     }px,0px)`,
   });

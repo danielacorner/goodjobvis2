@@ -8,6 +8,8 @@ import styled from "styled-components";
 import { Leva } from "leva";
 import { DataViz } from "./components/DataViz/DataViz";
 import { colors } from "./utils/constants";
+import { useFadeOut } from "./store/store";
+import { Fade } from "@mui/material";
 // 2. Extend the theme to include custom colors, fonts, etc
 const chakraColors = {
   brand: {
@@ -26,9 +28,12 @@ function App() {
         <div className="app-content">
           <div style={{ pointerEvents: isScrollEnabled ? "auto" : "none" }}>
             {/* <Graph graphData={currentStep.graphData} /> */}
-            <DataViz />
+            <FadeInOut>
+              <DataViz />
+            </FadeInOut>
 
             <GUI />
+
             {/* <NOCImages /> */}
             {/* <NOCThumbnails /> */}
           </div>
@@ -60,3 +65,13 @@ export const AppStyles = styled.div`
 `;
 
 export default App;
+
+function FadeInOut({ children }) {
+  const [fadeOut] = useFadeOut();
+  const open = !fadeOut;
+  return (
+    <Fade in={open} timeout={300} easing={open ? "ease-in" : "ease-out"}>
+      <div>{children}</div>
+    </Fade>
+  );
+}

@@ -77,7 +77,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     ),
   },
   {
-    graphType: "react-sigma",
+    graphType: "react-force-graph",
     graphData: {
       nodes: NOC_NODES,
       links: [],
