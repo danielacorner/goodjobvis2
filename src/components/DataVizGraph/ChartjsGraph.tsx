@@ -9,7 +9,7 @@ import {
   Legend,
   BubbleDataPoint,
 } from "chart.js";
-import { NOC_NODES } from "../../assets/NOC-node";
+import { NOC_NODES, NOC_NODES_CLEANED } from "../../assets/NOC-node";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { Bubble } from "react-chartjs-2";
 import { useEffect, useMemo, useState } from "react";
@@ -73,8 +73,8 @@ export function ChartjsGraph() {
       {xKey === "VARIABLE" && (
         <AxisControls
           {...{
-            xOptions: NOC_NUMERICAL_KEYS,
-            yOptions: NOC_NUMERICAL_KEYS,
+            xOptions: Object.keys(NOC_NODES_CLEANED[0]),
+            yOptions: Object.keys(NOC_NODES_CLEANED[0]),
             xKey: xKeyState,
             setXKey: (x) => setKeyState((p) => ({ ...p, xKeyState: x })),
             yKey: yKeyState,

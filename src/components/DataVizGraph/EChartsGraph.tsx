@@ -1,14 +1,11 @@
 import ReactECharts from "echarts-for-react";
 import { startCase } from "lodash";
 import { useEffect, useState } from "react";
-import { NOC_NODES, NOC_STATS } from "../../assets/NOC-node";
+import { NOC_NODES, NOC_NODES_CLEANED, NOC_STATS } from "../../assets/NOC-node";
 import { useCurrentStoryStep } from "../../store/store";
 import { INDUSTRY_COLORS } from "../../utils/constants";
 import { AxisControls } from "./AxisControls";
 const CATEGORIES = Object.keys(INDUSTRY_COLORS);
-const NOC_NUMERICAL_KEYS = Object.entries(NOC_NODES[0])
-  .filter(([key, val]) => typeof val === "number")
-  .map(([key]) => key);
 // https://github.com/hustcc/echarts-for-react
 
 // https://echarts.apache.org/examples/en/index.html#chart-type-scatter
@@ -108,8 +105,8 @@ export default function EchartsGraph() {
       {xKey === "VARIABLE" && (
         <AxisControls
           {...{
-            xOptions: NOC_NUMERICAL_KEYS,
-            yOptions: NOC_NUMERICAL_KEYS,
+            xOptions: Object.keys(NOC_NODES_CLEANED[0]),
+            yOptions: Object.keys(NOC_NODES_CLEANED[0]),
             xKey: xKeyState,
             setXKey: (x) => setKeyState((p) => ({ ...p, xKeyState: x })),
             yKey: yKeyState,
