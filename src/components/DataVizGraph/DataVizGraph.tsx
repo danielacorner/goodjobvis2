@@ -3,6 +3,7 @@ import { R3FGraph3D } from "./R3FGraph3D";
 import { useCurrentStoryStep } from "../../store/store";
 import { SigmaForceGraph } from "./SigmaForceGraph";
 import EchartsGraph from "./EChartsGraph";
+import ErrorBoundary from "../ErrorBoundary";
 
 export function DataVizGraph() {
   const { graphType } = useCurrentStoryStep();
@@ -13,13 +14,21 @@ export function DataVizGraph() {
   return (
     <>
       {graphType === "2dScatter" ? (
-        <EchartsGraph />
+        <ErrorBoundary>
+          <EchartsGraph />
+        </ErrorBoundary>
       ) : graphType === "react-force-graph" ? (
-        <ReactForceGraph />
+        <ErrorBoundary>
+          <ReactForceGraph />
+        </ErrorBoundary>
       ) : graphType === "react-sigma" ? (
-        <SigmaForceGraph />
+        <ErrorBoundary>
+          <SigmaForceGraph />
+        </ErrorBoundary>
       ) : graphType === "3dPile" ? (
-        <R3FGraph3D />
+        <ErrorBoundary>
+          <R3FGraph3D />
+        </ErrorBoundary>
       ) : null}
     </>
   );

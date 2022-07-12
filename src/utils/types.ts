@@ -16,10 +16,18 @@ export type StoryStepType = {
   // https://www.chartjs.org/docs/latest/axes/
   xScaleType?: "linear" | "logarithmic" | "time";
   yScaleType?: "linear" | "logarithmic" | "time";
-  stepName?: StepNames;
+  stepName: StepNames;
   nextStepOptions?: StepNames[];
 };
-export type StepNames = "Step1" | "Step2";
+export type StepNames =
+  | "step-1"
+  | "step-2"
+  | "step-3"
+  | "step-4"
+  | "step-5"
+  | "step-6"
+  | "step-7"
+  | "step-8";
 export type GraphDataType = {
   nodes: GraphNodeType[];
   links: [];

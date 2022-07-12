@@ -13,6 +13,7 @@ const StepStyles = styled.div`
 // the story
 const STORY_STEPS_PROD: StoryStepType[] = [
   {
+    stepName: "step-1",
     graphType: "3dPile",
     // TODO add colorBy
     graphData: {
@@ -46,6 +47,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   },
 
   {
+    stepName: "step-1",
     graphType: "3dPile",
     graphData: {
       nodes: NOC_NODES.filter(
@@ -62,6 +64,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     ),
   },
   {
+    stepName: "step-3",
     graphType: "react-force-graph",
     graphData: {
       nodes: NOC_NODES.filter(
@@ -77,6 +80,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     ),
   },
   {
+    stepName: "step-4",
     graphType: "react-force-graph",
     graphData: {
       nodes: NOC_NODES,
@@ -98,6 +102,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     ),
   },
   {
+    stepName: "step-5",
     graphType: "2dScatter",
     graphData: {
       nodes: [],
@@ -117,6 +122,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     yScaleType: "logarithmic",
   },
   {
+    stepName: "step-6",
     graphType: "2dScatter",
     graphData: {
       nodes: [],
@@ -135,6 +141,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   },
   // TODO: choose your own adventure!
   {
+    stepName: "step-7",
     graphType: "2dScatter",
     graphData: {
       nodes: [],
@@ -148,10 +155,10 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     ),
     xKey: "VARIABLE",
     yKey: "VARIABLE",
-    stepName: "Step1",
-    nextStepOptions: ["Step2"],
+    nextStepOptions: ["step-1"],
   },
   {
+    stepName: "step-8",
     graphType: "2dScatter",
     graphData: {
       nodes: [],
@@ -161,12 +168,11 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     text: <StepStyles>Step 2</StepStyles>,
     xKey: "VARIABLE",
     yKey: "VARIABLE",
-    stepName: "Step2",
-    nextStepOptions: ["Step1"],
+    nextStepOptions: ["step-1"],
   },
 ];
 
-const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(4);
+const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(1);
 
 export const STORY_STEPS =
   process.env.NODE_ENV === "development" ? STORY_STEPS_DEV : STORY_STEPS_PROD;

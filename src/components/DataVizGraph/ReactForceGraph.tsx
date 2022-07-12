@@ -10,7 +10,7 @@ import ErrorBoundary from "../ErrorBoundary";
 const DEG = Math.PI / 360;
 export function ReactForceGraph() {
   const [fadeOut, setFadeOut] = useFadeOut();
-  const { graphData } = useCurrentStoryStep();
+  const { graphData, stepName } = useCurrentStoryStep();
 
   //
   // use the force (d3 force simulation controls)
@@ -40,18 +40,25 @@ export function ReactForceGraph() {
   }, []);
 
   const { width, height } = useWindowSize();
+  const oncePerStep = useRef({});
   const [done, setDone] = useState(false);
   // whenever we change steps,
   useEffect(() => {
+    if (!stepName) {
+      return;
+    }
     // 1. fade out, start the simulation
-    setFadeOut(true);
-    setDone(false);
-    setTimeout(() => {
-      // 2. fade in, slow down/stop the simulation
-      setFadeOut(false);
-      setDone(true);
-    }, 1000);
-  }, [graphData, setFadeOut]);
+    if (!oncePerStep.current[stepName]) {
+      oncePerStep.current[stepName] = true;
+      setFadeOut(true);
+      setDone(false);
+      setTimeout(() => {
+        // 2. fade in, slow down/stop the simulation
+        setFadeOut(false);
+        setDone(true);
+      }, 600);
+    }
+  }, [stepName, setFadeOut]);
   return (
     // https://github.com/vasturiano/react-force-graph
     // <ForceGraph2D ref={fgRef} graphData={graphData} {...forceGraphProps} />

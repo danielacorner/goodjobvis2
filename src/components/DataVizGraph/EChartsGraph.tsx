@@ -36,7 +36,7 @@ export default function EchartsGraph() {
   return (
     <ReactECharts
       option={options}
-      style={{ width: "100vw", height: "100vh" }}
+      style={{ width: "100vw", height: "100vh", position: "fixed", inset: 0 }}
     />
   );
 }
