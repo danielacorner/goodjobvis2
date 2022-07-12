@@ -172,7 +172,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   },
 ];
 
-const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(4);
+const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(1);
 
 export const STORY_STEPS =
   process.env.NODE_ENV === "development" ? STORY_STEPS_DEV : STORY_STEPS_PROD;

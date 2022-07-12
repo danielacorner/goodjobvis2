@@ -2,162 +2,101 @@ import ReactECharts from "echarts-for-react";
 import { NOC_NODES } from "../../assets/NOC-node";
 import { INDUSTRY_COLORS } from "../../utils/constants";
 const CATEGORIES = Object.keys(INDUSTRY_COLORS);
-const schema = [
-  { name: "Income", index: 0, text: "人均收入", unit: "美元" },
-  { name: "LifeExpectancy", index: 1, text: "人均寿命", unit: "岁" },
-  { name: "Population", index: 2, text: "总人口", unit: "" },
-  { name: "Country", index: 3, text: "国家", unit: "" },
-];
-const options = {
-  baseOption: {
-    timeline: {
-      axisType: "category",
-      orient: "vertical",
-      autoPlay: true,
-      inverse: true,
-      playInterval: 1000,
-      left: null,
-      right: 0,
-      top: 20,
-      bottom: 20,
-      width: 55,
-      height: null,
-      symbol: "none",
-      checkpointStyle: {
-        borderWidth: 2,
-      },
-      controlStyle: {
-        showNextBtn: false,
-        showPrevBtn: false,
-      },
-      data: NOC_NODES,
-    },
-    title: [
-      {
-        text: NOC_NODES[0].title1,
-        textAlign: "center",
-        left: "63%",
-        top: "55%",
-        textStyle: {
-          fontSize: 100,
-        },
-      },
-      {
-        text: "各国人均寿命与GDP关系演变",
-        left: "center",
-        top: 10,
-        textStyle: {
-          fontWeight: "normal",
-          fontSize: 20,
-        },
-      },
-    ],
-    tooltip: {
-      padding: 5,
-      borderWidth: 1,
-      formatter: function (obj) {
-        const value = obj.value;
-        // prettier-ignore
-        return schema[3].text + '：' + value[3] + '<br>'
-                      + schema[1].text + '：' + value[1] + schema[1].unit + '<br>'
-                      + schema[0].text + '：' + value[0] + schema[0].unit + '<br>'
-                      + schema[2].text + '：' + value[2] + '<br>';
-      },
-    },
-    grid: {
-      top: 100,
-      containLabel: true,
-      left: 30,
-      right: "110",
-    },
-    xAxis: {
-      type: "log",
-      name: "人均收入",
-      max: 100000,
-      min: 300,
-      nameGap: 25,
-      nameLocation: "middle",
-      nameTextStyle: {
-        fontSize: 18,
-      },
-      splitLine: {
-        show: false,
-      },
-      axisLabel: {
-        formatter: "{value} $",
-      },
-    },
-    yAxis: {
-      type: "value",
-      name: "平均寿命",
-      max: 100,
-      nameTextStyle: {
-        fontSize: 18,
-      },
-      splitLine: {
-        show: false,
-      },
-      axisLabel: {
-        formatter: "{value} 岁",
-      },
-    },
-    visualMap: [
-      {
-        show: false,
-        dimension: 3,
-        categories: CATEGORIES,
-        inRange: {
-          color: (function () {
-            // prettier-ignore
-            const colors = ['#51689b', '#ce5c5c', '#fbc357', '#8fbf8f', '#659d84', '#fb8e6a', '#c77288', '#786090', '#91c4c5', '#6890ba'];
-            return colors.concat(colors);
-          })(),
-        },
-      },
-    ],
-    series: [
-      {
-        type: "scatter",
-        itemStyle: {
-          opacity: 0.8,
-        },
-        data: NOC_NODES,
-        symbolSize: function (val) {
-          console.log(
-            "🌟🚨 ~ file: EChartsGraph.tsx ~ line 128 ~ EchartsGraph ~ val",
-            val
-          );
-          return 10;
-          // return sizeFunction(val[2]);
-        },
-      },
-    ],
-    animationDurationUpdate: 1000,
-    animationEasingUpdate: "quinticInOut",
-  },
-  options: NOC_NODES.map((node) => ({
-    title: {
-      show: true,
-      text: node.job + "",
-    },
-    series: {
-      name: node.job,
-      type: "scatter",
-      itemStyle: { opacity: 0.8 },
-      data: node,
-      symbolSize: function (val) {
-        console.log(
-          "🌟🚨 ~ file: EChartsGraph.tsx ~ line 155 ~ EchartsGraph ~ val",
-          val
-        );
-        return 10;
-        // return sizeFunction(val[2]);
-      },
-    },
-  })),
-};
+
 // https://echarts.apache.org/examples/en/index.html
 export default function EchartsGraph() {
+  const data = [
+    [
+      [28604, 77, 17096869, "Australia", 1990],
+      [31163, 77.4, 27662440, "Canada", 1990],
+      [1516, 68, 1154605773, "China", 1990],
+      [13670, 74.7, 10582082, "Cuba", 1990],
+      [28599, 75, 4986705, "Finland", 1990],
+      [29476, 77.1, 56943299, "France", 1990],
+      [31476, 75.4, 78958237, "Germany", 1990],
+      [28666, 78.1, 254830, "Iceland", 1990],
+      [1777, 57.7, 870601776, "India", 1990],
+      [29550, 79.1, 122249285, "Japan", 1990],
+      [2076, 67.9, 20194354, "North Korea", 1990],
+      [12087, 72, 42972254, "South Korea", 1990],
+      [24021, 75.4, 3397534, "New Zealand", 1990],
+      [43296, 76.8, 4240375, "Norway", 1990],
+      [10088, 70.8, 38195258, "Poland", 1990],
+      [19349, 69.6, 147568552, "Russia", 1990],
+      [10670, 67.3, 53994605, "Turkey", 1990],
+      [26424, 75.7, 57110117, "United Kingdom", 1990],
+      [37062, 75.4, 252847810, "United States", 1990],
+    ],
+    [
+      [44056, 81.8, 23968973, "Australia", 2015],
+      [43294, 81.7, 35939927, "Canada", 2015],
+      [13334, 76.9, 1376048943, "China", 2015],
+      [21291, 78.5, 11389562, "Cuba", 2015],
+      [38923, 80.8, 5503457, "Finland", 2015],
+      [37599, 81.9, 64395345, "France", 2015],
+      [44053, 81.1, 80688545, "Germany", 2015],
+      [42182, 82.8, 329425, "Iceland", 2015],
+      [5903, 66.8, 1311050527, "India", 2015],
+      [36162, 83.5, 126573481, "Japan", 2015],
+      [1390, 71.4, 25155317, "North Korea", 2015],
+      [34644, 80.7, 50293439, "South Korea", 2015],
+      [34186, 80.6, 4528526, "New Zealand", 2015],
+      [64304, 81.6, 5210967, "Norway", 2015],
+      [24787, 77.3, 38611794, "Poland", 2015],
+      [23038, 73.13, 143456918, "Russia", 2015],
+      [19360, 76.5, 78665830, "Turkey", 2015],
+      [38225, 81.4, 64715810, "United Kingdom", 2015],
+      [53354, 79.1, 321773631, "United States", 2015],
+    ],
+  ];
+  const options = {
+    xAxis: {
+      splitLine: { show: false },
+    },
+    yAxis: {
+      splitLine: { show: false },
+      scale: true,
+    },
+    grid: {
+      left: 40,
+      right: 130,
+    },
+    series: [
+      {
+        name: "1990",
+        data: data[0],
+        type: "scatter",
+        symbolSize: function (data) {
+          return Math.sqrt(data[2]) / 5e2;
+        },
+        emphasis: {
+          focus: "self",
+        },
+        labelLayout: function () {
+          return {
+            x: window.innerWidth - 100,
+            moveOverlap: "shiftY",
+          };
+        },
+        labelLine: {
+          show: true,
+          length2: 5,
+          lineStyle: {
+            color: "#bbb",
+          },
+        },
+        label: {
+          show: true,
+          formatter: function (param) {
+            return param.data[3];
+          },
+          position: "right",
+          minMargin: 2,
+        },
+      },
+    ],
+  };
+
   return (
     <ReactECharts
       option={options}
