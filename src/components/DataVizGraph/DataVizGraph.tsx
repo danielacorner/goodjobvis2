@@ -1,10 +1,10 @@
-import { ReactForceGraph } from "../Graph/ReactForceGraph";
-import { R3FGraph3D } from "../Graph/R3FGraph3D";
-import { ChartjsGraph } from "../Graph/ChartjsGraph";
+import { ReactForceGraph } from "./ReactForceGraph";
+import { R3FGraph3D } from "./R3FGraph3D";
 import { useCurrentStoryStep } from "../../store/store";
-import { SigmaForceGraph } from "../Graph/SigmaForceGraph";
+import { SigmaForceGraph } from "./SigmaForceGraph";
+import EchartsGraph from "./EChartsGraph";
 
-export function DataViz() {
+export function DataVizGraph() {
   const { graphType } = useCurrentStoryStep();
   console.log(
     "🌟🚨 ~ file: DataViz.tsx ~ line 8 ~ DataViz ~ graphType",
@@ -13,7 +13,7 @@ export function DataViz() {
   return (
     <>
       {graphType === "2dScatter" ? (
-        <ChartjsGraph />
+        <EchartsGraph />
       ) : graphType === "react-force-graph" ? (
         <ReactForceGraph />
       ) : graphType === "react-sigma" ? (

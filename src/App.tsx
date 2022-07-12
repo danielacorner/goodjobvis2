@@ -6,10 +6,10 @@ import { NodeTooltip } from "./NodeTooltip";
 import { StoryCards } from "./StoryScrollyTeller/StoryCards";
 import styled from "styled-components";
 import { Leva } from "leva";
-import { DataViz } from "./components/DataViz/DataViz";
 import { colors } from "./utils/constants";
 import { useFadeOut } from "./store/store";
 import { Fade } from "@mui/material";
+import { DataVizGraph } from "./components/DataVizGraph/DataVizGraph";
 // 2. Extend the theme to include custom colors, fonts, etc
 const chakraColors = {
   brand: {
@@ -29,7 +29,7 @@ function App() {
           <div style={{ pointerEvents: isScrollEnabled ? "auto" : "none" }}>
             {/* <Graph graphData={currentStep.graphData} /> */}
             <FadeInOut>
-              <DataViz />
+              <DataVizGraph />
             </FadeInOut>
 
             <GUI />
