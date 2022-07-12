@@ -1,11 +1,17 @@
 import { interpolateRdYlGn } from "d3-scale-chromatic";
 import NOC_DATA from "./NOC-data";
-export const AUTOMATIONRISKS = NOC_DATA.map((node) => node.automationRisk);
+
+ const AUTOMATIONRISKS = NOC_DATA.map((node) => node.automationRisk);
+ const WORKERSES = NOC_DATA.map((node) => node.workers);
 
 export const NOC_STATS = {
   automationRisk: {
     min: AUTOMATIONRISKS.reduce((acc, cur) => Math.min(acc, cur), Infinity),
     max: AUTOMATIONRISKS.reduce((acc, cur) => Math.max(acc, cur), -Infinity),
+  },
+  workers: {
+    min: WORKERSES.reduce((acc, cur) => Math.min(acc, cur), Infinity),
+    max: WORKERSES.reduce((acc, cur) => Math.max(acc, cur), -Infinity),
   },
 };
 

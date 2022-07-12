@@ -40,12 +40,14 @@ export function AxisControls({
   );
 }
 const Styles = styled.div`
+  position: fixed;
+  top: 8px;
+  left: 0;
+  right: 0;
   display: flex;
   gap: 1em;
   justify-content: center;
-  margin-top: 2em;
-  z-index: 9999;
-  position: relative;
+  z-index: 123;
   .chakra-menu__menu-list {
     max-width: calc(100vw - 80px);
     max-height: calc(100vh - 6em);
