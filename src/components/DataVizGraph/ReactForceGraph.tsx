@@ -25,17 +25,18 @@ export function ReactForceGraph() {
     if (!fgRef.current) {
       return;
     }
-    fgRef.current.cameraPosition({ z: distance });
+    fgRef.current?.cameraPosition({ z: distance });
 
     // camera orbit
     let angle = 0;
     setInterval(() => {
-      fgRef.current.cameraPosition({
+      fgRef.current?.cameraPosition({
         x: distance * Math.sin(angle),
         z: distance * Math.cos(angle),
       });
       angle += 0.33 * DEG;
-      fgRef.current.zoomToFit();
+      fgRef.current?.zoomToFit();
+      fgRef.current?.zoomToFit();
     }, 1000 / 60);
   }, []);
 
