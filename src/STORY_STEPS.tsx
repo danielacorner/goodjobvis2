@@ -1,6 +1,7 @@
 import { StoryStepType } from "./utils/types";
 import { NOC_NODES, NOC_STATS } from "./assets/NOC-node";
 import styled from "styled-components";
+import { atom, useAtom } from "jotai";
 const lightGreen = "#b0f2b870";
 const lightRed = "#f2b0b06f";
 
@@ -148,14 +149,9 @@ const STORY_STEPS_PROD: StoryStepType[] = [
       // nodes: NOC_NODES,
       links: [],
     },
-    text: (
-      <StepStyles>
-        Go ahead and compare any two variables on the axes...
-      </StepStyles>
-    ),
+    text: <StepStyles>Here you can compare any two variables:</StepStyles>,
     xKey: "VARIABLE",
     yKey: "VARIABLE",
-    nextStepOptions: ["step-1"],
   },
   {
     stepName: "step-8",
@@ -165,10 +161,13 @@ const STORY_STEPS_PROD: StoryStepType[] = [
       // nodes: NOC_NODES,
       links: [],
     },
-    text: <StepStyles>Step 2</StepStyles>,
-    xKey: "VARIABLE",
-    yKey: "VARIABLE",
-    nextStepOptions: ["step-1"],
+    text: (
+      <StepStyles>
+        Pick one of these characters to see how they would use the
+        visualization:
+      </StepStyles>
+    ),
+    nextStepOptions: ["step-1", "step-2", "step-3", "step-4"],
   },
 ];
 
@@ -176,3 +175,9 @@ const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(4);
 
 export const STORY_STEPS =
   process.env.NODE_ENV === "development" ? STORY_STEPS_DEV : STORY_STEPS_PROD;
+
+// TODO on step 8, add/remove steps to the story via nextStepOptions
+const storyStepsAtom = atom<StoryStepType[]>(STORY_STEPS);
+export function useStorySteps() {
+  return useAtom(storyStepsAtom);
+}

@@ -7,7 +7,7 @@ import eslint from "vite-plugin-eslint";
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 4000,
+    port: 3000,
   },
   // This changes the out put dir from dist to build
   // comment this out if that isn't relevant for your project

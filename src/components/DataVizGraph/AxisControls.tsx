@@ -2,6 +2,14 @@ import styled from "styled-components";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
+const NICE_NAMES = {
+  job: "Job Title",
+  workers: "Workers",
+  yearsStudy: "Years of Education",
+  automationRisk: "Automation Risk (%)",
+  salaryMed: "Salary ($k/year)",
+};
+
 export function AxisControls({
   xOptions,
   yOptions,
@@ -14,7 +22,7 @@ export function AxisControls({
     <Styles>
       <Menu>
         <MenuButton as={Button as any} rightIcon={<ChevronDownIcon />}>
-          X Axis: {xKey === "VARIABLE" ? "" : xKey}
+          X Axis: {xKey === "VARIABLE" ? "" : NICE_NAMES[xKey]}
         </MenuButton>
         <MenuList>
           {xOptions.map((x) => (
@@ -26,7 +34,7 @@ export function AxisControls({
       </Menu>
       <Menu>
         <MenuButton as={Button as any} rightIcon={<ChevronDownIcon />}>
-          Y Axis: {yKey === "VARIABLE" ? "" : yKey}
+          Y Axis: {yKey === "VARIABLE" ? "" : NICE_NAMES[yKey]}
         </MenuButton>
         <MenuList>
           {yOptions.map((x) => (

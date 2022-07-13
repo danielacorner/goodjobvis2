@@ -66,3 +66,12 @@ export const INDUSTRY_COLORS = {
   "Sales and service": d3SchemeCategory10[8],
   "Natural resources, agriculture, production": d3SchemeCategory10[9],
 };
+
+export function removeKeys(object: any, keys: string[]) {
+  return Object.keys(object)
+    .filter((key) => !keys.includes(key))
+    .reduce((acc, cur) => {
+      acc[cur] = object[cur];
+      return acc;
+    }, {});
+}

@@ -1,4 +1,5 @@
 import { interpolateRdYlGn } from "d3-scale-chromatic";
+import { removeKeys } from "../utils/constants";
 import NOC_DATA from "./NOC-data";
 
 const AUTOMATIONRISKS = NOC_DATA.map((node) => node.automationRisk);
@@ -29,7 +30,7 @@ console.log(
 const REMOVE = [
   "id",
   "noc",
-  // "job",
+  "job",
   "title1",
   "title2",
   "title3",
@@ -129,13 +130,4 @@ function RGBToHex(r, g, b) {
   if (b.length === 1) b = "0" + b;
 
   return "#" + r + g + b;
-}
-
-function removeKeys(object: any, keys: string[]) {
-  return Object.keys(object)
-    .filter((key) => !keys.includes(key))
-    .reduce((acc, cur) => {
-      acc[cur] = object[cur];
-      return acc;
-    }, {});
 }

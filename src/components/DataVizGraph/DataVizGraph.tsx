@@ -7,10 +7,6 @@ import ErrorBoundary from "../ErrorBoundary";
 
 export function DataVizGraph() {
   const { graphType } = useCurrentStoryStep();
-  console.log(
-    "🌟🚨 ~ file: DataViz.tsx ~ line 8 ~ DataViz ~ graphType",
-    graphType
-  );
   return (
     <>
       {graphType === "2dScatter" ? (
