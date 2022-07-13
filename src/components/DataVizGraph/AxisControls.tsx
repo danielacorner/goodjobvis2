@@ -17,6 +17,9 @@ import { MdComputer } from "react-icons/md";
 import { GiLogicGateNand } from "react-icons/gi";
 import { TbMathFunction } from "react-icons/tb";
 import { IoLanguage } from "react-icons/io5";
+import { atom, useAtom } from "jotai";
+import { useFilters } from "../../store/store";
+import { NOC_STATS } from "../../assets/NOC-node";
 
 const NICE_NAMES = {
   job: "Job Title",
@@ -87,27 +90,36 @@ const Styles = styled.div`
 
 function FiltersMenu() {
   const [open, setOpen] = useState(false);
+  const [, setFilters] = useFilters();
   const MENU_ITEMS = [
     {
       name: "Computer Skills",
       key: "skillsComp",
       icon: MdComputer,
+      min: NOC_STATS.skillsComp.min,
+      max: NOC_STATS.skillsComp.max,
     },
 
     {
       name: "Logic Skills",
       key: "skillsLogi",
       icon: GiLogicGateNand,
+      min: NOC_STATS.skillsLogi.min,
+      max: NOC_STATS.skillsLogi.max,
     },
     {
       name: "Math Skills",
       key: "skillsMath",
       icon: TbMathFunction,
+      min: NOC_STATS.skillsMath.min,
+      max: NOC_STATS.skillsMath.max,
     },
     {
       name: "Language Skills",
       key: "skillsLang",
       icon: IoLanguage,
+      min: NOC_STATS.skillsLang.min,
+      max: NOC_STATS.skillsLang.max,
     },
   ];
   return (
@@ -129,7 +141,14 @@ function FiltersMenu() {
             <Styles2>
               <p>{item.name}</p>
               <div className="slider">
-                <Slider defaultValue={0} min={0} max={100}>
+                <Slider
+                  defaultValue={0}
+                  min={0}
+                  max={100}
+                  onChangeEnd={(val) => {
+                    setFilters((prev) => ({ ...prev, [item.key]: val }));
+                  }}
+                >
                   <SliderTrack>
                     <SliderFilledTrack />
                   </SliderTrack>

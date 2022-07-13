@@ -2,7 +2,7 @@ import ReactECharts from "echarts-for-react";
 import { startCase } from "lodash";
 import { useEffect, useState } from "react";
 import { NOC_NODES, NOC_NODES_CLEANED, NOC_STATS } from "../../assets/NOC-node";
-import { useCurrentStoryStep } from "../../store/store";
+import { useCurrentStoryStep, useFilters } from "../../store/store";
 import { INDUSTRY_COLORS } from "../../utils/constants";
 import { AxisControls } from "./AxisControls";
 const CATEGORIES = Object.keys(INDUSTRY_COLORS);
@@ -13,6 +13,8 @@ const CATEGORIES = Object.keys(INDUSTRY_COLORS);
 // https://echarts.apache.org/examples/en/index.html
 export default function EchartsGraph() {
   const { xKey, yKey } = useCurrentStoryStep();
+
+  const [filters, setFilters] = useFilters();
 
   // allow manual control of axis keys
   const [{ xKeyState, yKeyState }, setKeyState] = useState({
@@ -29,7 +31,11 @@ export default function EchartsGraph() {
 
   const data =
     xKeyState && yKeyState
-      ? NOC_NODES.map((node) => [
+      ? NOC_NODES.filter((node) => {
+          return Object.entries(filters).every(
+            ([skillsKey, filterValue]) => node[skillsKey] > filterValue
+          );
+        }).map((node) => [
           node[xKeyState],
           node[yKeyState],
           node.job,

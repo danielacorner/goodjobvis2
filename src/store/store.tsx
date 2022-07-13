@@ -72,3 +72,13 @@ export function useFadeOut(): [
   const [fadeOut, setFadeOut] = useAtom(fadeOutAtom);
   return [fadeOut, setFadeOut];
 }
+
+const filtersAtom = atom({
+  skillsLang: 0,
+  skillsMath: 0,
+  skillsLogi: 0,
+  skillsComp: 0,
+});
+export function useFilters() {
+  return useAtom(filtersAtom);
+}

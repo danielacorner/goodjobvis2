@@ -1,20 +1,26 @@
 import { interpolateRdYlGn } from "d3-scale-chromatic";
 import { removeKeys } from "../utils/constants";
+import { NOCDataType } from "../utils/types";
 import NOC_DATA from "./NOC-data";
 
-const AUTOMATIONRISKS = NOC_DATA.map((node) => node.automationRisk);
-const WORKERSES = NOC_DATA.map((node) => node.workers);
-
-export const NOC_STATS = {
-  automationRisk: {
-    min: AUTOMATIONRISKS.reduce((acc, cur) => Math.min(acc, cur), Infinity),
-    max: AUTOMATIONRISKS.reduce((acc, cur) => Math.max(acc, cur), -Infinity),
+export const NOC_STATS = Object.keys(NOC_DATA[0]).reduce(
+  (acc, nocDataKey) => {
+    acc[nocDataKey] = {
+      min: NOC_DATA.map((node) => node[nocDataKey]).reduce(
+        (acc, cur) => Math.min(acc, cur),
+        Infinity
+      ),
+      max: NOC_DATA.map((node) => node[nocDataKey]).reduce(
+        (acc, cur) => Math.max(acc, cur),
+        -Infinity
+      ),
+    };
+    return acc;
   },
-  workers: {
-    min: WORKERSES.reduce((acc, cur) => Math.min(acc, cur), Infinity),
-    max: WORKERSES.reduce((acc, cur) => Math.max(acc, cur), -Infinity),
-  },
-};
+  {} as {
+    [hey in keyof NOCDataType]: { min: number; max: number };
+  }
+);
 
 export const NOC_NODES = NOC_DATA.map((node) => ({
   ...node,
