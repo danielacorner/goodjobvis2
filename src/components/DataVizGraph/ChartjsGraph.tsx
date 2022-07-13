@@ -9,11 +9,14 @@ import {
   Legend,
   BubbleDataPoint,
 } from "chart.js";
-import { NOC_NODES, NOC_NODES_CLEANED } from "../../assets/NOC-node";
+import {
+  NOC_NODES,
+  NOC_NODES_BY_INDUSTRY,
+  NOC_NODES_CLEANED,
+} from "../../assets/NOC-node";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { Bubble } from "react-chartjs-2";
 import { useEffect, useMemo, useState } from "react";
-import { NOCDataType } from "../../utils/types";
 import { CLUSTER_COLORS } from "../../utils/constants";
 import { STORY_STEPS } from "../../STORY_STEPS";
 import { useCurrentStepIdx } from "../../store/store";
@@ -159,32 +162,28 @@ function getDatasets(
   yKey: string | null,
   width: number
 ): { label: string; data: BubbleDataPoint[]; backgroundColor: string }[] {
-  const groups = NOC_NODES.reduce((acc, node) => {
-    return {
-      ...acc,
-      [node.industry]: (acc[node.industry] || []).concat(node),
-    };
-  }, {} as { [key: string]: NOCDataType[] });
-  const datasetsFromGroups = Object.entries(groups).map(([industry, nodes]) => {
-    const color = CLUSTER_COLORS[nodes[0].cluster];
-    const opacity = 0.7;
-    return {
-      label: industry,
-      data: nodes.map((node) => {
-        const scale = 0.4 * (width < 768 ? 0.3 : 1);
-        return {
-          x: xKey && xKey !== "VARIABLE" ? node[xKey] : Math.random(),
-          y: yKey && yKey !== "VARIABLE" ? node[yKey] : Math.random(),
-          r: radiusFromCircleArea(node.workers) * scale,
-          tooltip: {
-            title: `${node.job}`,
-            node,
-          },
-        };
-      }) as BubbleDataPoint[],
-      backgroundColor: `${color.slice(0, -2)} ${opacity})`,
-    };
-  });
+  const datasetsFromGroups = Object.entries(NOC_NODES_BY_INDUSTRY).map(
+    ([industry, nodes]) => {
+      const color = CLUSTER_COLORS[nodes[0].cluster];
+      const opacity = 0.7;
+      return {
+        label: industry,
+        data: nodes.map((node) => {
+          const scale = 0.4 * (width < 768 ? 0.3 : 1);
+          return {
+            x: xKey && xKey !== "VARIABLE" ? node[xKey] : Math.random(),
+            y: yKey && yKey !== "VARIABLE" ? node[yKey] : Math.random(),
+            r: radiusFromCircleArea(node.workers) * scale,
+            tooltip: {
+              title: `${node.job}`,
+              node,
+            },
+          };
+        }) as BubbleDataPoint[],
+        backgroundColor: `${color.slice(0, -2)} ${opacity})`,
+      };
+    }
+  );
   return datasetsFromGroups;
 }
 

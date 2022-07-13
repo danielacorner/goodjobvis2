@@ -34,6 +34,7 @@
     "react-chartjs-2": "^4.1.0",
     "react-dom": "^18.1.0",
     "react-force-graph": "^1.41.12",
+    "react-icons": "^4.4.0",
     "react-sigma": "^1.2.35",
     "react-spring": "^9.4.5",
     "react-use": "^17.4.0",

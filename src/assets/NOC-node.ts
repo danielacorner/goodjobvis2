@@ -131,3 +131,10 @@ function RGBToHex(r, g, b) {
 
   return "#" + r + g + b;
 }
+
+export const NOC_NODES_BY_INDUSTRY = NOC_NODES.reduce((acc, node) => {
+  return {
+    ...acc,
+    [node.industry]: (acc[node.industry] || []).concat(node),
+  };
+}, {} as { [key: string]: any[] });

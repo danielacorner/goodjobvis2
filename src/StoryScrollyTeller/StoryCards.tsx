@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import styled from "styled-components";
 import { STORY_STEPS } from "../STORY_STEPS";
 
@@ -13,11 +14,13 @@ export function StoryCards() {
             </div>
             {step.nextStepOptions && (
               <div className="options">
-                {step.nextStepOptions.map((nextStepName, idx) => (
-                  <div key={idx} className="option">
-                    {nextStepName}
-                  </div>
-                ))}
+                {step.nextStepOptions.map(
+                  ({ description, icon, stepName }, idx) => (
+                    <Button key={idx} leftIcon={icon} className="option">
+                      {description}
+                    </Button>
+                  )
+                )}
               </div>
             )}
           </StoryStepStyles>
@@ -57,4 +60,7 @@ const StoryStepStyles = styled.div`
   padding: 0.5em;
   box-shadow: 1px 2px 4px 0px #00000024;
   border-radius: 8px;
+  .options {
+    pointer-events: auto;
+  }
 `;

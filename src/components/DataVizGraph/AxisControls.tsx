@@ -1,6 +1,16 @@
 import styled from "styled-components";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import {
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+} from "@chakra-ui/react";
 
 const NICE_NAMES = {
   job: "Job Title",
@@ -8,6 +18,10 @@ const NICE_NAMES = {
   yearsStudy: "Years of Education",
   automationRisk: "Automation Risk (%)",
   salaryMed: "Salary ($k/year)",
+  skillsComp: "Computer skills",
+  skillsLogi: "Logic skills",
+  skillsMath: "Math skills",
+  skillsLang: "Language skills",
 };
 
 export function AxisControls({
@@ -27,7 +41,7 @@ export function AxisControls({
         <MenuList>
           {xOptions.map((x) => (
             <MenuItem key={x} onClick={() => setXKey(x)}>
-              {x}
+              {NICE_NAMES[x] ?? x}
             </MenuItem>
           ))}
         </MenuList>
@@ -39,11 +53,12 @@ export function AxisControls({
         <MenuList>
           {yOptions.map((x) => (
             <MenuItem key={x} onClick={() => setYKey(x)}>
-              {x}
+              {NICE_NAMES[x] ?? x}
             </MenuItem>
           ))}
         </MenuList>
       </Menu>
+      <FiltersMenu />
     </Styles>
   );
 }
@@ -63,3 +78,28 @@ const Styles = styled.div`
     overflow-y: auto;
   }
 `;
+
+function FiltersMenu() {
+  return (
+    <Menu>
+      <MenuButton as={Button as any} rightIcon={<ChevronDownIcon />}>
+        Filters
+      </MenuButton>
+      <MenuList>
+        <MenuItem
+          onClick={() => {
+            return;
+          }}
+        >
+          Computer Skills
+          <Slider aria-label="slider-ex-1" defaultValue={30}>
+            <SliderTrack>
+              <SliderFilledTrack />
+            </SliderTrack>
+            <SliderThumb />
+          </Slider>
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  );
+}

@@ -2,6 +2,11 @@ import { StoryStepType } from "./utils/types";
 import { NOC_NODES, NOC_STATS } from "./assets/NOC-node";
 import styled from "styled-components";
 import { atom, useAtom } from "jotai";
+import { GrTest } from "react-icons/gr";
+import { IoPlanetOutline } from "react-icons/io5";
+import { MdEngineering } from "react-icons/md";
+import { GiComputerFan } from "react-icons/gi";
+
 const lightGreen = "#b0f2b870";
 const lightRed = "#f2b0b06f";
 
@@ -167,11 +172,32 @@ const STORY_STEPS_PROD: StoryStepType[] = [
         visualization:
       </StepStyles>
     ),
-    nextStepOptions: ["step-1", "step-2", "step-3", "step-4"],
+    nextStepOptions: [
+      {
+        stepName: "step-1",
+        description: "chemistry",
+        icon: <GrTest />,
+      },
+      {
+        stepName: "step-1",
+        description: "astronomer",
+        icon: <IoPlanetOutline />,
+      },
+      {
+        stepName: "step-1",
+        description: "engineer",
+        icon: <MdEngineering />,
+      },
+      {
+        stepName: "step-1",
+        description: "computers",
+        icon: <GiComputerFan />,
+      },
+    ],
   },
 ];
 
-const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(4);
+const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(6);
 
 export const STORY_STEPS =
   process.env.NODE_ENV === "development" ? STORY_STEPS_DEV : STORY_STEPS_PROD;

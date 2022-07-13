@@ -17,7 +17,12 @@ export type StoryStepType = {
   xScaleType?: "linear" | "logarithmic" | "time";
   yScaleType?: "linear" | "logarithmic" | "time";
   stepName: StepNames;
-  nextStepOptions?: StepNames[];
+  nextStepOptions?: NextStepOption[];
+};
+export type NextStepOption = {
+  stepName: StepNames;
+  description: string;
+  icon: any;
 };
 export type StepNames =
   | "step-1"
