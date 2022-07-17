@@ -9,7 +9,6 @@ export function AxisLabels({ xAxisLabel, yAxisLabel, grid }) {
   const { width, height } = useWindowSize();
 
   const xLabel = xAxisLabel.split("(")[0];
-
   const xUnit = xAxisLabel.split("(")[1];
 
   const yLabel = yAxisLabel.split("(")[0];
@@ -18,16 +17,16 @@ export function AxisLabels({ xAxisLabel, yAxisLabel, grid }) {
   return (
     <AxisLabelStyles {...{ width, height, grid }}>
       <div className="y-axis-label">
-        {xLabel}
-        {xUnit ? "(" : ""}
-        {xUnit ? <span className="unit">{xUnit.slice(0, -1)}</span> : null}
-        {xUnit ? ")" : ""}
-      </div>
-      <div className="x-axis-label">
         {yLabel}
         {yUnit ? "(" : ""}
         {yUnit ? <span className="unit">{yUnit.slice(0, -1)}</span> : null}
         {yUnit ? ")" : ""}
+      </div>
+      <div className="x-axis-label">
+        {xLabel}
+        {xUnit ? "(" : ""}
+        {xUnit ? <span className="unit">{xUnit.slice(0, -1)}</span> : null}
+        {xUnit ? ")" : ""}
       </div>
     </AxisLabelStyles>
   );
