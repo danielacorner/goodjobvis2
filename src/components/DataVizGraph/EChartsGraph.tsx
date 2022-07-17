@@ -223,17 +223,23 @@ type EchartsNodeType = {
   dataIndex: number;
 };
 const COLOR_BY_FUNCTIONS = {
+  ...Object.keys(NOC_STATS_TYPED).reduce(
+    (acc, key) => ({
+      ...acc,
+      [key]: (node: EchartsNodeType) => {
+        const nocNode = NOC_NODES[node.dataIndex];
+        const statPct = nocNode[key] / NOC_STATS_TYPED[key].max;
+        return `hsl(210,70%,${100 - 100 * statPct}%)`;
+      },
+    }),
+    {}
+  ),
   job: (node: EchartsNodeType) => {
     return `hsl(${Math.random() * 360},70%,50%)`;
   },
   automationRisk: (node: EchartsNodeType) => {
     const nocNode = NOC_NODES[node.dataIndex];
     return `hsl(${120 * nocNode.automationRisk},70%,50%)`;
-  },
-  workers: (node: EchartsNodeType) => {
-    const nocNode = NOC_NODES[node.dataIndex];
-    const workersPct = nocNode.workers / NOC_STATS_TYPED.workers.max;
-    return `hsl(210,70%,${100 - 80 * workersPct}%)`;
   },
 } as { [sup in keyof NOCDataType]: (node: EchartsNodeType) => string };
 
