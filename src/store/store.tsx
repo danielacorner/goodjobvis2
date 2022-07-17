@@ -1,9 +1,15 @@
 import { useEventListener } from "@chakra-ui/react";
 import { atom, SetStateAction, useAtom } from "jotai";
 import { useState } from "react";
+import { NOC_NODES } from "../assets/NOC-node";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { STORY_STEPS } from "../STORY_STEPS";
-import { GraphDataType, GraphNodeType, StoryStepType } from "../utils/types";
+import {
+  GraphDataType,
+  GraphNodeType,
+  NOCDataType,
+  StoryStepType,
+} from "../utils/types";
 export const isCoolAtom = atom<boolean>(true);
 export type TooltipNodeType = GraphNodeType & {
   position: { x: number; y: number };
@@ -79,14 +85,41 @@ export function useFadeOut(): [
   return [fadeOut, setFadeOut];
 }
 
-const filtersAtom = atom({
+const INITIAL_FILTERS = {
   skillsLang: 0,
   skillsMath: 0,
   skillsLogi: 0,
   skillsComp: 0,
   searchText: "",
   colorBy: "",
-});
-export function useFilters() {
-  return useAtom(filtersAtom);
+};
+const filtersAtom = atom(INITIAL_FILTERS);
+export function useFilters(): [
+  typeof INITIAL_FILTERS,
+  (
+    update: SetStateAction<{
+      skillsLang: number;
+      skillsMath: number;
+      skillsLogi: number;
+      skillsComp: number;
+      searchText: string;
+      colorBy: string;
+    }>
+  ) => void,
+  NOCDataType[]
+] {
+  const [filters, setFilters] = useAtom(filtersAtom);
+  const filteredNodes = NOC_NODES.filter((node) => {
+    return Object.entries(filters).every(([skillsKey, filterValue]) =>
+      // search filter
+      skillsKey === "searchText" && typeof filterValue === "string"
+        ? node.job.includes(filterValue)
+        : // color-by filter
+        skillsKey === "colorBy"
+        ? true
+        : // skills sliders fiters
+          node[skillsKey] > filterValue
+    );
+  });
+  return [filters, setFilters, filteredNodes];
 }

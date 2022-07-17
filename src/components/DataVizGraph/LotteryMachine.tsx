@@ -1,80 +1,145 @@
-import { Canvas } from "@react-three/fiber";
 import {
-  Environment,
-  OrbitControls,
-  Sphere,
-  useAspect,
   useTexture,
+  Sky,
+  Environment,
+  Effects as EffectComposer,
 } from "@react-three/drei";
-import { useCurrentStoryStep } from "../../store/store";
-import { Debug, Physics, usePlane, useSphere } from "@react-three/cannon";
-import { Mesh } from "three";
-import { GraphNodeType } from "../../utils/types";
+import * as THREE from "three";
+import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
+import { Physics, useSphere } from "@react-three/cannon";
+import { SSAOPass } from "three-stdlib";
+import { useFilters } from "../../store/store";
+import { useMemo } from "react";
 
-export function LotteryMachine() {
-  return (
-    <Canvas style={{ position: "fixed", inset: 0 }}>
-      <Physics>
-        <Debug>
-          <BallsAndCollisions />
-        </Debug>
-      </Physics>
+extend({ SSAOPass });
 
-      <Environment preset="warehouse" />
-      <Background position={[0, 0, -5]} />
-      {process.env.NODE_ENV === "development" && <OrbitControls />}
-    </Canvas>
-  );
-}
-const Background = (props) => (
-  <mesh scale={useAspect(5000, 3800, 3)} {...props}>
-    <planeGeometry />
-    <meshBasicMaterial map={useTexture("/bg.jpg")} />
-  </mesh>
+const RADIUS = 0.1;
+const rfs = THREE.MathUtils.randFloatSpread;
+const sphereGeometry = new THREE.SphereGeometry(RADIUS, 32, 32);
+const baubleMaterial = new THREE.MeshStandardMaterial({
+  color: "red",
+  roughness: 0,
+  envMapIntensity: 0.2,
+  emissive: "#370037",
+});
+
+export const LotteryMachine = () => (
+  <Canvas
+    style={{ position: "fixed", inset: 0 }}
+    shadows
+    dpr={[1, 2]}
+    camera={{ position: [0, 0, 20], fov: 35, near: 1, far: 40 }}
+  >
+    <ambientLight intensity={0.25} />
+    <spotLight
+      intensity={1}
+      angle={0.2}
+      penumbra={1}
+      position={[30, 30, 30]}
+      castShadow
+      shadow-mapSize={[512, 512]}
+    />
+    <directionalLight intensity={5} position={[-10, -10, -10]} color="purple" />
+    <Physics gravity={[0, 2, 0]} iterations={10}>
+      <Pointer />
+      <Clump />
+    </Physics>
+    <Environment files="/adamsbridge.hdr" />
+    <Effects />
+    <Sky />
+  </Canvas>
 );
-const PI = Math.PI;
-const GLASS_BALL_RADIUS = 1;
-function BallsAndCollisions() {
-  const { graphData } = useCurrentStoryStep();
-  const [glassBallRef, api] = usePlane<Mesh>(() => ({
-    args: [GLASS_BALL_RADIUS],
-    position: [0, -GLASS_BALL_RADIUS, 0],
-    rotation: [PI / 2, 0, 0],
+
+function Clump({
+  mat = new THREE.Matrix4(),
+  vec = new THREE.Vector3(),
+  ...props
+}) {
+  const texture = useTexture("/cross.jpg");
+  const [ref, api] = useSphere<any>(() => ({
+    args: [RADIUS],
+    mass: 1,
+    angularDamping: 0.1,
+    linearDamping: 0.65,
+    position: [rfs(20), rfs(20), rfs(20)],
   }));
+  const [, , filteredNodes] = useFilters();
+
+  const filteredNodesRandom = useMemo(
+    () => shuffleArray([...filteredNodes]).slice(0, 30),
+    [filteredNodes]
+  );
+  useFrame((state) => {
+    for (let i = 0; i < filteredNodesRandom.length; i++) {
+      // Get current whereabouts of the instanced sphere
+      ref.current.getMatrixAt(i, mat);
+      // Normalize the position and multiply by a negative force.
+      // This is enough to drive it towards the center-point.
+      api
+        .at(i)
+        .applyForce(
+          vec
+            .setFromMatrixPosition(mat)
+            .normalize()
+            .multiplyScalar(-50)
+            .toArray(),
+          [0, 0, 0]
+        );
+    }
+  });
   return (
-    <>
-      <mesh ref={glassBallRef}></mesh>
-      <Sphere args={[GLASS_BALL_RADIUS, 16, 16]}>
-        <meshPhysicalMaterial
-          transmission={1}
-          roughness={0}
-          thickness={1}
-          envMapIntensity={1}
-        />
-      </Sphere>
-      {graphData.nodes.slice(0, 1).map((node) => (
-        <Gumball key={node.id} {...{ node }} />
-      ))}
-    </>
+    <instancedMesh
+      ref={ref}
+      castShadow
+      receiveShadow
+      args={[undefined, undefined, filteredNodesRandom.length]}
+      geometry={sphereGeometry}
+      material={baubleMaterial}
+      material-map={texture}
+    />
   );
 }
-const GUMBALL_RADIUS = 0.1;
-function Gumball({ node }: { node: GraphNodeType }) {
-  const [ref, api] = useSphere<Mesh>(() => ({
-    args: [GUMBALL_RADIUS],
-    position: [0, 1, 0],
-    mass: 1,
+
+function Pointer() {
+  const viewport = useThree((state) => state.viewport);
+  const [, api] = useSphere(() => ({
+    type: "Kinematic",
+    args: [1],
+    position: [0, 0, 0],
   }));
-  return (
-    <mesh ref={ref}>
-      <Sphere key={node.id} args={[GUMBALL_RADIUS, 8, 8]}>
-        <meshPhysicalMaterial
-          transmission={0}
-          roughness={0}
-          thickness={0.01}
-          envMapIntensity={1}
-        />
-      </Sphere>
-    </mesh>
+  return useFrame((state) =>
+    api.position.set(
+      (state.mouse.x * viewport.width) / 2,
+      (state.mouse.y * viewport.height) / 2,
+      0
+    )
   );
+}
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      sSAOPass: any;
+    }
+  }
+}
+function Effects(props) {
+  const { scene, camera } = useThree();
+  return (
+    <EffectComposer {...props}>
+      <sSAOPass
+        args={[scene, camera, 100, 100]}
+        kernelRadius={1.2}
+        kernelSize={0}
+      />
+    </EffectComposer>
+  );
+}
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }

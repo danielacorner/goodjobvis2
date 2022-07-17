@@ -194,20 +194,20 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   },
   // ...(process.env.NODE_ENV === "development"
   //   ? [
-  //       {
-  //         id: "step-9",
-  //         graphType: "lotteryMachine",
-  //         graphData: {
-  //           nodes: NOC_NODES,
-  //           links: [],
-  //         },
-  //         text: <StepStyles>{`Check out some jobs at random:`}</StepStyles>,
-  //       },
-  //     ]
-  //   : ([] as any)),
+  {
+    id: "step-9",
+    graphType: "lotteryMachine",
+    graphData: {
+      nodes: NOC_NODES,
+      links: [],
+    },
+    text: <StepStyles>{`Check out some jobs at random:`}</StepStyles>,
+  },
+  // ]
+  // : ([] as any)),
 ];
 
-const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(6);
+const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(-1);
 
 const mockStep: StoryStepType = {
   id: "astronomer-1",

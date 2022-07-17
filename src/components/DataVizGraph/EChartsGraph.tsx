@@ -16,7 +16,7 @@ const DEFAULT_COLOR = "steelblue";
 export default function EchartsGraph() {
   const { xKey, yKey } = useCurrentStoryStep();
 
-  const [filters] = useFilters();
+  const [filters, , filteredNodes] = useFilters();
 
   // allow manual control of axis keys
   const [{ xKeyState, yKeyState }, setKeyState] = useState({
@@ -34,18 +34,7 @@ export default function EchartsGraph() {
   const yAxisLabel = (yKeyState && NICE_NAMES[yKeyState]) ?? yKeyState;
   const data =
     xKeyState && yKeyState
-      ? NOC_NODES.filter((node) => {
-          return Object.entries(filters).every(([skillsKey, filterValue]) =>
-            // search filter
-            skillsKey === "searchText" && typeof filterValue === "string"
-              ? node.job.includes(filterValue)
-              : // color-by filter
-              skillsKey === "colorBy"
-              ? true
-              : // skills sliders fiters
-                node[skillsKey] > filterValue
-          );
-        }).map((node) => [
+      ? filteredNodes.map((node) => [
           node[xKeyState],
           node[yKeyState],
           node.job,
