@@ -1,11 +1,12 @@
 import { Button } from "@chakra-ui/react";
 import styled from "styled-components";
-import { STORY_STEPS } from "../STORY_STEPS";
+import { STORY_STEPS, STORY_STEPS_PATHS, useStorySteps } from "../STORY_STEPS";
 
 export function StoryCards() {
+  const [storySteps, setStorySteps] = useStorySteps();
   return (
     <StoryCardsStyles>
-      {STORY_STEPS.map((step, idx) => {
+      {storySteps.map((step, idx) => {
         const Text = step.text;
         return (
           <StoryStepStyles key={idx} stepIdx={idx}>
@@ -15,8 +16,23 @@ export function StoryCards() {
             {step.nextStepOptions && (
               <div className="options">
                 {step.nextStepOptions.map(
-                  ({ description, icon, stepName }, idx) => (
-                    <Button key={idx} leftIcon={icon} className="option">
+                  ({ description, icon, stepPathName }, idx) => (
+                    <Button
+                      key={idx}
+                      leftIcon={icon}
+                      className="option"
+                      onClick={() => {
+                        console.log(
+                          "🌟🚨 ~ file: StoryCards.tsx ~ line 19 ~ {STORY_STEPS.map ~ stepPathName",
+                          stepPathName,
+                          setStorySteps
+                        );
+                        setStorySteps((prev) => [
+                          ...prev.slice(0, -1),
+                          ...STORY_STEPS_PATHS[stepPathName],
+                        ]);
+                      }}
+                    >
                       {description}
                     </Button>
                   )

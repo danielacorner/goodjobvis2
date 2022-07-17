@@ -19,23 +19,23 @@ export type StoryStepType = {
   // https://www.chartjs.org/docs/latest/axes/
   xScaleType?: "linear" | "logarithmic" | "time";
   yScaleType?: "linear" | "logarithmic" | "time";
-  stepName: StepNames;
+  id: string;
   nextStepOptions?: NextStepOption[];
 };
 export type NextStepOption = {
-  stepName: StepNames;
+  stepPathName: StepPaths;
+  // stepName: StepNames;
   description: string;
   icon: any;
 };
-export type StepNames =
-  | "step-1"
-  | "step-2"
-  | "step-3"
-  | "step-4"
-  | "step-5"
-  | "step-6"
-  | "step-7"
-  | "step-8";
+export type StepPaths =
+  | "chemistry"
+  | "astronomer"
+  | "engineer"
+  | "computers"
+  | "journalist"
+  | "nurse";
+
 export type GraphDataType = {
   nodes: GraphNodeType[];
   links: [];

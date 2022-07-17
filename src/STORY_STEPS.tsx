@@ -1,4 +1,4 @@
-import { NOC_STATS_TYPED, StoryStepType } from "./utils/types";
+import { NOC_STATS_TYPED, StepPaths, StoryStepType } from "./utils/types";
 import { NOC_NODES } from "./assets/NOC-node";
 import styled from "styled-components";
 import { atom, useAtom } from "jotai";
@@ -21,7 +21,7 @@ const StepStyles = styled.div`
 // the story
 const STORY_STEPS_PROD: StoryStepType[] = [
   {
-    stepName: "step-1",
+    id: "step-1",
     graphType: "3dPile",
     // TODO add colorBy
     graphData: {
@@ -55,7 +55,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   },
 
   {
-    stepName: "step-1",
+    id: "step-1",
     graphType: "3dPile",
     graphData: {
       nodes: NOC_NODES.filter(
@@ -73,7 +73,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     ),
   },
   {
-    stepName: "step-3",
+    id: "step-3",
     graphType: "react-force-graph",
     graphData: {
       nodes: NOC_NODES.filter(
@@ -90,7 +90,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     ),
   },
   {
-    stepName: "step-4",
+    id: "step-4",
     graphType: "react-force-graph",
     graphData: {
       nodes: NOC_NODES,
@@ -112,7 +112,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     ),
   },
   {
-    stepName: "step-5",
+    id: "step-5",
     graphType: "2dScatter",
     graphData: {
       nodes: [],
@@ -132,7 +132,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     yScaleType: "logarithmic",
   },
   {
-    stepName: "step-6",
+    id: "step-6",
     graphType: "2dScatter",
     graphData: {
       nodes: [],
@@ -151,7 +151,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   },
   // TODO: choose your own adventure!
   {
-    stepName: "step-7",
+    id: "step-7",
     graphType: "2dScatter",
     graphData: {
       nodes: [],
@@ -163,7 +163,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     yKey: "VARIABLE",
   },
   {
-    stepName: "step-8",
+    id: "step-8",
     graphType: "2dScatter",
     graphData: {
       nodes: [],
@@ -172,37 +172,37 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     },
     text: (
       <StepStyles>
-        {`For example, here's how someone seeking one of these jobs might use this visualization:`}
+        {`For example, here's how someone with one of these interests might use this visualization:`}
       </StepStyles>
     ),
     nextStepOptions: [
       {
-        stepName: "step-1",
+        stepPathName: "chemistry",
         description: "chemistry",
         icon: <GrTest />,
       },
       {
-        stepName: "step-1",
+        stepPathName: "astronomer",
         description: "astronomer",
         icon: <IoPlanetOutline />,
       },
       {
-        stepName: "step-1",
+        stepPathName: "engineer",
         description: "engineer",
         icon: <MdEngineering />,
       },
       {
-        stepName: "step-1",
+        stepPathName: "computers",
         description: "computers",
         icon: <GiComputerFan />,
       },
       {
-        stepName: "step-1",
+        stepPathName: "journalist",
         description: "journalist",
         icon: <BsNewspaper />,
       },
       {
-        stepName: "step-1",
+        stepPathName: "nurse",
         description: "nurse",
         icon: <FaUserNurse />,
       },
@@ -212,10 +212,36 @@ const STORY_STEPS_PROD: StoryStepType[] = [
 
 const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(6);
 
+const mockStep: StoryStepType = {
+  id: "astronomer-1",
+  graphType: "2dScatter",
+  graphData: {
+    nodes: [],
+    // nodes: NOC_NODES,
+    links: [],
+  },
+  text: (
+    <StepStyles>
+      ...or we could ask a question like {`"`}How does a worker{`'`}s{" "}
+      <em>Reading Skill</em> correlate with their job{`'`}s{" "}
+      <em>Risk of Automation</em>?{`"`}.
+    </StepStyles>
+  ),
+  xKey: "s10Reading",
+  yKey: "automationRisk",
+};
+export const STORY_STEPS_PATHS: { [sup in StepPaths]: StoryStepType[] } = {
+  astronomer: [mockStep],
+  chemistry: [mockStep],
+  engineer: [mockStep],
+  computers: [mockStep],
+  journalist: [mockStep],
+  nurse: [mockStep],
+};
+
 export const STORY_STEPS =
   process.env.NODE_ENV === "development" ? STORY_STEPS_DEV : STORY_STEPS_PROD;
 
-// TODO on step 8, add/remove steps to the story via nextStepOptions
 const storyStepsAtom = atom<StoryStepType[]>(STORY_STEPS);
 export function useStorySteps() {
   return useAtom(storyStepsAtom);
