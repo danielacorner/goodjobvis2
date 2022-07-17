@@ -1,10 +1,6 @@
 import styled from "styled-components";
 
 export function AxisLabels({ xAxisLabel, yAxisLabel, grid }) {
-  console.log(
-    "🌟🚨 ~ file: AxisLabels.tsx ~ line 4 ~ AxisLabels ~ xAxisLabel",
-    xAxisLabel
-  );
   if (!xAxisLabel || !yAxisLabel) {
     return null;
   }

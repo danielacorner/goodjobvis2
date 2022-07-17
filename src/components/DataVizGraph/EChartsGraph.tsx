@@ -1,14 +1,14 @@
 import ReactECharts from "echarts-for-react";
-import startCase from "lodash.startcase";
 import { useEffect, useState } from "react";
 import { NOC_NODES, NOC_NODES_CLEANED } from "../../assets/NOC-node";
 import { useCurrentStoryStep, useFilters } from "../../store/store";
-import { INDUSTRY_COLORS } from "../../utils/constants";
-import { NOC_STATS_TYPED } from "../../utils/types";
-import { AxisControls, NICE_NAMES } from "./AxisControls/AxisControls";
+import { INDUSTRY_COLORS, NICE_NAMES } from "../../utils/constants";
+import { NOCDataType, NOC_STATS_TYPED } from "../../utils/types";
+import { AxisControls } from "./AxisControls/AxisControls";
 import { AxisLabels } from "./AxisLabels";
 const CATEGORIES = Object.keys(INDUSTRY_COLORS);
 // https://github.com/hustcc/echarts-for-react
+const DEFAULT_COLOR = "steelblue";
 
 // https://echarts.apache.org/examples/en/index.html#chart-type-scatter
 // https://echarts.apache.org/examples/en/editor.html?c=scatter-simple
@@ -37,8 +37,11 @@ export default function EchartsGraph() {
       ? NOC_NODES.filter((node) => {
           return Object.entries(filters).every(([skillsKey, filterValue]) =>
             // search filter
-            typeof filterValue === "string"
+            skillsKey === "searchText" && typeof filterValue === "string"
               ? node.job.includes(filterValue)
+              : // color-by filter
+              skillsKey === "colorBy"
+              ? true
               : // skills sliders fiters
                 node[skillsKey] > filterValue
           );
@@ -133,6 +136,13 @@ export default function EchartsGraph() {
         name: "NOC_Nodes",
         data,
         type: "scatter",
+        itemStyle: {
+          color: (node) => {
+            return filters.colorBy
+              ? getColorBy(filters.colorBy)(node)
+              : DEFAULT_COLOR;
+          },
+        },
         symbolSize: function (node: typeof data[0]) {
           if (!node) {
             return;
@@ -207,4 +217,30 @@ export default function EchartsGraph() {
 }
 function radiusFromArea(area: number) {
   return Math.sqrt(area / Math.PI) * 2;
+}
+
+type EchartsNodeType = {
+  dataIndex: number;
+};
+const COLOR_BY_FUNCTIONS = {
+  job: (node: EchartsNodeType) => {
+    return `hsl(${Math.random() * 360},70%,50%)`;
+  },
+  automationRisk: (node: EchartsNodeType) => {
+    const nocNode = NOC_NODES[node.dataIndex];
+    return `hsl(${120 * nocNode.automationRisk},70%,50%)`;
+  },
+  workers: (node: EchartsNodeType) => {
+    const nocNode = NOC_NODES[node.dataIndex];
+    const workersPct = nocNode.workers / NOC_STATS_TYPED.workers.max;
+    return `hsl(210,70%,${100 - 80 * workersPct}%)`;
+  },
+} as { [sup in keyof NOCDataType]: (node: EchartsNodeType) => string };
+
+function getColorBy(colorBy: string) {
+  return (node) => {
+    const fn = COLOR_BY_FUNCTIONS[colorBy];
+    const color = fn ? fn(node) : DEFAULT_COLOR;
+    return color;
+  };
 }

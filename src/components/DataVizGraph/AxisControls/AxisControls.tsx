@@ -10,33 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { MdSwapHoriz } from "react-icons/md";
 import { FiltersMenu } from "./FiltersMenu";
-
-export const NICE_NAMES = {
-  job: "Job Title",
-  workers: "Workers",
-  yearsStudy: "Years of Education",
-  automationRisk: "Automation Risk (%)",
-  salaryMed: "Salary ($k/year)",
-  skillsComp: "Computer Skills",
-  skillsLogi: "Logic Skills",
-  skillsMath: "Math Skills",
-  skillsLang: "Language Skills",
-  s1DataAnalysis: "Data Analysis Skill",
-  s2DecisionMaking: "Decision Making Skill",
-  s3FindingInformation: "Finding Information Skill",
-  s4JobTaskPlanningandOrganizing: "Job Task Planning and Organizing Skill",
-  s5MeasurementandCalculation: "Measurement and Calculation Skill",
-  s6MoneyMath: "Money Math Skill",
-  s7NumericalEstimation: "Numerical Estimation Skill",
-  s8OralCommunication: "Oral Communication Skill",
-  s9ProblemSolving: "Problem Solving Skill",
-  s10Reading: "Reading Skill",
-  s11SchedulingorBudgetingandAccounting: "Scheduling or Budgeting and Accounting Skill",
-  s12DigitalTechnology: "Digital Technology Skill",
-  s13DocumentUse: "Document Use Skill",
-  s14Writing: "Writing Skill",
-  s15CriticalThinking: "Critical Thinking Skill",
-};
+import { NICE_NAMES } from "../../../utils/constants";
 
 export function AxisControls({
   xOptions,

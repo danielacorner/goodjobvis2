@@ -85,6 +85,7 @@ const filtersAtom = atom({
   skillsLogi: 0,
   skillsComp: 0,
   searchText: "",
+  colorBy: "",
 });
 export function useFilters() {
   return useAtom(filtersAtom);

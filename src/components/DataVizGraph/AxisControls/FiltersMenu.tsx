@@ -19,8 +19,10 @@ import { GiLogicGateNand } from "react-icons/gi";
 import { TbMathFunction } from "react-icons/tb";
 import { IoLanguage } from "react-icons/io5";
 import { FiFilter } from "react-icons/fi";
+import { AiOutlineBgColors } from "react-icons/ai";
 import { useFilters } from "../../../store/store";
 import { NOC_STATS_TYPED } from "../../../utils/types";
+import { NICE_NAMES } from "../../../utils/constants";
 
 export function FiltersMenu() {
   const [open, setOpen] = useState(false);
@@ -94,6 +96,10 @@ export function FiltersMenu() {
             </Styles2>
           </MenuItem>
         ))}
+        {/* color by box */}
+        <MenuItem>
+          <ColorByBox />
+        </MenuItem>
         {/* search box */}
         <MenuItem>
           <Styles2>
@@ -123,6 +129,74 @@ export function FiltersMenu() {
 const Styles2 = styled.div`
   display: flex;
   text-align: center;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+
+  .slider {
+    padding: 6px 10px 0;
+    width: 100%;
+  }
+`;
+
+function ColorByBox() {
+  const [open, setOpen] = useState(false);
+  const [filters, setFilters] = useFilters();
+
+  return (
+    <ColorByBoxStyles>
+      <Menu isOpen={open}>
+        <MenuButton
+          as={Button as any}
+          rightIcon={<ChevronDownIcon />}
+          onClick={() => setOpen(!open)}
+        >
+          <div className="sup">
+            <div>
+              <AiOutlineBgColors />{" "}
+            </div>
+            <div>
+              {filters.colorBy ? NICE_NAMES[filters.colorBy] : "Color By"}
+            </div>
+          </div>
+        </MenuButton>
+        <MenuList
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          {Object.entries({ "": "--", ...NICE_NAMES }).map(
+            ([itemKey, itemName]) => (
+              <MenuItem
+                key={itemKey}
+                onClick={() => {
+                  setFilters((prev) => ({ ...prev, colorBy: itemKey }));
+                  setOpen(false);
+                }}
+              >
+                <Styles3>{itemName}</Styles3>
+              </MenuItem>
+            )
+          )}
+        </MenuList>
+      </Menu>
+    </ColorByBoxStyles>
+  );
+}
+
+const ColorByBoxStyles = styled.div`
+  .chakra-menu__menu-button {
+    width: 100%;
+  }
+  .sup {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+`;
+const Styles3 = styled.div`
+  display: flex;
+  text-align: right;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
