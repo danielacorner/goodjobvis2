@@ -116,8 +116,8 @@ const REMOVE = [
 export const NOC_NODES_CLEANED = NOC_NODES.map((node) =>
   removeKeys(node, REMOVE)
 ) as typeof NOC_NODES;
-export function getNodeColor(node) {
-  const pct = node.automationRisk / NOC_STATS.automationRisk.max;
+function getNodeColor(node) {
+  const pct = node.automationRisk / (NOC_STATS as any).automationRisk.max;
   const col = interpolateRdYlGn(1 - pct);
   const rgb = col.slice(`rgb(`.length, -`)`.length).split(", ");
   const [r, g, b] = rgb.map(Number);

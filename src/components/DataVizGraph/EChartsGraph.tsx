@@ -1,5 +1,5 @@
 import ReactECharts from "echarts-for-react";
-import { startCase } from "lodash";
+import startCase from "lodash.startcase";
 import { useEffect, useState } from "react";
 import { NOC_NODES, NOC_NODES_CLEANED } from "../../assets/NOC-node";
 import { useCurrentStoryStep, useFilters } from "../../store/store";

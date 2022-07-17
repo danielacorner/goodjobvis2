@@ -26,7 +26,7 @@
     "jotai": "^1.6.7",
     "just-unique": "^4.0.1",
     "leva": "^0.9.27",
-    "lodash": "^4.17.21",
+    "lodash.startcase": "^4.4.0",
     "mini-css-extract-plugin": "^2.6.0",
     "nice-color-palettes": "^3.0.0",
     "npm-force-resolutions": "0.0.10",
