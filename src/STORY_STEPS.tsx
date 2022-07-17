@@ -220,23 +220,17 @@ const mockStep: StoryStepType = {
     // nodes: NOC_NODES,
     links: [],
   },
-  text: (
-    <StepStyles>
-      ...or we could ask a question like {`"`}How does a worker{`'`}s{" "}
-      <em>Reading Skill</em> correlate with their job{`'`}s{" "}
-      <em>Risk of Automation</em>?{`"`}.
-    </StepStyles>
-  ),
+  text: <StepStyles>text</StepStyles>,
   xKey: "s10Reading",
   yKey: "automationRisk",
 };
 export const STORY_STEPS_PATHS: { [sup in StepPaths]: StoryStepType[] } = {
-  astronomer: [mockStep],
-  chemistry: [mockStep],
-  engineer: [mockStep],
-  computers: [mockStep],
-  journalist: [mockStep],
-  nurse: [mockStep],
+  astronomer: [{ ...mockStep, text: <StepStyles>astronomer</StepStyles> }],
+  chemistry: [{ ...mockStep, text: <StepStyles>chemistry</StepStyles> }],
+  engineer: [{ ...mockStep, text: <StepStyles>engineer</StepStyles> }],
+  computers: [{ ...mockStep, text: <StepStyles>computers</StepStyles> }],
+  journalist: [{ ...mockStep, text: <StepStyles>journalist</StepStyles> }],
+  nurse: [{ ...mockStep, text: <StepStyles>nurse</StepStyles> }],
 };
 
 export const STORY_STEPS =
