@@ -98,10 +98,17 @@ export function FiltersMenu() {
         <MenuItem>
           <Styles2>
             <Input
+              className="text1q23"
               value={filters.searchText}
               placeholder="Search job titles"
               onClick={(e) => {
                 e.stopPropagation();
+                e.preventDefault();
+                // setTimeout(() => {
+                //   document
+                //     .querySelector<HTMLInputElement>(".text1q23")
+                //     ?.click();
+                // }, 100);
               }}
               onChange={(e) => {
                 setFilters((prev) => ({ ...prev, searchText: e.target.value }));
