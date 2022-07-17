@@ -153,10 +153,19 @@ export default function EchartsGraph() {
           }}
         />
       )}
-      <ReactECharts
-        option={options}
+      <div
         style={{ width: "100vw", height: "100vh", position: "fixed", inset: 0 }}
-      />
+      >
+        <ReactECharts
+          option={options}
+          style={{
+            width: "100vw",
+            height: "100vh",
+            position: "fixed",
+            inset: 0,
+          }}
+        />
+      </div>
     </>
   );
 }
