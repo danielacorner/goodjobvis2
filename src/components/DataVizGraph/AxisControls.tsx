@@ -17,6 +17,7 @@ import { MdComputer } from "react-icons/md";
 import { GiLogicGateNand } from "react-icons/gi";
 import { TbMathFunction } from "react-icons/tb";
 import { IoLanguage } from "react-icons/io5";
+import { FiFilter } from "react-icons/fi";
 import { atom, useAtom } from "jotai";
 import { useFilters } from "../../store/store";
 import { NOC_STATS } from "../../assets/NOC-node";
@@ -45,7 +46,12 @@ export function AxisControls({
     <Styles>
       <Menu>
         <MenuButton as={Button as any} rightIcon={<ChevronDownIcon />}>
-          X Axis: {xKey === "VARIABLE" ? "" : NICE_NAMES[xKey]}
+          <div style={{ fontWeight: xKey === "VARIABLE" ? "bold" : "normal" }}>
+            X Axis:
+          </div>
+          <div style={{ fontSize: 12 }}>
+            {xKey === "VARIABLE" ? "" : NICE_NAMES[xKey]}
+          </div>
         </MenuButton>
         <MenuList>
           {xOptions.map((x) => (
@@ -57,7 +63,12 @@ export function AxisControls({
       </Menu>
       <Menu>
         <MenuButton as={Button as any} rightIcon={<ChevronDownIcon />}>
-          Y Axis: {yKey === "VARIABLE" ? "" : NICE_NAMES[yKey]}
+          <div style={{ fontWeight: yKey === "VARIABLE" ? "bold" : "normal" }}>
+            Y Axis:
+          </div>
+          <div style={{ fontSize: 12 }}>
+            {yKey === "VARIABLE" ? "" : NICE_NAMES[yKey]}
+          </div>
         </MenuButton>
         <MenuList>
           {yOptions.map((x) => (
@@ -80,6 +91,9 @@ const Styles = styled.div`
   gap: 1em;
   justify-content: center;
   z-index: 123;
+  .chakra-menu__menu-button {
+    padding: 0 0.5em 0 1em;
+  }
   .chakra-menu__menu-list {
     max-width: calc(100vw - 80px);
     max-height: calc(100vh - 6em);
@@ -129,7 +143,7 @@ function FiltersMenu() {
         rightIcon={<ChevronDownIcon />}
         onClick={() => setOpen(!open)}
       >
-        Filters
+        <FiFilter />
       </MenuButton>
       <MenuList
         onClick={(e) => {
