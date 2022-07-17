@@ -53,6 +53,7 @@ export default function EchartsGraph() {
     top: 72,
     left: 56,
     bottom: 48,
+    right: 48,
     // right: 130,
   };
   const options = {
@@ -63,8 +64,21 @@ export default function EchartsGraph() {
           : !xAxisLabel && !yAxisLabel
           ? "_____ vs _____"
           : `${xAxisLabel} vs ${yAxisLabel}`,
-      left: "center",
-      top: 20,
+      textStyle: {
+        fontSize: 14,
+      },
+      left: 22,
+      top: 22,
+    },
+    toolbox: {
+      top: xKey === "VARIABLE" ? 48 : 16,
+      right: 16,
+      itemSize: 18,
+      feature: {
+        dataZoom: {
+          yAxisIndex: false,
+        },
+      },
     },
     // https://echarts.apache.org/en/option.html#tooltip
     tooltip: {

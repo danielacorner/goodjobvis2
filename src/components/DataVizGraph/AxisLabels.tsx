@@ -33,6 +33,7 @@ export function AxisLabels({ xAxisLabel, yAxisLabel, grid }) {
   );
 }
 const AxisLabelStyles = styled.div`
+  pointer-events: none;
   position: absolute;
   top: 0;
   left: 0;
