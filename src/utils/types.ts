@@ -1,5 +1,8 @@
 import NOC_DATA from "../assets/NOC-data";
-import { NOC_NODES } from "../assets/NOC-node";
+import { NOC_NODES, NOC_STATS } from "../assets/NOC-node";
+export const NOC_STATS_TYPED = NOC_STATS as {
+  [hey in keyof NOCDataType]: { min: number; max: number };
+};
 
 export type NOCDataType = typeof NOC_DATA[0];
 

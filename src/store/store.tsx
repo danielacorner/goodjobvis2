@@ -78,6 +78,7 @@ const filtersAtom = atom({
   skillsMath: 0,
   skillsLogi: 0,
   skillsComp: 0,
+  searchText: "",
 });
 export function useFilters() {
   return useAtom(filtersAtom);

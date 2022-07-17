@@ -21,7 +21,7 @@ import { CLUSTER_COLORS } from "../../utils/constants";
 import { STORY_STEPS } from "../../STORY_STEPS";
 import { useCurrentStepIdx } from "../../store/store";
 import zoomPlugin from "chartjs-plugin-zoom";
-import { AxisControls } from "./AxisControls";
+import { AxisControls } from "./AxisControls/AxisControls";
 // https://www.chartjs.org/docs/latest/
 
 // https://react-chartjs-2.netlify.app/examples/bubble-chart

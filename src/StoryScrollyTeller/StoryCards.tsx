@@ -62,5 +62,9 @@ const StoryStepStyles = styled.div`
   border-radius: 8px;
   .options {
     pointer-events: auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 0.5em;
+    margin-top: 0.5em;
   }
 `;

@@ -1,10 +1,11 @@
 import ReactECharts from "echarts-for-react";
 import { startCase } from "lodash";
 import { useEffect, useState } from "react";
-import { NOC_NODES, NOC_NODES_CLEANED, NOC_STATS } from "../../assets/NOC-node";
+import { NOC_NODES, NOC_NODES_CLEANED } from "../../assets/NOC-node";
 import { useCurrentStoryStep, useFilters } from "../../store/store";
 import { INDUSTRY_COLORS } from "../../utils/constants";
-import { AxisControls } from "./AxisControls";
+import { NOC_STATS_TYPED } from "../../utils/types";
+import { AxisControls } from "./AxisControls/AxisControls";
 const CATEGORIES = Object.keys(INDUSTRY_COLORS);
 // https://github.com/hustcc/echarts-for-react
 
@@ -14,7 +15,7 @@ const CATEGORIES = Object.keys(INDUSTRY_COLORS);
 export default function EchartsGraph() {
   const { xKey, yKey } = useCurrentStoryStep();
 
-  const [filters, setFilters] = useFilters();
+  const [filters] = useFilters();
 
   // allow manual control of axis keys
   const [{ xKeyState, yKeyState }, setKeyState] = useState({
@@ -24,16 +25,20 @@ export default function EchartsGraph() {
   // update when the step changes
   useEffect(() => {
     setKeyState({
-      xKeyState: xKey,
-      yKeyState: yKey,
+      xKeyState: xKey === "VARIABLE" ? "skillsComp" : xKey,
+      yKeyState: yKey === "VARIABLE" ? "salaryMed" : yKey,
     });
   }, [xKey, yKey]);
 
   const data =
     xKeyState && yKeyState
       ? NOC_NODES.filter((node) => {
-          return Object.entries(filters).every(
-            ([skillsKey, filterValue]) => node[skillsKey] > filterValue
+          return Object.entries(filters).every(([skillsKey, filterValue]) =>
+            // search filter
+            typeof filterValue === "string"
+              ? node.job.includes(filterValue)
+              : // skills sliders fiters
+                node[skillsKey] > filterValue
           );
         }).map((node) => [
           node[xKeyState],
@@ -50,6 +55,32 @@ export default function EchartsGraph() {
           : `${startCase(xKeyState)} (x) vs ${startCase(yKeyState)} (y)`,
       left: "center",
       top: 0,
+    },
+    // https://echarts.apache.org/en/option.html#tooltip
+    tooltip: {
+      formatter: (nodes, ...rest) => {
+        return nodes.reduce((acc, node) => {
+          return (
+            acc +
+            `<div>[${Math.round(node.value[0])}, ${Math.round(
+              node.value[1]
+            )}] ${node.value[2]}</div>`
+          );
+        }, ``);
+      },
+      className: "echarts-tooltip",
+      confine: true,
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+      },
+      backgroundColor: "rgba(255, 255, 255, 0.8)",
+      // position: function (pos, params, el, elRect, size) {
+      //   const obj = { top: 10 };
+      //   obj[["left", "right"][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+      //   return obj;
+      // },
+      extraCssText: "width: fit-content",
     },
     xAxis: {
       splitLine: { show: false },
@@ -71,7 +102,9 @@ export default function EchartsGraph() {
           if (!node) {
             return;
           }
-          const size = radiusFromArea(Number(node[3]) / NOC_STATS.workers.max);
+          const size = radiusFromArea(
+            Number(node[3]) / NOC_STATS_TYPED.workers.max
+          );
           return size * 20;
         },
         // emphasis: {

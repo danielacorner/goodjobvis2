@@ -1,11 +1,13 @@
-import { StoryStepType } from "./utils/types";
-import { NOC_NODES, NOC_STATS } from "./assets/NOC-node";
+import { NOC_STATS_TYPED, StoryStepType } from "./utils/types";
+import { NOC_NODES } from "./assets/NOC-node";
 import styled from "styled-components";
 import { atom, useAtom } from "jotai";
 import { GrTest } from "react-icons/gr";
 import { IoPlanetOutline } from "react-icons/io5";
 import { MdEngineering } from "react-icons/md";
 import { GiComputerFan } from "react-icons/gi";
+import { BsNewspaper } from "react-icons/bs";
+import { FaUserNurse } from "react-icons/fa";
 
 const lightGreen = "#b0f2b870";
 const lightRed = "#f2b0b06f";
@@ -24,7 +26,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     // TODO add colorBy
     graphData: {
       nodes: NOC_NODES.filter(
-        (node) => node.automationRisk < 0.1 * NOC_STATS.automationRisk.max
+        (node) => node.automationRisk < 0.1 * NOC_STATS_TYPED.automationRisk.max
       ),
       links: [],
     },
@@ -57,7 +59,8 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     graphType: "3dPile",
     graphData: {
       nodes: NOC_NODES.filter(
-        (node) => node.automationRisk >= 0.9 * NOC_STATS.automationRisk.max
+        (node) =>
+          node.automationRisk >= 0.9 * NOC_STATS_TYPED.automationRisk.max
       ),
       links: [],
     },
@@ -74,7 +77,8 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     graphType: "react-force-graph",
     graphData: {
       nodes: NOC_NODES.filter(
-        (node) => node.automationRisk >= 0.9 * NOC_STATS.automationRisk.max
+        (node) =>
+          node.automationRisk >= 0.9 * NOC_STATS_TYPED.automationRisk.max
       ),
       links: [],
     },
@@ -168,8 +172,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
     },
     text: (
       <StepStyles>
-        Pick one of these characters to see how they would use the
-        visualization:
+        {`For example, here's how someone seeking one of these jobs might use this visualization:`}
       </StepStyles>
     ),
     nextStepOptions: [
@@ -192,6 +195,16 @@ const STORY_STEPS_PROD: StoryStepType[] = [
         stepName: "step-1",
         description: "computers",
         icon: <GiComputerFan />,
+      },
+      {
+        stepName: "step-1",
+        description: "journalist",
+        icon: <BsNewspaper />,
+      },
+      {
+        stepName: "step-1",
+        description: "nurse",
+        icon: <FaUserNurse />,
       },
     ],
   },

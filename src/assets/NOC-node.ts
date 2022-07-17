@@ -1,6 +1,5 @@
 import { interpolateRdYlGn } from "d3-scale-chromatic";
 import { removeKeys } from "../utils/constants";
-import { NOCDataType } from "../utils/types";
 import NOC_DATA from "./NOC-data";
 
 export const NOC_STATS = Object.keys(NOC_DATA[0]).reduce(
@@ -17,9 +16,9 @@ export const NOC_STATS = Object.keys(NOC_DATA[0]).reduce(
     };
     return acc;
   },
-  {} as {
+  {} /* as {
     [hey in keyof NOCDataType]: { min: number; max: number };
-  }
+  } */
 );
 
 export const NOC_NODES = NOC_DATA.map((node) => ({
