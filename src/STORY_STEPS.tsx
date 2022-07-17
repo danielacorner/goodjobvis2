@@ -156,7 +156,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
 
     text: (
       <StepStyles>
-        {`For example, here's how someone with one of these interests might use this visualization:`}
+        {`For example, pick an interest to see how you might investigate related jobs:`}
       </StepStyles>
     ),
     nextStepOptions: [
@@ -217,14 +217,6 @@ const mockStep: StoryStepType = {
   xKey: "s10Reading",
   yKey: "automationRisk",
 };
-export const STORY_STEPS_PATHS: { [sup in StepPaths]: StoryStepType[] } = {
-  astronomer: [{ ...mockStep, text: <StepStyles>astronomer</StepStyles> }],
-  chemistry: [{ ...mockStep, text: <StepStyles>chemistry</StepStyles> }],
-  engineer: [{ ...mockStep, text: <StepStyles>engineer</StepStyles> }],
-  computers: [{ ...mockStep, text: <StepStyles>computers</StepStyles> }],
-  journalist: [{ ...mockStep, text: <StepStyles>journalist</StepStyles> }],
-  nurse: [{ ...mockStep, text: <StepStyles>nurse</StepStyles> }],
-};
 
 export const STORY_STEPS =
   process.env.NODE_ENV === "development" ? STORY_STEPS_DEV : STORY_STEPS_PROD;
@@ -233,3 +225,30 @@ const storyStepsAtom = atom<StoryStepType[]>(STORY_STEPS);
 export function useStorySteps() {
   return useAtom(storyStepsAtom);
 }
+
+const ASTRONOMER_STORY: StoryStepType[] = [
+  {
+    id: "step-6",
+    graphType: "2dScatter",
+
+    text: (
+      <StepStyles>
+        ...or we could ask a question like {`"`}How does a worker{`'`}s{" "}
+        <em>Reading Skill</em> correlate with their job{`'`}s{" "}
+        <em>Risk of Automation</em>?{`"`}.
+      </StepStyles>
+    ),
+    xKey: "s10Reading",
+    yKey: "automationRisk",
+  },
+  { ...mockStep, text: <StepStyles>astronomer</StepStyles> },
+];
+
+export const STORY_STEPS_PATHS: { [sup in StepPaths]: StoryStepType[] } = {
+  astronomer: ASTRONOMER_STORY,
+  chemistry: [{ ...mockStep, text: <StepStyles>chemistry</StepStyles> }],
+  engineer: [{ ...mockStep, text: <StepStyles>engineer</StepStyles> }],
+  computers: [{ ...mockStep, text: <StepStyles>computers</StepStyles> }],
+  journalist: [{ ...mockStep, text: <StepStyles>journalist</StepStyles> }],
+  nurse: [{ ...mockStep, text: <StepStyles>nurse</StepStyles> }],
+};

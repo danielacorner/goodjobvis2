@@ -1,4 +1,3 @@
-import { useWindowSize } from "react-use";
 import styled from "styled-components";
 
 export function AxisLabels({ xAxisLabel, yAxisLabel, grid }) {
@@ -6,7 +5,9 @@ export function AxisLabels({ xAxisLabel, yAxisLabel, grid }) {
     "🌟🚨 ~ file: AxisLabels.tsx ~ line 4 ~ AxisLabels ~ xAxisLabel",
     xAxisLabel
   );
-  const { width, height } = useWindowSize();
+  if (!xAxisLabel || !yAxisLabel) {
+    return null;
+  }
 
   const xLabel = xAxisLabel.split("(")[0];
   const xUnit = xAxisLabel.split("(")[1];
@@ -15,7 +16,7 @@ export function AxisLabels({ xAxisLabel, yAxisLabel, grid }) {
   const yUnit = yAxisLabel.split("(")[1];
 
   return (
-    <AxisLabelStyles {...{ width, height, grid }}>
+    <AxisLabelStyles {...{ grid }}>
       <div className="y-axis-label">
         {yLabel}
         {yUnit ? "(" : ""}
@@ -54,7 +55,7 @@ const AxisLabelStyles = styled.div`
     transform: rotate(-90deg)
       translate(
         calc(-100% - ${(p) => p.grid.top}px),
-        ${(p) => p.grid.left - 56}px
+        ${(p) => p.grid.left - 64}px
       );
     transform-origin: top left;
     justify-self: flex-end;

@@ -51,15 +51,20 @@ export default function EchartsGraph() {
       : [];
   const grid = {
     top: 72,
-    left: 48,
+    left: 56,
     bottom: 48,
     // right: 130,
   };
   const options = {
     title: {
-      text: xKey === "VARIABLE" ? "" : `${xAxisLabel} vs ${yAxisLabel}`,
+      text:
+        xKey === "VARIABLE"
+          ? ""
+          : !xAxisLabel && !yAxisLabel
+          ? "_____ vs _____"
+          : `${xAxisLabel} vs ${yAxisLabel}`,
       left: "center",
-      top: 0,
+      top: 20,
     },
     // https://echarts.apache.org/en/option.html#tooltip
     tooltip: {
@@ -89,10 +94,24 @@ export default function EchartsGraph() {
     },
     xAxis: {
       splitLine: { show: false },
+      axisLabel: {
+        formatter: (value) => {
+          return xKeyState && ["automationRisk"].includes(xKeyState)
+            ? `${value * 100}%`
+            : value;
+        },
+      },
     },
     yAxis: {
       splitLine: { show: false },
       scale: true,
+      axisLabel: {
+        formatter: (value) => {
+          return yKeyState && ["automationRisk"].includes(yKeyState)
+            ? `${value * 100}%`
+            : value;
+        },
+      },
     },
     grid,
     series: [
