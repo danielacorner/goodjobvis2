@@ -1,1 +1,1 @@
-[WIP] https://goodjobvis.netlify.app/
+GoodJob, a Canadian Careers explorer / interactive data story https://goodjobvis.netlify.app/

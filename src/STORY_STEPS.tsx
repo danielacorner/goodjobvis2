@@ -114,11 +114,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   {
     id: "step-5",
     graphType: "2dScatter",
-    graphData: {
-      nodes: [],
-      // nodes: NOC_NODES,
-      links: [],
-    },
+
     text: (
       <StepStyles>
         The dataset comes with a lot of different data. For example,
@@ -134,11 +130,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   {
     id: "step-6",
     graphType: "2dScatter",
-    graphData: {
-      nodes: [],
-      // nodes: NOC_NODES,
-      links: [],
-    },
+
     text: (
       <StepStyles>
         ...or we could ask a question like {`"`}How does a worker{`'`}s{" "}
@@ -153,11 +145,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   {
     id: "step-7",
     graphType: "2dScatter",
-    graphData: {
-      nodes: [],
-      // nodes: NOC_NODES,
-      links: [],
-    },
+
     text: <StepStyles>Here you can compare any two variables:</StepStyles>,
     xKey: "VARIABLE",
     yKey: "VARIABLE",
@@ -165,11 +153,7 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   {
     id: "step-8",
     graphType: "2dScatter",
-    graphData: {
-      nodes: [],
-      // nodes: NOC_NODES,
-      links: [],
-    },
+
     text: (
       <StepStyles>
         {`For example, here's how someone with one of these interests might use this visualization:`}
@@ -208,18 +192,27 @@ const STORY_STEPS_PROD: StoryStepType[] = [
       },
     ],
   },
+  // ...(process.env.NODE_ENV === "development"
+  //   ? [
+  //       {
+  //         id: "step-9",
+  //         graphType: "lotteryMachine",
+  //         graphData: {
+  //           nodes: NOC_NODES,
+  //           links: [],
+  //         },
+  //         text: <StepStyles>{`Check out some jobs at random:`}</StepStyles>,
+  //       },
+  //     ]
+  //   : ([] as any)),
 ];
 
-const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(6);
+const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(4);
 
 const mockStep: StoryStepType = {
   id: "astronomer-1",
   graphType: "2dScatter",
-  graphData: {
-    nodes: [],
-    // nodes: NOC_NODES,
-    links: [],
-  },
+
   text: <StepStyles>text</StepStyles>,
   xKey: "s10Reading",
   yKey: "automationRisk",

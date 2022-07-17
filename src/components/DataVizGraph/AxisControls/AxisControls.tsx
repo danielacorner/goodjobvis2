@@ -11,7 +11,7 @@ import {
 import { MdSwapHoriz } from "react-icons/md";
 import { FiltersMenu } from "./FiltersMenu";
 
-const NICE_NAMES = {
+export const NICE_NAMES = {
   job: "Job Title",
   workers: "Workers",
   yearsStudy: "Years of Education",

@@ -4,6 +4,7 @@ import { useCurrentStoryStep } from "../../store/store";
 import { SigmaForceGraph } from "./SigmaForceGraph";
 import EchartsGraph from "./EChartsGraph";
 import ErrorBoundary from "../ErrorBoundary";
+import { LotteryMachine } from "./LotteryMachine";
 
 export function DataVizGraph() {
   const { graphType } = useCurrentStoryStep();
@@ -24,6 +25,10 @@ export function DataVizGraph() {
       ) : graphType === "3dPile" ? (
         <ErrorBoundary>
           <R3FGraph3D />
+        </ErrorBoundary>
+      ) : graphType === "lotteryMachine" ? (
+        <ErrorBoundary>
+          <LotteryMachine />
         </ErrorBoundary>
       ) : null}
     </>

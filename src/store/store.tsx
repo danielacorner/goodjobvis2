@@ -3,7 +3,7 @@ import { atom, SetStateAction, useAtom } from "jotai";
 import { useState } from "react";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { STORY_STEPS } from "../STORY_STEPS";
-import { GraphNodeType, StoryStepType } from "../utils/types";
+import { GraphDataType, GraphNodeType, StoryStepType } from "../utils/types";
 export const isCoolAtom = atom<boolean>(true);
 export type TooltipNodeType = GraphNodeType & {
   position: { x: number; y: number };
@@ -18,9 +18,15 @@ export function useCurrentStepIdx(): [
   const [currentStepIdx, setCurrentStepIdx] = useAtom(currentStepIdxAtom);
   return [currentStepIdx, setCurrentStepIdx];
 }
-export function useCurrentStoryStep(): StoryStepType {
+export function useCurrentStoryStep(): StoryStepType & {
+  graphData: GraphDataType;
+} {
   const [currentStepIdx] = useCurrentStepIdx();
-  return STORY_STEPS[currentStepIdx];
+  const currentStoryStep = STORY_STEPS[currentStepIdx];
+  return {
+    ...currentStoryStep,
+    graphData: currentStoryStep.graphData ?? { nodes: [], links: [] },
+  };
 }
 
 export function useStoryStepIdx() {

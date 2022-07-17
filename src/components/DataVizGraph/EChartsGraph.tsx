@@ -5,7 +5,8 @@ import { NOC_NODES, NOC_NODES_CLEANED } from "../../assets/NOC-node";
 import { useCurrentStoryStep, useFilters } from "../../store/store";
 import { INDUSTRY_COLORS } from "../../utils/constants";
 import { NOC_STATS_TYPED } from "../../utils/types";
-import { AxisControls } from "./AxisControls/AxisControls";
+import { AxisControls, NICE_NAMES } from "./AxisControls/AxisControls";
+import { AxisLabels } from "./AxisLabels";
 const CATEGORIES = Object.keys(INDUSTRY_COLORS);
 // https://github.com/hustcc/echarts-for-react
 
@@ -29,7 +30,8 @@ export default function EchartsGraph() {
       yKeyState: yKey === "VARIABLE" ? "salaryMed" : yKey,
     });
   }, [xKey, yKey]);
-
+  const xAxisLabel = (xKeyState && NICE_NAMES[xKeyState]) ?? xKeyState;
+  const yAxisLabel = (yKeyState && NICE_NAMES[yKeyState]) ?? yKeyState;
   const data =
     xKeyState && yKeyState
       ? NOC_NODES.filter((node) => {
@@ -47,12 +49,15 @@ export default function EchartsGraph() {
           node.workers,
         ])
       : [];
+  const grid = {
+    top: 72,
+    left: 48,
+    bottom: 48,
+    // right: 130,
+  };
   const options = {
     title: {
-      text:
-        xKey === "VARIABLE"
-          ? ""
-          : `${startCase(xKeyState)} (x) vs ${startCase(yKeyState)} (y)`,
+      text: xKey === "VARIABLE" ? "" : `${xAxisLabel} vs ${yAxisLabel}`,
       left: "center",
       top: 0,
     },
@@ -89,10 +94,7 @@ export default function EchartsGraph() {
       splitLine: { show: false },
       scale: true,
     },
-    grid: {
-      left: 80,
-      // right: 130,
-    },
+    grid,
     series: [
       {
         name: "NOC_Nodes",
@@ -165,11 +167,11 @@ export default function EchartsGraph() {
             inset: 0,
           }}
         />
+        <AxisLabels {...{ xAxisLabel, yAxisLabel, grid }} />
       </div>
     </>
   );
 }
-
 function radiusFromArea(area: number) {
   return Math.sqrt(area / Math.PI) * 2;
 }
