@@ -1,6 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import styled from "styled-components";
 import { STORY_STEPS, STORY_STEPS_PATHS, useStorySteps } from "../STORY_STEPS";
+import { useMount } from "../utils/constants";
 
 export function StoryCards() {
   const [storySteps, setStorySteps] = useStorySteps();
@@ -44,6 +45,13 @@ export function StoryCards() {
       })}
     </StoryCardsStyles>
   );
+}
+export function StoryCards2() {
+  const [storySteps, setStorySteps] = useStorySteps();
+  useMount(() => {
+    setStorySteps(storySteps.slice(-1));
+  });
+  return <StoryCards />;
 }
 const StoryCardsStyles = styled.div`
   pointer-events: none;

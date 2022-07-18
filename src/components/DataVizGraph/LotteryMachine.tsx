@@ -11,8 +11,7 @@ import { Debug, Physics, useSphere } from "@react-three/cannon";
 import { SSAOPass } from "three-stdlib";
 import { useFilters } from "../../store/store";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useMount } from "../../utils/constants";
-
+import { CLUSTER_COLORS, d3SchemeCategory10 } from "../../utils/constants";
 extend({ SSAOPass });
 
 const RADIUS = 0.5;
@@ -64,12 +63,13 @@ function DebugInDev({ children }) {
 const tempObject = new THREE.Object3D();
 const tempColor = new THREE.Color();
 const NUM_NODES = 30;
-const COLORS = [...new Array(NUM_NODES)].map(
-  () =>
-    "hsl(" +
-    Math.round(360 * Math.random()) +
-    `, 100%, ${Math.round(Math.random() * 64) + 36}%)`
-);
+// const COLORS = [...new Array(NUM_NODES)].map(
+//   () => palettes[0][Math.floor(Math.random() * palettes[0].length)]
+//   // "hsl(" +
+//   // Math.round(360 * Math.random()) +
+//   // `, 100%, ${Math.round(Math.random() * 64) + 36}%)`
+// );
+const COLORS = d3SchemeCategory10;
 
 function Clump({
   mat = new THREE.Matrix4(),
@@ -81,13 +81,14 @@ function Clump({
     () =>
       // Float32Array.from(
       new Array(NUM_NODES).fill(null).flatMap((_, i) => {
-        const [h, s, l] = hslStringToHSL(COLORS[i]);
-        const hex = hslToHex(
-          Number(h),
-          Number(s.slice(0, -1)),
-          Number(l.slice(0, -1))
-        );
-        const color = hex;
+        // const [h, s, l] = hslStringToHSL(COLORS[i]);
+        // const hex = hslToHex(
+        //   Number(h),
+        //   Number(s.slice(0, -1)),
+        //   Number(l.slice(0, -1))
+        // );
+        // const color = hex;
+        const color = COLORS[i];
         return color;
       }),
     // ),
@@ -155,7 +156,9 @@ function Clump({
   });
   useEffect(() => {
     for (let index = 0; index < colorArray.length; index++) {
-      const color = colorArray[index];
+      const node = filteredNodesRandom[index];
+      // const color = colorArray[index];
+      const color = CLUSTER_COLORS[node.cluster];
       console.log(
         "🌟🚨 ~ file: LotteryMachine.tsx ~ line 169 ~ useEffect ~ color",
         color

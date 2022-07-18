@@ -7,6 +7,7 @@ export const DISABLE_SELECTION_OF_TEXT_CSS = `
   -ms-user-select: none; /* IE 10+ */
   user-select: none;
 `;
+import palettes from "nice-color-palettes";
 
 export function useMount(cb: EffectCallback) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -25,7 +26,7 @@ export const FULL_WIDTH = 0.5;
 export const PADDING = 0.08;
 export const NODE_RADIUS = 0.12;
 export const NODE_RADIUS_COLLISION_MULTIPLIER = 1.2;
-const d3SchemeCategory10 = [
+export const d3SchemeCategory10 = [
   "rgba(31,119,180, 1)",
   "rgba(255,127,14, 1)",
   "rgba(44,160,44, 1)",
@@ -37,7 +38,11 @@ const d3SchemeCategory10 = [
   "rgba(188,189,34, 1)",
   "rgba(23,190,207, 1)",
 ];
-const palette = d3SchemeCategory10;
+// const palette = d3SchemeCategory10;
+const palette = [
+  ...palettes[Math.floor(Math.random() * palettes.length)],
+  ...palettes[Math.floor(Math.random() * palettes.length)],
+];
 export const CLUSTER_COLORS = {
   "1": palette[0],
   "2": palette[1],
