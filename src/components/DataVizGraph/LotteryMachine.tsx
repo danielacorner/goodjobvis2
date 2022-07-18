@@ -6,14 +6,14 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
-import { Physics, useSphere } from "@react-three/cannon";
+import { Debug, Physics, useSphere } from "@react-three/cannon";
 import { SSAOPass } from "three-stdlib";
 import { useFilters } from "../../store/store";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 extend({ SSAOPass });
 
-const RADIUS = 0.1;
+const RADIUS = 0.5;
 const rfs = THREE.MathUtils.randFloatSpread;
 const sphereGeometry = new THREE.SphereGeometry(RADIUS, 32, 32);
 const baubleMaterial = new THREE.MeshStandardMaterial({
@@ -41,15 +41,23 @@ export const LotteryMachine = () => (
     />
     <directionalLight intensity={5} position={[-10, -10, -10]} color="purple" />
     <Physics gravity={[0, 2, 0]} iterations={10}>
-      <Pointer />
-      <Clump />
+      <Debug>
+        <ColliderSphere />
+        <Clump />
+      </Debug>
     </Physics>
     <Environment files="/adamsbridge.hdr" />
     <Effects />
     <Sky />
   </Canvas>
 );
-
+function DebugInDev({ children }) {
+  return process.env.NODE_ENV === "development" ? (
+    <Debug>{children}</Debug>
+  ) : (
+    <>{children}</>
+  );
+}
 function Clump({
   mat = new THREE.Matrix4(),
   vec = new THREE.Vector3(),
@@ -99,15 +107,18 @@ function Clump({
     />
   );
 }
-
-function Pointer() {
+const COLLIDER_RADIUS = RADIUS * 3;
+function ColliderSphere() {
+  const [shuffling, setShuffling] = useState(false);
   const viewport = useThree((state) => state.viewport);
   const [, api] = useSphere(() => ({
     type: "Kinematic",
-    args: [1],
+    args: [COLLIDER_RADIUS],
     position: [0, 0, 0],
   }));
   return useFrame((state) =>
+    // TODO move randomly during shuffle
+    // TODO tooltip
     api.position.set(
       (state.mouse.x * viewport.width) / 2,
       (state.mouse.y * viewport.height) / 2,
