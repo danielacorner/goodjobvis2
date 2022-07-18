@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import styled from "styled-components";
+import { useCurrentStepIdx } from "../store/store";
 import { STORY_STEPS, STORY_STEPS_PATHS, useStorySteps } from "../STORY_STEPS";
 import { useMount } from "../utils/constants";
 
@@ -48,8 +49,11 @@ export function StoryCards() {
 }
 export function StoryCards2() {
   const [storySteps, setStorySteps] = useStorySteps();
+  const [, setCurrentStepIdx] = useCurrentStepIdx();
+
   useMount(() => {
     setStorySteps(storySteps.slice(-1));
+    setCurrentStepIdx(storySteps.length - 1);
   });
   return <StoryCards />;
 }

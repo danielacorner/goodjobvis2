@@ -207,7 +207,8 @@ const STORY_STEPS_PROD: StoryStepType[] = [
   // : ([] as any)),
 ];
 
-const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(8);
+const STORY_STEPS_DEV = STORY_STEPS_PROD;
+// const STORY_STEPS_DEV = STORY_STEPS_PROD.slice(8);
 
 const mockStep: StoryStepType = {
   id: "astronomer-1",
