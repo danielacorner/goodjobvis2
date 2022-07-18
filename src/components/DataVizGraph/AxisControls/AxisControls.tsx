@@ -48,7 +48,14 @@ export function AxisControls({
         </div>
         <MenuList>
           {xOptions.map((x) => (
-            <MenuItem key={x} onClick={() => setXKey(x)}>
+            <MenuItem
+              key={x}
+              disabled={x === yKey}
+              style={
+                x === yKey ? { color: "lightgrey", pointerEvents: "none" } : {}
+              }
+              onClick={() => (x === yKey ? null : setXKey(x))}
+            >
               {NICE_NAMES[x] ?? x}
             </MenuItem>
           ))}
@@ -65,7 +72,14 @@ export function AxisControls({
         </MenuButton>
         <MenuList>
           {yOptions.map((x) => (
-            <MenuItem key={x} onClick={() => setYKey(x)}>
+            <MenuItem
+              key={x}
+              disabled={x === xKey}
+              style={
+                x === xKey ? { color: "lightgrey", pointerEvents: "none" } : {}
+              }
+              onClick={() => (x === xKey ? null : setYKey(x))}
+            >
               {NICE_NAMES[x] ?? x}
             </MenuItem>
           ))}
