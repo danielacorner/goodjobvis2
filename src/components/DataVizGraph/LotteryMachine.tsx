@@ -9,7 +9,7 @@ import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
 import { Debug, Physics, useSphere } from "@react-three/cannon";
 import { SSAOPass } from "three-stdlib";
 import { useFilters } from "../../store/store";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 extend({ SSAOPass });
 
@@ -111,19 +111,27 @@ const COLLIDER_RADIUS = RADIUS * 3;
 function ColliderSphere() {
   const [shuffling, setShuffling] = useState(false);
   const viewport = useThree((state) => state.viewport);
-  const [, api] = useSphere(() => ({
+
+  const [ref, api] = useSphere<any>(() => ({
     type: "Kinematic",
     args: [COLLIDER_RADIUS],
     position: [0, 0, 0],
   }));
+  // subscribe to sphere position
+  const position = useRef([0, 0, 0]);
+  useEffect(() => api.position.subscribe((v) => (position.current = v)), [api]);
+
   return useFrame((state) =>
     // TODO move randomly during shuffle
     // TODO tooltip
-    api.position.set(
-      (state.mouse.x * viewport.width) / 2,
-      (state.mouse.y * viewport.height) / 2,
-      0
-    )
+    {
+      const nextX = (state.mouse.x * viewport.width) / 2;
+      const nextY = (state.mouse.y * viewport.height) / 2;
+      const nextXL = THREE.MathUtils.lerp(position.current[0], nextX, 0.2);
+      const nextYL = THREE.MathUtils.lerp(position.current[1], nextY, 0.2);
+
+      return api.position.set(nextXL, nextYL, 0);
+    }
   );
 }
 

@@ -52,7 +52,7 @@ export const CLUSTER_COLORS = {
 };
 
 export const colors = {
-  appBackground: "#f5ffe1",
+  appBackground: "#f9ffe8",
 };
 export const INDUSTRY_COLORS = {
   Management: d3SchemeCategory10[0],
