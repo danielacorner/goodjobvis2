@@ -12,6 +12,7 @@ import { Fade } from "@mui/material";
 import { DataVizGraph } from "./components/DataVizGraph/DataVizGraph";
 import { Route, Router, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
+import { LotteryMachine } from "./components/DataVizGraph/LotteryMachine";
 // 2. Extend the theme to include custom colors, fonts, etc
 const chakraColors = {
   brand: {
@@ -39,12 +40,7 @@ function App() {
             {/* <NOCImages /> */}
             {/* <NOCThumbnails /> */}
           </div>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<StoryCards />}></Route>
-              <Route path="/boop" element={<StoryCards2 />}></Route>
-            </Routes>
-          </BrowserRouter>
+          <StoryCards />
         </div>
       </AppStyles>
       <NodeTooltip />
@@ -71,7 +67,20 @@ export const AppStyles = styled.div`
   }
 `;
 
-export default App;
+const RoutedApp = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />}></Route>
+      <Route path="/boop" element={<App2 />}></Route>
+    </Routes>
+  </BrowserRouter>
+);
+
+function App2() {
+  return <LotteryMachine />;
+}
+
+export default RoutedApp;
 
 function FadeInOut({ children }) {
   const [fadeOut] = useFadeOut();

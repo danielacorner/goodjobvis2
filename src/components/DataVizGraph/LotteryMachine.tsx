@@ -4,6 +4,7 @@ import {
   Environment,
   Effects as EffectComposer,
   Sphere,
+  useDetectGPU,
 } from "@react-three/drei";
 import * as THREE from "three";
 import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
@@ -62,7 +63,14 @@ function DebugInDev({ children }) {
 
 const tempObject = new THREE.Object3D();
 const tempColor = new THREE.Color();
-const NUM_NODES = 30;
+function useNumNodes() {
+  const { tier } = useDetectGPU();
+  return tier > 2 ? 60 : 30;
+}
+function useColliderRadius() {
+  const { tier } = useDetectGPU();
+  return tier > 2 ? RADIUS * 4 : RADIUS * 3;
+}
 // const COLORS = [...new Array(NUM_NODES)].map(
 //   () => palettes[0][Math.floor(Math.random() * palettes[0].length)]
 //   // "hsl(" +
@@ -76,11 +84,12 @@ function Clump({
   vec = new THREE.Vector3(),
   ...props
 }) {
+  const numNodes = useNumNodes();
   const texture = useTexture("/worker.jpg");
   const colorArray = useMemo(
     () =>
       // Float32Array.from(
-      new Array(NUM_NODES).fill(null).flatMap((_, i) => {
+      new Array(numNodes).fill(null).flatMap((_, i) => {
         // const [h, s, l] = hslStringToHSL(COLORS[i]);
         // const hex = hslToHex(
         //   Number(h),
@@ -133,8 +142,8 @@ function Clump({
   const [, , filteredNodes] = useFilters();
 
   const filteredNodesRandom = useMemo(
-    () => shuffleArray([...filteredNodes]).slice(0, NUM_NODES),
-    [filteredNodes]
+    () => shuffleArray([...filteredNodes]).slice(0, numNodes),
+    [filteredNodes, numNodes]
   );
   useFrame((state) => {
     for (let i = 0; i < filteredNodesRandom.length; i++) {
@@ -205,14 +214,14 @@ function Clump({
     </instancedMesh>
   );
 }
-const COLLIDER_RADIUS = RADIUS * 3;
 function ColliderSphere() {
   const [shuffling, setShuffling] = useState(false);
   const viewport = useThree((state) => state.viewport);
 
+  const colliderRadius = useColliderRadius();
   const [ref, api] = useSphere<any>(() => ({
     type: "Kinematic",
-    args: [COLLIDER_RADIUS],
+    args: [colliderRadius],
     position: [0, 0, 0],
   }));
   // subscribe to sphere position
@@ -232,10 +241,10 @@ function ColliderSphere() {
     }
   );
   return (
-    <Sphere ref={ref} args={[COLLIDER_RADIUS]}>
+    <Sphere ref={ref} args={[colliderRadius]}>
       <meshPhysicalMaterial
         transmission={1}
-        thickness={COLLIDER_RADIUS}
+        thickness={colliderRadius}
         roughness={0}
       />
     </Sphere>
