@@ -192,6 +192,7 @@ function Clump({
           emissive: "#370037",
           // });
         }}
+        // transmission={1}
       >
         {/* <instancedBufferAttribute
           attach="attributes-color"
