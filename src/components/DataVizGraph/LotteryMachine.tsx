@@ -16,13 +16,13 @@ extend({ SSAOPass });
 
 const RADIUS = 0.5;
 const rfs = THREE.MathUtils.randFloatSpread;
-const sphereGeometry = new THREE.SphereGeometry(RADIUS, 32, 32);
-const baubleMaterial = new THREE.MeshStandardMaterial({
-  color: "red",
-  roughness: 0,
-  envMapIntensity: 0.2,
-  emissive: "#370037",
-});
+// const sphereGeometry = new THREE.SphereGeometry(RADIUS, 32, 32);
+// const baubleMaterial = new THREE.MeshStandardMaterial({
+//   color: "white",
+//   roughness: 0,
+//   envMapIntensity: 0.2,
+//   emissive: "#370037",
+// });
 
 export const LotteryMachine = () => (
   <Canvas
@@ -59,12 +59,48 @@ function DebugInDev({ children }) {
     <>{children}</>
   );
 }
+
+const tempObject = new THREE.Object3D();
+const tempColor = new THREE.Color();
+const NUM_NODES = 30;
+const colors = [...new Array(NUM_NODES)].map(
+  () => "hsl(" + Math.round(360 * Math.random()) + ", 100%, 50%)"
+);
+
 function Clump({
   mat = new THREE.Matrix4(),
   vec = new THREE.Vector3(),
   ...props
 }) {
-  const texture = useTexture("/cross.jpg");
+  const texture = useTexture("/worker.jpg");
+  console.log("🌟🚨 ~ file: LotteryMachine.tsx ~ line 81 ~ colors", colors);
+  const colorArray = useMemo(
+    () =>
+      Float32Array.from(
+        [...new Array(NUM_NODES)].flatMap((_, i) => {
+          const [h, s, l] = hslStringToHSL(colors[i]);
+          console.log(
+            "🌟🚨 ~ file: LotteryMachine.tsx ~ line 82 ~ [...newArray ~ [h, s, l]",
+            [h, s, l]
+          );
+          return tempColor
+            .set(
+              hslToHex(
+                Number(h),
+                Number(s.slice(0, -1)),
+                Number(l.slice(0, -1))
+              )
+            )
+            .toArray();
+        })
+      ),
+    []
+  );
+  console.log(
+    "🌟🚨 ~ file: LotteryMachine.tsx ~ line 85 ~ colorArray",
+    colorArray
+  );
+
   const [ref, api] = useSphere<any>(() => ({
     args: [RADIUS],
     mass: 1,
@@ -75,7 +111,7 @@ function Clump({
   const [, , filteredNodes] = useFilters();
 
   const filteredNodesRandom = useMemo(
-    () => shuffleArray([...filteredNodes]).slice(0, 30),
+    () => shuffleArray([...filteredNodes]).slice(0, NUM_NODES),
     [filteredNodes]
   );
   useFrame((state) => {
@@ -96,16 +132,43 @@ function Clump({
         );
     }
   });
+  // const sphereGeometry = new THREE.SphereGeometry(RADIUS, 32, 32);
   return (
     <instancedMesh
       ref={ref}
       castShadow
       receiveShadow
       args={[undefined, undefined, filteredNodesRandom.length]}
-      geometry={sphereGeometry}
-      material={baubleMaterial}
-      material-map={texture}
-    />
+      // geometry={sphereGeometry}
+      // material={baubleMaterial}
+      // material-map={texture}
+    >
+      <sphereBufferGeometry args={[RADIUS, 32, 32]}>
+        {/* <instancedBufferAttribute
+          attach="attributes-color"
+          count={filteredNodesRandom.length}
+          array={colorArray}
+        /> */}
+        <bufferAttribute
+          attach="attributes-color"
+          count={filteredNodesRandom.length}
+          array={colorArray}
+          itemSize={1}
+        />
+      </sphereBufferGeometry>
+
+      <meshStandardMaterial
+        map={texture}
+        {...{
+          // const baubleMaterial = new THREE.MeshStandardMaterial({
+          // color: "white",
+          roughness: 0,
+          envMapIntensity: 0.2,
+          emissive: "#370037",
+          // });
+        }}
+      ></meshStandardMaterial>
+    </instancedMesh>
   );
 }
 const COLLIDER_RADIUS = RADIUS * 3;
@@ -171,4 +234,22 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
+}
+
+function hslStringToHSL(hslString) {
+  const [h, s, l] = hslString.slice(4, -1).split(",");
+  return [h, s, l];
+}
+
+function hslToHex(h, s, l) {
+  l /= 100;
+  const a = (s * Math.min(l, 1 - l)) / 100;
+  const f = (n) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, "0"); // convert to Hex and prefix "0" if needed
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
 }
