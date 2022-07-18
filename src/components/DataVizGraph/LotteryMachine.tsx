@@ -3,6 +3,7 @@ import {
   Sky,
   Environment,
   Effects as EffectComposer,
+  Sphere,
 } from "@react-three/drei";
 import * as THREE from "three";
 import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
@@ -41,10 +42,10 @@ export const LotteryMachine = () => (
     />
     <directionalLight intensity={5} position={[-10, -10, -10]} color="purple" />
     <Physics gravity={[0, 2, 0]} iterations={10}>
-      <Debug>
-        <ColliderSphere />
-        <Clump />
-      </Debug>
+      {/* <DebugInDev> */}
+      <ColliderSphere />
+      <Clump />
+      {/* </DebugInDev> */}
     </Physics>
     <Environment files="/adamsbridge.hdr" />
     <Effects />
@@ -121,7 +122,7 @@ function ColliderSphere() {
   const position = useRef([0, 0, 0]);
   useEffect(() => api.position.subscribe((v) => (position.current = v)), [api]);
 
-  return useFrame((state) =>
+  useFrame((state) =>
     // TODO move randomly during shuffle
     // TODO tooltip
     {
@@ -132,6 +133,15 @@ function ColliderSphere() {
 
       return api.position.set(nextXL, nextYL, 0);
     }
+  );
+  return (
+    <Sphere ref={ref} args={[COLLIDER_RADIUS]}>
+      <meshPhysicalMaterial
+        transmission={1}
+        thickness={COLLIDER_RADIUS}
+        roughness={0}
+      />
+    </Sphere>
   );
 }
 
