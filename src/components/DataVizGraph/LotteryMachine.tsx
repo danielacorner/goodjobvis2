@@ -11,6 +11,7 @@ import { Debug, Physics, useSphere } from "@react-three/cannon";
 import { SSAOPass } from "three-stdlib";
 import { useFilters } from "../../store/store";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useMount } from "../../utils/constants";
 
 extend({ SSAOPass });
 
@@ -63,8 +64,11 @@ function DebugInDev({ children }) {
 const tempObject = new THREE.Object3D();
 const tempColor = new THREE.Color();
 const NUM_NODES = 30;
-const colors = [...new Array(NUM_NODES)].map(
-  () => "hsl(" + Math.round(360 * Math.random()) + ", 100%, 50%)"
+const COLORS = [...new Array(NUM_NODES)].map(
+  () =>
+    "hsl(" +
+    Math.round(360 * Math.random()) +
+    `, 100%, ${Math.round(Math.random() * 64) + 36}%)`
 );
 
 function Clump({
@@ -73,33 +77,20 @@ function Clump({
   ...props
 }) {
   const texture = useTexture("/worker.jpg");
-  console.log("🌟🚨 ~ file: LotteryMachine.tsx ~ line 81 ~ colors", colors);
   const colorArray = useMemo(
     () =>
-      Float32Array.from(
-        new Array(NUM_NODES).fill(null).flatMap((_, i) => {
-          const [h, s, l] = hslStringToHSL(colors[i]);
-          console.log(
-            "🌟🚨 ~ file: LotteryMachine.tsx ~ line 82 ~ [...newArray ~ [h, s, l]",
-            [h, s, l]
-          );
-          const hex = hslToHex(
-            Number(h),
-            Number(s.slice(0, -1)),
-            Number(l.slice(0, -1))
-          );
-          console.log(
-            "🌟🚨 ~ file: LotteryMachine.tsx ~ line 91 ~ [...newArray ~ hex",
-            hex
-          );
-          const color = hex;
-          console.log(
-            "🌟🚨 ~ file: LotteryMachine.tsx ~ line 93 ~ colorArray ~ color",
-            color
-          );
-          return tempColor.set(color).toArray();
-        })
-      ),
+      // Float32Array.from(
+      new Array(NUM_NODES).fill(null).flatMap((_, i) => {
+        const [h, s, l] = hslStringToHSL(COLORS[i]);
+        const hex = hslToHex(
+          Number(h),
+          Number(s.slice(0, -1)),
+          Number(l.slice(0, -1))
+        );
+        const color = hex;
+        return color;
+      }),
+    // ),
     []
   );
 
@@ -162,6 +153,16 @@ function Clump({
         );
     }
   });
+  useEffect(() => {
+    for (let index = 0; index < colorArray.length; index++) {
+      const color = colorArray[index];
+      console.log(
+        "🌟🚨 ~ file: LotteryMachine.tsx ~ line 169 ~ useEffect ~ color",
+        color
+      );
+      ref.current.setColorAt(index, new THREE.Color(color));
+    }
+  });
   // const sphereGeometry = new THREE.SphereGeometry(RADIUS, 32, 32);
   return (
     <instancedMesh
@@ -179,12 +180,6 @@ function Clump({
           count={filteredNodesRandom.length}
           array={colorArray}
         /> */}
-        <bufferAttribute
-          attach="attributes-color"
-          count={filteredNodesRandom.length}
-          array={colorArray}
-          itemSize={1}
-        />
       </sphereBufferGeometry>
 
       <meshStandardMaterial
@@ -197,7 +192,12 @@ function Clump({
           emissive: "#370037",
           // });
         }}
-      ></meshStandardMaterial>
+      >
+        {/* <instancedBufferAttribute
+          attach="attributes-color"
+          args={[colorArray, 3]}
+        /> */}
+      </meshStandardMaterial>
     </instancedMesh>
   );
 }
