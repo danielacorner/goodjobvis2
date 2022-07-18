@@ -77,25 +77,55 @@ function Clump({
   const colorArray = useMemo(
     () =>
       Float32Array.from(
-        [...new Array(NUM_NODES)].flatMap((_, i) => {
+        new Array(NUM_NODES).fill(null).flatMap((_, i) => {
           const [h, s, l] = hslStringToHSL(colors[i]);
           console.log(
             "🌟🚨 ~ file: LotteryMachine.tsx ~ line 82 ~ [...newArray ~ [h, s, l]",
             [h, s, l]
           );
-          return tempColor
-            .set(
-              hslToHex(
-                Number(h),
-                Number(s.slice(0, -1)),
-                Number(l.slice(0, -1))
-              )
-            )
-            .toArray();
+          const hex = hslToHex(
+            Number(h),
+            Number(s.slice(0, -1)),
+            Number(l.slice(0, -1))
+          );
+          console.log(
+            "🌟🚨 ~ file: LotteryMachine.tsx ~ line 91 ~ [...newArray ~ hex",
+            hex
+          );
+          const color = hex;
+          console.log(
+            "🌟🚨 ~ file: LotteryMachine.tsx ~ line 93 ~ colorArray ~ color",
+            color
+          );
+          return tempColor.set(color).toArray();
         })
       ),
     []
   );
+
+  // const colorArray = useMemo(
+  //   () =>
+  //     Float32Array.from(
+  //       [...new Array(NUM_NODES)].flatMap((_, i) => {
+  //         const [h, s, l] = hslStringToHSL(colors[i]);
+  //         console.log(
+  //           "🌟🚨 ~ file: LotteryMachine.tsx ~ line 82 ~ [...newArray ~ [h, s, l]",
+  //           [h, s, l]
+  //         );
+  //         const hex = hslToHex(
+  //           Number(h),
+  //           Number(s.slice(0, -1)),
+  //           Number(l.slice(0, -1))
+  //         );
+  //         console.log(
+  //           "🌟🚨 ~ file: LotteryMachine.tsx ~ line 91 ~ [...newArray ~ hex",
+  //           hex
+  //         );
+  //         return tempColor.set(hex).toArray();
+  //       })
+  //     ),
+  //   []
+  // );
   console.log(
     "🌟🚨 ~ file: LotteryMachine.tsx ~ line 85 ~ colorArray",
     colorArray
