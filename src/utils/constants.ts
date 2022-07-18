@@ -39,9 +39,27 @@ export const d3SchemeCategory10 = [
   "rgba(23,190,207, 1)",
 ];
 // const palette = d3SchemeCategory10;
+const p = [
+  palettes[0],
+  palettes[1],
+  palettes[3],
+  palettes[4],
+  palettes[9],
+  palettes[10],
+  palettes[16],
+  palettes[21],
+  palettes[24],
+  palettes[29],
+  palettes[33],
+  palettes[35],
+  palettes[38],
+  palettes[39],
+  palettes[47],
+  palettes[50],
+];
 const palette = [
-  ...palettes[Math.floor(Math.random() * palettes.length)],
-  ...palettes[Math.floor(Math.random() * palettes.length)],
+  ...p[Math.floor(Math.random() * p.length)],
+  ...p[Math.floor(Math.random() * p.length)],
 ];
 export const CLUSTER_COLORS = {
   "1": palette[0],
