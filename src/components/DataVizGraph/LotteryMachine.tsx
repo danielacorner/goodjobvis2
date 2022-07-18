@@ -101,7 +101,7 @@ function Clump({
         return color;
       }),
     // ),
-    []
+    [numNodes]
   );
 
   // const colorArray = useMemo(
@@ -244,7 +244,7 @@ function ColliderSphere() {
     <Sphere ref={ref} args={[colliderRadius]}>
       <meshPhysicalMaterial
         transmission={1}
-        thickness={colliderRadius}
+        thickness={colliderRadius / 2}
         roughness={0}
       />
     </Sphere>
